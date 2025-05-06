@@ -1,15 +1,21 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
-import Welcome from './pages/Welcome';
+import Welcome from './pages/Welcome/Welcome';
+import ProtectedRoute from './components/ProtectedRoute';
+import MainPage from './pages/Dashboard/MainPage';
 import './index.css';
 
-// import Register from './pages/Register';
-
-export default function App() {
+function App() {
   return (
     <Routes>
-        <Route path="/" element={<Welcome />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Navigate to="/welcome" />} />
+      <Route path="/welcome" element={<Welcome />} />
+      <Route path="/main" element={
+          <ProtectedRoute>
+            <MainPage />
+          </ProtectedRoute>
+        } />
     </Routes>
   );
 }
+
+export default App;

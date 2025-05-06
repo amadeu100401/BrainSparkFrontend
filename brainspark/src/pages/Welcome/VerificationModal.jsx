@@ -3,21 +3,27 @@ import Modal from "../../components/Modal";
 import { httpRequest } from "../../utils/HttpRequestsUtil"; 
 import { useNavigate } from "react-router-dom";
 
-export default function VerificationModal({ isOpen, onClose, onSuccess, email}) {
+export default function VerificationModal({ isOpen, onClose, onSuccess}) {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+
 
   const handleChange = async (e) => {
     const value = e.target.value.replace(/\D/g, "");
     setCode(value);
-
+    
     if (value.length === 5) {
       try {
+        const email = localStorage.getItem("email");
         const payload = {token: value, email: email};
+
+        console.log(payload);
+
         const response = await httpRequest("/api/v1/auth/validate", "POST", payload);
 
-        localStorage.setItem("email", data.email);
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("email", response.email);
+        localStorage.setItem("token", response.token);
 
         navigate("/");
 
@@ -25,6 +31,7 @@ export default function VerificationModal({ isOpen, onClose, onSuccess, email}) 
         onClose();
         onSuccess();
       } catch (err) {
+        console.log(err)
         setError("Erro na verificação. Tente novamente mais tarde.");
         setCode("");
       }

@@ -4,7 +4,6 @@ import InputGroup from "../../components/InputGroup";
 import { useNavigate } from "react-router-dom";
 import AccessDeniedModal from "./AccessDeniedModal";
 import { useAuth } from "../../components/AuthContext";
-
 import {
     FaEnvelope,
     FaLock,
@@ -116,7 +115,7 @@ export default function LoginForm() {
         </form>
         <p
           onClick={() => {
-            setView("register");
+            navigate("/welcome/register")
             setLoginForm({ email: "", password: "" });
           }}
           className="text-sm text-center text-white/60"

@@ -1,16 +1,20 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import Cookies from 'js-cookie';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { token } = useAuth();
+  var { token } = useAuth();
+
+  if (Cookies.get("rememberMe")) {
+    token = Cookies.get("token");
+  }
 
   if (!token) {
-    console.log("Nao funcionou")
     return <Navigate to="/welcome" replace />;
   }
 
@@ -18,3 +22,4 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default ProtectedRoute;
+

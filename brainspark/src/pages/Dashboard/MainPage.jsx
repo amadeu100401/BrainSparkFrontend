@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaChartBar, FaCog, FaUserCircle, FaSignOutAlt, FaAngleLeft } from "react-icons/fa"; // Importando ícones do react-icons
+import { FaChartBar, FaCog, FaUserCircle, FaSignOutAlt, FaAngleLeft } from "react-icons/fa";
+import { useAuth } from '../../components/AuthContext';
 
 export default function MainPage() {
+  const logout = useAuth();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Estado para controlar a abertura/fechamento da sidebar
   const email = localStorage.getItem("email") || sessionStorage.getItem("email");
@@ -14,10 +16,7 @@ export default function MainPage() {
   }, [email, navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token");
-    localStorage.removeItem("email");
-    sessionStorage.removeItem("email");
+    logout.logout();
     navigate("/welcome");
   };
 

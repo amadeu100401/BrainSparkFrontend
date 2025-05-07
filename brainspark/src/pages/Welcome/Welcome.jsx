@@ -1,10 +1,7 @@
-import { useState } from "react";
 import RightSide from "./RightSide";
 import { Outlet } from "react-router-dom";
 
 export default function WelcomePage() {
-  const [view, setView] = useState("default");
-
   return (
     <div className="h-screen w-full flex flex-col md:flex-row text-white">
       {/* Lado esquerdo */}

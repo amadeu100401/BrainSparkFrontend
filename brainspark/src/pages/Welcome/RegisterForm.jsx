@@ -3,8 +3,10 @@ import { FaUser, FaEnvelope, FaLock} from "react-icons/fa";
 import { httpRequest } from "../../utils/HttpRequestsUtil"; 
 import InputGroup from "../../components/InputGroup";
 import VerificationModal from "./VerificationModal";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterForm({ setView }) {
+    const navigate = useNavigate();
 
     const [registerForm, setRegisterForm] = useState({
         name: "",
@@ -37,15 +39,13 @@ export default function RegisterForm({ setView }) {
             name: registerForm.name,
             email: registerForm.email,
             password: registerForm.password,
-            birthDate: "2001-04-10"
+            birthDate: "2000-01-01"
         }
     
         const response = await httpRequest("/api/v1/auth/signup", "POST", payload);
     
-        console.log("Resposta do servidor no submit:", response)
-
         if (response.email) {
-            localStorage.setItem("email", registerForm.email);
+            sessionStorage.setItem("email", registerForm.email);
             setIsVerifying(true);
             setRegisterForm({
                 name: "",
@@ -116,7 +116,7 @@ export default function RegisterForm({ setView }) {
                 Já possui um cadastro?{" "}
                 <span
                 onClick={() => {
-                    setView("login");
+                    navigate("/welcome/login")
                     setError("");
                 }}
                 className="font-semibold text-white hover:underline cursor-pointer"

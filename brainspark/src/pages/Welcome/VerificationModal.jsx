@@ -15,17 +15,17 @@ export default function VerificationModal({ isOpen, onClose, onSuccess}) {
     
     if (value.length === 5) {
       try {
-        const email = localStorage.getItem("email");
+        const email = sessionStorage.getItem("email");
         const payload = {token: value, email: email};
 
         console.log(payload);
 
         const response = await httpRequest("/api/v1/auth/validate", "POST", payload);
 
-        localStorage.setItem("email", response.email);
-        localStorage.setItem("token", response.token);
+        sessionStorage.setItem("email", response.email);
+        sessionStorage.setItem("token", response.token);
 
-        navigate("/");
+        navigate("/brainspark/main");
 
         setCode("");
         onClose();

@@ -3,14 +3,16 @@ import { httpRequest } from "../../utils/HttpRequestsUtil";
 import InputGroup from "../../components/InputGroup";
 import { useNavigate } from "react-router-dom";
 import AccessDeniedModal from "./AccessDeniedModal";
+import { useAuth } from "../../components/AuthContext";
 
 import {
     FaEnvelope,
     FaLock,
   } from "react-icons/fa";
 
-export default function LoginForm({ setView }) {
+export default function LoginForm() {
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
@@ -24,7 +26,7 @@ export default function LoginForm({ setView }) {
     const handleLoginChange = (e) => {
         const { name, value } = e.target;
         setLoginForm((prev) => ({ ...prev, [name]: value }));
-      };
+    };
     
       const handleLoginSubmit = async (e) => {
         e.preventDefault();
@@ -37,13 +39,12 @@ export default function LoginForm({ setView }) {
       
           const response = await httpRequest("/api/v1/auth/login", "POST", payload);
           const token = response.token;
-          const email = response.email;
+          const email = loginForm.email;
       
           if (token) {
-            localStorage.setItem("token", token);
-            localStorage.setItem("email", email)
+            login(token, email, rememberMe);
             setIsAccessDenied(false);
-            navigate("/main");
+            navigate("/brainspark/main");
           } else {
             setIsAccessDenied(true);
           }
@@ -54,7 +55,7 @@ export default function LoginForm({ setView }) {
       };
     
     const toggleRememberMe = () => {
-    setRememberMe(!rememberMe);
+      setRememberMe(!rememberMe);
     };
 
     return (<div className="w-full max-w-md space-y-6">
@@ -96,7 +97,7 @@ export default function LoginForm({ setView }) {
             </label>
             <span
               onClick={() => {
-                setView("forgotPassword");
+                navigate("/welcome/forgetPassword")
                 setLoginForm({ email: "", password: "" });
               }}
               className="text-sm text-white/60 hover:text-white hover:underline cursor-pointer"

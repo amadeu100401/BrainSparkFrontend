@@ -2,11 +2,14 @@ import InputGroup from "../../components/InputGroup";
 import {
     FaEnvelope 
   } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export default function ForgotPassword({ setView }) {
-        const handleForgetPasswordSubmit = async (e) => {
-            e.preventDefault();
-        };
+    const handleForgetPasswordSubmit = async (e) => {
+        e.preventDefault();
+    };
+
+    const navigate = useNavigate();
 
     return(
         <div className="w-full max-w-md space-y-6">
@@ -29,7 +32,7 @@ export default function ForgotPassword({ setView }) {
         </form>
         <p
           onClick={() => {
-            setView("login");
+            navigate("/welcome/login")
           }}
           className="text-sm text-center text-white/60"
         >

@@ -8,10 +8,12 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-const clearSessionStore = () => {
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("email");
+const clearMemory = () => {
+  Cookies.remove('token');
+  Cookies.remove('email');
+  Cookies.remove('rememberMe');
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("email");
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -27,11 +29,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = (newToken: string, email: string, rememberMe: boolean) => {
     if (rememberMe) {
+      clearMemory();
       Cookies.set('token', newToken, { expires: 7 });
       Cookies.set('email', email, { expires: 7 });
       Cookies.set('rememberMe', rememberMe, { expires: 7 });
-      clearSessionStore();
     } else {
+      clearMemory();
       sessionStorage.setItem("token", newToken);
       sessionStorage.setItem("email", email);
     }
@@ -40,10 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    Cookies.remove('token');
-    Cookies.remove('email');
-    Cookies.remove('rememberMe');
-    clearSessionStore();
+    clearMemory();
     setToken(null);
   };
 

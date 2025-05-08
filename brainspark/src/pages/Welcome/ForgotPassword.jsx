@@ -4,7 +4,7 @@ import {
   } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-export default function ForgotPassword({ setView }) {
+export default function ForgotPassword() {
     const handleForgetPasswordSubmit = async (e) => {
         e.preventDefault();
     };

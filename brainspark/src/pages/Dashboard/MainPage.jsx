@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaChartBar, FaCog, FaUserCircle, FaSignOutAlt, FaAngleLeft } from "react-icons/fa";
 import { useAuth } from '../../components/AuthContext';
+import Cookies from 'js-cookie';
 
 export default function MainPage() {
   const logout = useAuth();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Estado para controlar a abertura/fechamento da sidebar
-  const email = localStorage.getItem("email") || sessionStorage.getItem("email");
+  const email = Cookies.get("email") || sessionStorage.getItem("email");
 
   useEffect(() => {
     if (!email) {

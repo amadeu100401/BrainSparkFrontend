@@ -10,7 +10,8 @@ interface ProtectedRouteProps {
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   var { token } = useAuth();
 
-  if (Cookies.get("rememberMe")) {
+  if (Cookies.get("rememberMe") === true) {
+    console.log("Aqui")
     token = Cookies.get("token");
   }
 

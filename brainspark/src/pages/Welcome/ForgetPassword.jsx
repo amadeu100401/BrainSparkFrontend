@@ -6,6 +6,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { httpRequest } from "../../utils/HttpRequestsUtil"; 
 import ResetPasswordlModal from "./ResetPasswordModal"
+import ErrorToast from "../../components/ErrorToast";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState({
@@ -13,7 +14,7 @@ export default function ForgotPassword() {
     }); 
 
     const [error, setError] = useState(""); 
-
+    const [showErrorToast, setShowErrorToast] = useState("");
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const handleForgetPasswordSubmit = async (e) => {
@@ -27,7 +28,7 @@ export default function ForgotPassword() {
           await httpRequest("/api/v1/auth/forgetPassword", "POST", data);
           setShowSuccessModal(true);
         } catch (error) {
-          setError("Erro ao realizar a requisição da troca de senha.")
+          setShowErrorToast(true);
         }
     };
 
@@ -49,6 +50,7 @@ export default function ForgotPassword() {
             value={email.email}
             onChange={handleForgetPasswordChange}
             icon={<FaEnvelope />}
+            required
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className="flex justify-center w-full">
@@ -69,6 +71,12 @@ export default function ForgotPassword() {
           <span className="font-semibold hover:text-white hover:underline cursor-pointer">Voltar</span>
         </p>
         <ResetPasswordlModal isOpen={showSuccessModal} onClose={() => setShowSuccessModal(false)} />
+        {showErrorToast && (
+            <ErrorToast
+                message="Erro ao realizar a redefinição de senha. Tente novamente mais tarde."
+                onClose={() => setShowToast(false)}
+            />
+            )}
       </div>
     );
 }

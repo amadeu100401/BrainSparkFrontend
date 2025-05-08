@@ -21,11 +21,11 @@ export async function httpRequest(url, method = 'GET', data = null, headers = {}
             ? await response.json()
             : await response.text();
 
-        if (!response.ok) {
-            throw new Error(responseData?.message || "Erro na requisição")
-        }
-
-        return responseData;
+        return {
+            status: response.status,
+            ok: response.ok,
+            data: responseData,
+        };
     } catch (error) {
         console.error("Erro HTTP", error);
         throw error;

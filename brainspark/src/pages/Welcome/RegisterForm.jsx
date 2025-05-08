@@ -4,9 +4,11 @@ import { httpRequest } from "../../utils/HttpRequestsUtil";
 import InputGroup from "../../components/InputGroup";
 import VerificationModal from "./VerificationModal";
 import { useNavigate } from "react-router-dom";
+import ErrorToast from "../../components/ErrorToast";
 
 export default function RegisterForm({ setView }) {
     const navigate = useNavigate();
+    const [showToast, setShowToast] = useState(false);
 
     const [registerForm, setRegisterForm] = useState({
         name: "",
@@ -42,10 +44,10 @@ export default function RegisterForm({ setView }) {
             birthDate: "2000-01-01"
         }
     
-        const response = await httpRequest("/api/v1/auth/signup", "POST", payload);
+        const { status, ok, data } = await httpRequest("/api/v1/users/signup", "POST", payload);
     
-        if (response.email) {
-            sessionStorage.setItem("email", registerForm.email);
+        if (ok) {
+            sessionStorage.setItem("email", data.email);
             setIsVerifying(true);
             setRegisterForm({
                 name: "",
@@ -53,12 +55,13 @@ export default function RegisterForm({ setView }) {
                 password: "",
                 confirmPassword: "",
               });
+            setShowToast(false);
         } else {
             setError("Erro ao cadastrar. Tente novamente.");
+            setShowToast(false);
         }
-
         } catch(error) {
-            setError("Erro ao realizar o cadastro. Tente novamente mais tarde.");
+            setShowToast(true);
         }
     };
 
@@ -73,6 +76,7 @@ export default function RegisterForm({ setView }) {
                 value={registerForm.name}
                 onChange={handleRegisterChange}
                 icon={<FaUser />}
+                required
                 />
                 <InputGroup
                 type="email"
@@ -81,6 +85,7 @@ export default function RegisterForm({ setView }) {
                 value={registerForm.email}
                 onChange={handleRegisterChange}
                 icon={<FaEnvelope />}
+                required
                 />
                 <InputGroup
                 type="password"
@@ -91,6 +96,7 @@ export default function RegisterForm({ setView }) {
                 icon={<FaLock />}
                 show={showPassword}
                 toggleShow={() => setShowPassword((prev) => !prev)}
+                required
                 />
                 <InputGroup
                 type="password"
@@ -101,6 +107,7 @@ export default function RegisterForm({ setView }) {
                 icon={<FaLock />}
                 show={showConfirmPassword}
                 toggleShow={() => setShowConfirmPassword((prev) => !prev)}
+                required
                 />
                 {error && <p className="text-red-500 text-sm">{error}</p>}
                 <div className="flex justify-center w-full">
@@ -136,6 +143,12 @@ export default function RegisterForm({ setView }) {
                     setView("login");
                 }}
             />
+            {showToast && (
+            <ErrorToast
+                message="Erro ao realizar o cadastro. Tente novamente mais tarde."
+                onClose={() => setShowToast(false)}
+            />
+            )}
         </div>
     )
 }

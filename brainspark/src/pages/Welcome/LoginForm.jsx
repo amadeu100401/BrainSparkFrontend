@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { httpRequest } from "../../utils/HttpRequestsUtil"; 
 import InputGroup from "../../components/InputGroup";
 import { useNavigate } from "react-router-dom";
-import AccessDeniedModal from "./AccessDeniedModal";
 import { useAuth } from "../../components/AuthContext";
+import ErrorToast from "../../components/ErrorToast";
 import {
     FaEnvelope,
     FaLock,
@@ -13,9 +13,10 @@ export default function LoginForm() {
     const navigate = useNavigate();
     const { login } = useAuth();
 
+    const [error, setError] = useState("");
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
-    const [isAccessDenied, setIsAccessDenied] = useState(false);
+    const [showToast, setShowToast] = useState(false);
 
     const [loginForm, setLoginForm] = useState({
         email: "",
@@ -29,6 +30,7 @@ export default function LoginForm() {
     
       const handleLoginSubmit = async (e) => {
         e.preventDefault();
+        setError("");
       
         try {
           const payload = {
@@ -36,20 +38,18 @@ export default function LoginForm() {
             password: loginForm.password,
           };
       
-          const response = await httpRequest("/api/v1/users/login", "POST", payload);
-          const token = response.token;
+          const { status, ok, data } = await httpRequest("/api/v1/auth/login", "POST", payload);
+          const token = data.token;
           const email = loginForm.email;
       
-          if (token) {
+          if (ok) {
             login(token, email, rememberMe);
-            setIsAccessDenied(false);
             navigate("/brainspark/main");
           } else {
-            setIsAccessDenied(true);
+            setError("Acesso negado. Credenciais inválidas.");
           }
         } catch (error) {
-          console.error("Erro no login:", error);
-          setIsAccessDenied(true);
+          setShowToast(true);
         }
       };
     
@@ -67,6 +67,7 @@ export default function LoginForm() {
             value={loginForm.email}
             onChange={handleLoginChange}
             icon={<FaEnvelope />}
+            required
           />
           <InputGroup
             type="password"
@@ -77,6 +78,7 @@ export default function LoginForm() {
             icon={<FaLock />}
             show={showConfirmPassword}
             toggleShow={() => setShowConfirmPassword((prev) => !prev)}
+            required
           />
           <div className="flex items-center justify-between">
             <label className="flex items-center cursor-pointer">
@@ -104,6 +106,7 @@ export default function LoginForm() {
               Esqueci a senha
             </span>
           </div>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className="flex justify-center w-full">
             <button
               type="submit"
@@ -125,10 +128,10 @@ export default function LoginForm() {
             Clique aqui!
           </span>
         </p>
-        {/* MODAL DE ACESSO NEGADO */}
-        <AccessDeniedModal
-            isOpen={isAccessDenied}
-            onClose={() => setIsAccessDenied(false)}
+        {showToast && (
+        <ErrorToast
+          onClose={() => setShowToast(false)}
         />
+      )}
       </div>);
 }

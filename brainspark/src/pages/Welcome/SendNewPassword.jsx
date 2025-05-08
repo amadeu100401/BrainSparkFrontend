@@ -4,6 +4,7 @@ import InputGroup from "../../components/InputGroup";
 import { FaLock } from 'react-icons/fa'; 
 import { httpRequest } from "../../utils/HttpRequestsUtil"; 
 import PasswordResetSuccess from "./PasswordResetSuccessModal";
+import ErrorToast from "../../components/ErrorToast";
 
 export default function SendNewPassword() {
   const location = useLocation(); 
@@ -18,6 +19,7 @@ export default function SendNewPassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -52,7 +54,7 @@ export default function SendNewPassword() {
       const response = await httpRequest("/api/v1/auth/send-new-password", "POST", data);
       setShowSuccessModal(true);
     } catch (err) {
-      setError("Falha ao redefinir senha. Tente novamente.");
+      setShowToast(true);
     }
   };
 
@@ -69,6 +71,7 @@ export default function SendNewPassword() {
           icon={<FaLock />}
           show={showPassword}
           toggleShow={() => setShowPassword((prev) => !prev)}
+          required
         />
         <InputGroup
           type={showConfirmPassword ? "text" : "password"}
@@ -79,6 +82,7 @@ export default function SendNewPassword() {
           icon={<FaLock />}
           show={showConfirmPassword}
           toggleShow={() => setShowConfirmPassword((prev) => !prev)}
+          required
         />
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <div className="flex justify-center w-full">
@@ -94,6 +98,12 @@ export default function SendNewPassword() {
         isOpen={showSuccessModal}
         onClose={() => setShowSuccessModal(false)}
       />
+      {showToast && (
+      <ErrorToast
+          message="Erro ao realizar a redefinição de senha."
+          onClose={() => setShowToast(false)}
+      />
+      )}
     </div>
   );
 }

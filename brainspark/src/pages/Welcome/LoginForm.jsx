@@ -36,7 +36,7 @@ export default function LoginForm() {
             password: loginForm.password,
           };
       
-          const response = await httpRequest("/api/v1/auth/login", "POST", payload);
+          const response = await httpRequest("/api/v1/users/login", "POST", payload);
           const token = response.token;
           const email = loginForm.email;
       

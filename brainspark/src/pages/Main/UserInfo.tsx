@@ -185,15 +185,15 @@ export default function UserInfo() {
               type="submit"
               className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded"
             >
-              Save Changes
+              Salvar alterações
             </button>
           </div>
         </form>
   
         <div className="mt-10 border-t pt-6">
-          <h3 className="text-lg font-semibold text-red-600 mb-2">Delete Account</h3>
+          <h3 className="text-lg font-semibold text-red-600 mb-2">Excluir conta</h3>
           <p className="text-sm text-gray-600 mb-4">
-            After making a deletion request, you will have <strong>6 months</strong> to maintain this account.
+            Após requisitar a exclusão, você terá <strong>1 dia</strong> para manter essa conta.
           </p>
           <button 
           className="text-red-600 border border-red-600 px-4 py-2 rounded hover:bg-red-50"

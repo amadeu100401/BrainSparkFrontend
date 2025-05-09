@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import InputGroup from "../../components/InputGroup"; 
 import { FaLock } from 'react-icons/fa'; 
 import { httpRequest } from "../../utils/HttpRequestsUtil"; 
-import PasswordResetSuccess from "./PasswordResetSuccessModal";
+import PasswordResetSuccess from "././components/PasswordResetSuccessModal";
 import ErrorToast from "../../components/ErrorToast";
 
 export default function SendNewPassword() {

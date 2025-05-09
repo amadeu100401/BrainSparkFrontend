@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Modal from "../../components/Modal";
-import { httpRequest } from "../../utils/HttpRequestsUtil"; 
+import Modal from "../../../components/Modal";
+import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
 import { useNavigate } from "react-router-dom";
 
 export default function VerificationModal({ isOpen, onClose, onSuccess}) {

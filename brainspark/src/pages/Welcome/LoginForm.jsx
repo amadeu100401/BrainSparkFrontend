@@ -46,7 +46,9 @@ export default function LoginForm() {
             login(token, email, rememberMe);
             navigate("/brainspark/main");
           } else {
-            setError("Acesso negado. Credenciais inválidas.");
+            const errorMessage = data.message || "Erro desconhecido";
+            console.log(errorMessage)
+            setError(`Erro ao fazer login: ${errorMessage}`);
           }
         } catch (error) {
           setShowToast(true);
@@ -130,6 +132,7 @@ export default function LoginForm() {
         </p>
         {showToast && (
         <ErrorToast
+          message={error}
           onClose={() => setShowToast(false)}
         />
       )}

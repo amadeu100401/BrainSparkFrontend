@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaUser, FaEnvelope, FaLock} from "react-icons/fa";
 import { httpRequest } from "../../utils/HttpRequestsUtil"; 
 import InputGroup from "../../components/InputGroup";
-import VerificationModal from "./VerificationModal";
+import VerificationModal from "././components/VerificationModal";
 import { useNavigate } from "react-router-dom";
 import ErrorToast from "../../components/ErrorToast";
 

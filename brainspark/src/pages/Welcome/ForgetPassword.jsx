@@ -5,7 +5,7 @@ import {
   } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { httpRequest } from "../../utils/HttpRequestsUtil"; 
-import ResetPasswordlModal from "./ResetPasswordModal"
+import ResetPasswordlModal from "././components/ResetPasswordModal"
 import ErrorToast from "../../components/ErrorToast";
 
 export default function ForgotPassword() {

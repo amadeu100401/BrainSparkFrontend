@@ -27,8 +27,6 @@ export async function httpRequest(
   
     try {
       const fullUrl = `${baseUrl}${url}`;
-      console.log('Requisição para:', fullUrl);
-      console.log('Headers:', options.headers);
   
       const response = await fetch(fullUrl, options);
   

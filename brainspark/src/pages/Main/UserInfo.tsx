@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { httpRequest } from "../../utils/HttpRequestsUtil"; 
 import { useAuth } from '../../components/AuthContext';
-import ErrorToast from "../../components/ErrorToast";
+import Toast from "../../components/Toast.tsx";
 import Loading from "./components/LoadingComponent";
 import DeleteAccountModal from "./components/DeleteAccountModal";
 import Cookies from 'js-cookie';
+import { saveUserInfoInCookie, updateUserInfo, getUserInfo } from '../../utils/CookieManeger.ts'
 
 export default function UserInfo() {
     var context = useAuth();
     var token = Cookies.get("token") || sessionStorage.getItem("token");
 
+    const [showToastError, setShowToastError] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -31,40 +33,69 @@ export default function UserInfo() {
         setFormInput((prev) => ({ ...prev, [name]: value }));
       };
 
+    const fetchData = async () => {
+          try {
+              const { status, ok, data } = await httpRequest(
+                  "/api/v1/users/get-info", 
+                  "GET", 
+                  null, 
+                  {}, 
+                  token);
+
+              if (ok) {
+                  setUserForm({
+                      email: data.email,
+                      name: data.name,
+                      photoLink: data.photoLink
+                  })
+                  setFormInput({
+                      email: data.email,
+                      name: data.name
+                  })
+                  
+                  data.photoLink = null;
+                  saveUserInfoInCookie(data);
+
+                  setShowToastError(false);
+              }
+
+          } catch(erro) {
+              console.error("Erro ao buscar dados do cliente:", erro);
+              setError("Falha ao buscar os dados do cliente.");
+              setShowToastError(true);
+          } finally {
+              setLoading(false);
+          }
+      }
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const { status, ok, data } = await httpRequest(
-                    "/api/v1/users/get-info", 
-                    "GET", 
-                    null, 
-                    {}, 
-                    token);
+        const cookieData = getDataFromCookie();
 
-                if (ok) {
-                    setUserForm({
-                        email: data.email,
-                        name: data.name,
-                        photoLink: data.photoLink
-                    })
-                    setFormInput({
-                        email: data.email,
-                        name: data.name
-                    })
-                    setShowToast(false);
-                }
-
-            } catch(erro) {
-                console.error("Erro ao buscar dados do cliente:", erro);
-                setError("Falha ao buscar os dados do cliente.");
-                setShowToast(true);
-            } finally {
-                setLoading(false);
-            }
+        if (cookieData !== null) {
+            setUserForm({
+                email: cookieData.email,
+                name: cookieData.name,
+                photoLink: cookieData.photoLink
+            });
+            setFormInput({
+                email: cookieData.email,
+                name: cookieData.name
+            });
+        } else {
+            fetchData();
         }
+    }, []);
 
-        fetchData();
-    }, [])   
+    const getDataFromCookie = () => {
+      const cookieData = getUserInfo();
+
+      if (cookieData && typeof cookieData === 'object' && Object.keys(cookieData).length > 0) {
+          setLoading(false);
+          return cookieData;
+      } else {
+          return null;
+      }
+    }
     
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,19 +115,22 @@ export default function UserInfo() {
         token);
 
         if (!ok) {
-        alert("Erro ao atualizar informações: Status: " + status);
-        setShowToast(true);
+          alert("Erro ao atualizar informações: Status: " + status);
+          setShowToastError(true);
         }
+
+        updateUserInfo(formInput);
+        setShowToast(true);
     } catch (error) {
         setError("Erro ao realizar atualizar de perfil. Tente novamente mais tarde.");
-        setShowToast(true);
+        setShowToastError(true);
     }
     };
 
     if (loading) return <Loading />;
 
     return(
-        <div className="w-full p-8 bg-white rounded-md shadow">
+        <div className="w-full p-8 bg-gray-50">
         <h2 className="text-2xl font-semibold mb-6">Informações do usuário</h2>
         
         <div className="flex items-center space-x-4 mb-8">
@@ -148,36 +182,6 @@ export default function UserInfo() {
                 readOnly
               />
             </div>
-  
-            {/* <div>
-              <label className="block text-sm font-medium">Country</label>
-              <input
-                name="country"
-                value={userForm.country}
-                onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </div> */}
-  
-            {/* <div>
-              <label className="block text-sm font-medium">City</label>
-              <input
-                name="city"
-                value={userForm.city}
-                onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </div> */}
-  
-            {/* <div>
-              <label className="block text-sm font-medium">Zip Code</label>
-              <input
-                name="zip"
-                value={userForm.zip}
-                onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </div> */}
           </div>
   
           <div className="flex justify-end">
@@ -203,10 +207,18 @@ export default function UserInfo() {
           </button>
         </div>
         {showToast && (
-            <ErrorToast
-                message={error}
-                onClose={() => setShowToast(false)}
-            />
+          <Toast 
+            message={"Dados salvos com sucesso!"}
+            onClose={() => console.log()}
+            type="success"
+          />
+        )}
+        {showToastError && (
+          <Toast 
+            message={error}
+            onClose={() => console.log()}
+            type="error"
+          />
         )}
         {showDeleteModal && (
         <DeleteAccountModal 

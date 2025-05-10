@@ -1,19 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from '../../../components/AuthContext';
-import {
-  Home,
-  LineChart,
-  Briefcase,
-  Settings,
-  LogOut,
-  ChevronLeft
-} from "lucide-react";
-
 export default function FullSidebar() {
     return(
         <div className="space-y-4 text-zinc-700">
-            <h2 className="text-xl font-semibold mb-4 text-zinc-800">Opportunities</h2>
+            <h2 className="text-xl font-semibold mb-4 text-zinc-800">Menu</h2>
 
           <div className="font-medium flex items-center gap-2">
             <span>≡</span> All

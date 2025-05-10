@@ -11,10 +11,8 @@ export default function Loading() {
     }, []);
 
     return(
-        <div className="flex items-center justify-center h-screen">
-        <p className="text-xl font-semibold animate-pulse">
-          Carregando{dots}
-        </p>
-      </div> 
+        <div className="flex items-center justify-center h-64">
+          <div className="w-12 h-12 border-4 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+        </div>
     );
 }

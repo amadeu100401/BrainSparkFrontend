@@ -7,6 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ForgotPassword from './pages/Welcome/ForgetPassword';
 import MainPage from './pages/Main/MainPage';
 import SendNewPassword from './pages/Welcome/SendNewPassword';
+import WelcomeScreen from './pages/Main/WelcomeScreen';
 import UserInfo from './pages/Main/UserInfo';
 import { AuthProvider } from './components/AuthContext';
 
@@ -27,7 +28,7 @@ function App() {
         </Route>
         
         <Route path='/brainspark' element={ <ProtectedRoute> <MainPage /> </ProtectedRoute> }>
-          <Route path="main" element={<div>Bem-vindo à página principal!</div>} />
+          <Route path="main" element={<WelcomeScreen />} />
           <Route path="user-info" element={ <UserInfo /> } />
         </Route>
       </Routes>

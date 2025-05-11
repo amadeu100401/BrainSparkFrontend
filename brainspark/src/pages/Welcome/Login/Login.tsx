@@ -1,14 +1,13 @@
-import React, { useState } from "react";
-import { httpRequest } from "../../utils/HttpRequestsUtil"; 
-import InputGroup from "../../components/InputGroup";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../components/AuthContext";
-import ErrorToast from "../../components/ErrorToast";
-import {
-  FaEnvelope,
-  FaLock,
-} from "react-icons/fa";
-import Switch from "react-switch"; // Importando o Switch da biblioteca
+import { useAuth } from "../../../components/AuthContext";
+import { loginUser } from "./LoginUtil";  // Importando a função de login
+import InputGroup from "../../../components/InputGroup";
+import ErrorToast from "../../../components/ErrorToast";
+import { FaEnvelope, FaLock } from "react-icons/fa";
+import Switch from "react-switch";
+import VerificationModal from "../components/VerificationModal";
+import { Button } from "@/components/ui/button";
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -16,47 +15,46 @@ export default function LoginForm() {
 
   const [error, setError] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);  // Aqui é o estado para o Switch
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(true);
   const [showToast, setShowToast] = useState(false);
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
   });
 
-  const handleLoginChange = (e) => {
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleLoginSubmit = async (e) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    try {
-      const payload = {
-        email: loginForm.email,
-        password: loginForm.password,
-      };
+    const { email, password } = loginForm;
 
-      const { status, ok, data } = await httpRequest("/api/v1/auth/login", "POST", payload);
-      const token = data.token;
-      const email = loginForm.email;
+    const result = await loginUser(email, password, rememberMe);
 
-      if (ok) {
-        login(token, email, rememberMe);
-        navigate("/brainspark/main");
-      } else {
-        const errorMessage = data.message || "Erro desconhecido";
-        console.log(errorMessage);
-        setError(`Erro ao fazer login: ${errorMessage}`);
+    if (result.success) {
+      login(result.token, email, rememberMe);
+      navigate("/brainspark/main");
+    } else {
+      //Email não autenticado
+      if (result.code === "001") {
+          setIsVerifying(false);
+          setLoginForm({
+            email:"",
+            password:""
+          })
       }
-    } catch (error) {
+
+      setError(result.message);
       setShowToast(true);
     }
   };
 
-  // Alterando para o Switch
-  const handleSwitchChange = (checked) => {
+  const handleSwitchChange = (checked: boolean) => {
     setRememberMe(checked);
   };
 
@@ -90,8 +88,8 @@ export default function LoginForm() {
             <Switch
               onChange={handleSwitchChange}
               checked={rememberMe}
-              offColor="#888"   // Cor quando está desligado
-              onColor="#4CAF50" // Cor quando está ligado
+              offColor="#888"
+              onColor="#4CAF50"
               uncheckedIcon={false}
               checkedIcon={false}
               height={20}
@@ -101,7 +99,7 @@ export default function LoginForm() {
           </label>
           <span
             onClick={() => {
-              navigate("/welcome/forgetPassword")
+              navigate("/welcome/forgetPassword");
               setLoginForm({ email: "", password: "" });
             }}
             className="text-sm text-white/60 hover:text-white hover:underline cursor-pointer"
@@ -111,17 +109,17 @@ export default function LoginForm() {
         </div>
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <div className="flex justify-center w-full">
-          <button
+          <Button
             type="submit"
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 py-2 px-40 rounded font-semibold mt-8 mx-auto"
+            className="bg-blue-600 hover:bg-blue-700 px-40"
           >
             Entrar
-          </button>
+          </Button>
         </div>
       </form>
       <p
         onClick={() => {
-          navigate("/welcome/register")
+          navigate("/welcome/register");
           setLoginForm({ email: "", password: "" });
         }}
         className="text-sm text-center text-white/60"
@@ -131,6 +129,14 @@ export default function LoginForm() {
           Clique aqui!
         </span>
       </p>
+      <VerificationModal
+        isOpen={!isVerifying}
+        isResendEmail={!isVerifying}
+        onSuccess={() => {
+            setIsVerifying(false);
+        }}
+        onClose={() => setIsVerifying(true)}
+      />
       {showToast && (
         <ErrorToast
           message={error}

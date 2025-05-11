@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { FaUser, FaEnvelope, FaLock} from "react-icons/fa";
-import { httpRequest } from "../../utils/HttpRequestsUtil"; 
-import InputGroup from "../../components/InputGroup";
-import VerificationModal from "././components/VerificationModal";
+import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
+import InputGroup from "../../../components/InputGroup";
+import VerificationModal from "../components/VerificationModal";
 import { useNavigate } from "react-router-dom";
-import ErrorToast from "../../components/ErrorToast";
+import ErrorToast from "../../../components/ErrorToast";
+import { Button } from "@/components/ui/button";
 
 export default function RegisterForm({ setView }) {
     const navigate = useNavigate();
@@ -44,7 +45,7 @@ export default function RegisterForm({ setView }) {
             birthDate: "2000-01-01"
         }
     
-        const { status, ok, data } = await httpRequest("/api/v1/users/signup", "POST", payload);
+        const { ok, data } = await httpRequest("/api/v1/users/signup", "POST", payload);
     
         if (ok) {
             sessionStorage.setItem("email", data.email);
@@ -111,12 +112,12 @@ export default function RegisterForm({ setView }) {
                 />
                 {error && <p className="text-red-500 text-sm">{error}</p>}
                 <div className="flex justify-center w-full">
-                <button
+                <Button
                     type="submit"
                     className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 py-2 px-40 rounded font-semibold mt-8 mx-auto"
                 >
                     Cadastrar
-                </button>
+                </Button>
                 </div>
             </form>
             <p className="text-sm text-center text-white/60">

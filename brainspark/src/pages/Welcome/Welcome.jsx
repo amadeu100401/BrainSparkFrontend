@@ -1,4 +1,4 @@
-import RightSide from "./RightSide";
+import FixedContent from "./FixedContent";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
@@ -24,7 +24,7 @@ export default function WelcomePage() {
 
   return (
     <div className="h-screen w-full flex flex-col md:flex-row text-white">
-      <RightSide />
+      <FixedContent />
       <div className="md:w-1/2 w-full h-1/2 md:h-full bg-gray-900 flex items-center justify-center px-6 py-12 bg-gradient-to-t from-slate-900 to-slate-700">
         <Outlet />
       </div>

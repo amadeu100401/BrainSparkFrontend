@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import InputGroup from "../../components/InputGroup"; 
+import InputGroup from "../../../components/InputGroup"; 
 import { FaLock } from 'react-icons/fa'; 
-import { httpRequest } from "../../utils/HttpRequestsUtil"; 
-import PasswordResetSuccess from "././components/PasswordResetSuccessModal";
-import ErrorToast from "../../components/ErrorToast";
+import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
+import PasswordResetSuccess from "../components/PasswordResetSuccessModal";
+import ErrorToast from "../../../components/ErrorToast";
+import { Button } from "@/components/ui/button";
 
 export default function SendNewPassword() {
   const location = useLocation(); 
@@ -86,12 +87,12 @@ export default function SendNewPassword() {
         />
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <div className="flex justify-center w-full">
-          <button
+          <Button
             type="submit"
             className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 py-2 px-40 rounded font-semibold mt-8 mx-auto"
           >
             Enviar
-          </button>
+          </Button>
         </div>
       </form>
       <PasswordResetSuccess

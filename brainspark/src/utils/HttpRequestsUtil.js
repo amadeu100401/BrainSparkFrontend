@@ -34,6 +34,23 @@ export async function httpRequest(
       const responseData = contentType?.includes("application/json")
         ? await response.json()
         : await response.text();
+
+      if (!response.ok) {
+        console.log(responseData.message)
+        const rawMessage = responseData.message || "";
+        const codeMatch = rawMessage.match(/\[(.*?)\]/);
+        const code = codeMatch ? codeMatch[1] : null;
+        const message = rawMessage.split("]:")[1]?.trim() || rawMessage;
+
+        return {
+          status: response.status,
+          ok: false,
+          code,
+          message,
+          date: responseData.date,
+          path: responseData.path,
+        };
+      }
   
       return {
         status: response.status,
@@ -42,11 +59,13 @@ export async function httpRequest(
       };
   
     } catch (error) {
-      console.error("Erro HTTP:", error);
       return {
         status: 0,
         ok: false,
-        data: { message: error.message || "Erro desconhecido" },
+        code: null,
+        message: "Erro de rede ou conexão com o servidor.",
+        date: new Date().toISOString(),
+        path: url,
       };
     }
   }

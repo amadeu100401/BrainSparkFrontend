@@ -1,40 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../../../components/Modal";
+import ResendEmail from './ResendVarifyEmailCode';
 import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
 import { useNavigate } from "react-router-dom";
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 
-export default function VerificationModal({ isOpen, onClose, onSuccess}) {
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+
+export default function VerificationModal({ isOpen, onClose, onSuccess, isResendEmail = false}) {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [wasSended, setWasSended] = useState((isResendEmail ? false : true));
 
+  useEffect(() => {
+    if (code.length === 5) {
+      verifyCode(code);
+    }
+  }, [code]);
 
-  const handleChange = async (e) => {
-    const value = e.target.value.replace(/\D/g, "");
-    setCode(value);
-    
-    if (value.length === 5) {
-      try {
-        const email = sessionStorage.getItem("email");
-        const payload = {token: value, email: email};
+  useEffect(() => {
+    setWasSended(!isResendEmail);
+  }, [isResendEmail]);
 
-        console.log(payload);
+  const verifyCode = async (value) => {
+    try {
+      const email = sessionStorage.getItem("email");
+      const payload = { email };
 
-        const response = await httpRequest("/api/v1/auth/validate", "POST", payload);
+      const {ok, data} = await httpRequest("/api/v1/auth/validate", "POST", payload);
 
-        sessionStorage.setItem("email", response.email);
-        sessionStorage.setItem("token", response.token);
-
-        navigate("/brainspark/main");
-
+      if (ok) {
+        setError("");
         setCode("");
+        isResendEmail = false;
+
+        sessionStorage.setItem("email", data.email);
+        sessionStorage.setItem("token", data.token);
+
         onClose();
         onSuccess();
-      } catch (err) {
-        console.log(err)
-        setError("Erro na verificação. Tente novamente mais tarde.");
-        setCode("");
+        onClose(true);
+        navigate("/welcome/login");
       }
+
+    } catch (err) {
+      setError("Erro na verificação. Tente novamente mais tarde.");
+      setCode("");
     }
   };
 
@@ -42,16 +58,42 @@ export default function VerificationModal({ isOpen, onClose, onSuccess}) {
     <Modal isOpen={isOpen} onClose={onClose}>
       <h3 className="text-xl font-semibold text-center">Verifique seu email</h3>
       <p className="text-sm text-center text-gray-600 mb-4">
-        Digite o código de 5 dígitos enviado para o seu email.
+        {!isResendEmail ? "Digite o código de 5 dígitos enviado para o seu email." 
+          : "Por favor, solicite um novo email com  o código"}
       </p>
-      <input
-        type="text"
-        maxLength={5}
-        value={code}
-        onChange={handleChange}
-        className="w-full text-center text-lg font-mono tracking-widest border border-gray-300 rounded px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="00000"
-      />
+
+      {/* Alinhamento central com espaçamento entre os slots */}
+      {(wasSended) && (
+        <div className="flex justify-center mb-2">
+          <InputOTP
+            maxLength={5}
+            value={code}
+            onChange={(val) => {
+              setError("");
+              setCode(val.replace(/\D/g, ""));
+            }}
+            pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+            className="caret-white"
+          >
+            <InputOTPGroup>
+              <InputOTPSlot index={0} className="caret-white"/>
+              <InputOTPSlot index={1} className="caret-white"/>
+              <InputOTPSlot index={2} className="caret-white"/>
+              <InputOTPSlot index={3} className="caret-white"/>
+              <InputOTPSlot index={4} className="caret-white"/>
+            </InputOTPGroup>
+          </InputOTP>
+        </div>
+      )}
+
+      {(isResendEmail && !wasSended) && (
+        <div>
+          <ResendEmail
+            onSuccess={() => setWasSended(true)} 
+          />
+        </div>
+      )}
+
       {error && (
         <p className="text-red-600 text-center text-sm mt-2">{error}</p>
       )}

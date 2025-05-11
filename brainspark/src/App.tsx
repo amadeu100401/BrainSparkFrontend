@@ -1,13 +1,13 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Welcome from './pages/Welcome/Welcome';
 import Default from './pages/Welcome/Default';
-import Login from './pages/Welcome/LoginForm'
-import Register from './pages/Welcome/RegisterForm';
+import Login from './pages/Welcome/Login/Login'
+import Register from './pages/Welcome/Register/RegisterForm';
 import ProtectedRoute from './components/ProtectedRoute';
-import ForgotPassword from './pages/Welcome/ForgetPassword';
+import ForgotPassword from './pages/Welcome/ForgetPassword/ForgetPassword';
 import MainPage from './pages/Main/MainPage';
-import SendNewPassword from './pages/Welcome/SendNewPassword';
-import WelcomeScreen from './pages/Main/WelcomeScreen';
+import SendNewPassword from './pages/Welcome/ForgetPassword/SendNewPassword';
+import WelcomeScreen from './pages/Main/Home';
 import UserInfo from './pages/Main/UserInfo';
 import IdeaDoc from './pages/Main/IdeaDocument/IdeaDoc';
 import { AuthProvider } from './components/AuthContext';

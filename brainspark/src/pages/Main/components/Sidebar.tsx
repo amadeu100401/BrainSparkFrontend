@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../../components/AuthContext';
 import FullSidebar from '../components/FullSidebar';
-import { clearAllCookies } from '../../../utils/CookieManeger.ts';
 
 import {
   Home,
@@ -24,7 +23,7 @@ export default function Sidebar() {
   };
 
   const handleLogout = () => {
-    clearAllCookies();
+    logout.logout();
     navigate("/welcome");
   };
 

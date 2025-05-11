@@ -1,10 +1,11 @@
-import InputGroup from "../../components/InputGroup";
+import InputGroup from "../../../components/InputGroup";
 import { useState } from "react";
 import { FaEnvelope } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { httpRequest } from "../../utils/HttpRequestsUtil"; 
-import ResetPasswordlModal from "././components/ResetPasswordModal"
-import ErrorToast from "../../components/ErrorToast";
+import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
+import ResetPasswordlModal from "../components/ResetPasswordModal"
+import ErrorToast from "../../../components/ErrorToast";
+import { Button } from "@/components/ui/button";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState({
@@ -53,12 +54,12 @@ export default function ForgotPassword() {
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className="flex justify-center w-full">
-            <button
+            <Button
               type="submit"
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 py-2 px-40 rounded font-semibold mt-4 mx-auto"
+              className="sm:w-auto bg-blue-600 hover:bg-blue-700 py-2 px-40 "
             >
               Enviar
-            </button>
+            </Button>
           </div>
         </form>
         <p

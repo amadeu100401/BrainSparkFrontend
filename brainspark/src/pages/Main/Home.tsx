@@ -4,7 +4,7 @@ import { httpRequest } from "../../utils/HttpRequestsUtil";
 import LoadingCircle from './components/LoadingComponent'
 import { getTokenSession, saveMainPageInCookie, getMainPageInfo} from '../../utils/CookieManeger';
 import { useNavigate } from "react-router-dom";
-import BaseComponent from '../Main/components/BaseComponent'
+import BaseComponent from './components/BaseComponent'
 
 interface Document {
   title: string;
@@ -81,7 +81,7 @@ export default function WelcomeScreen() {
 
       {!loading && (
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-        {getGreeting()}, {mainPage.name || "usuário"}!
+        {getGreeting()} { mainPage.name|| ""}!
         </h1>
       )}
 

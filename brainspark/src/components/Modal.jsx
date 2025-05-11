@@ -2,7 +2,7 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function Modal({ isOpen, onClose, children }) {
+export default function Modal({ isOpen, onClose=false, children }) {
   return createPortal(
     <AnimatePresence>
       {isOpen && (

@@ -6,6 +6,7 @@ import Loading from "./components/LoadingComponent";
 import DeleteAccountModal from "./components/DeleteAccountModal";
 import Cookies from 'js-cookie';
 import { saveUserInfoInCookie, updateUserInfo, getUserInfo } from '../../utils/CookieManeger.ts'
+import { Input } from "@/components/ui/input"
 
 export default function UserInfo() {
     var context = useAuth();
@@ -130,7 +131,7 @@ export default function UserInfo() {
     if (loading) return <Loading />;
 
     return(
-        <div className="w-full p-8 bg-gray-50">
+        <div className="w-full p-8 bg-gray-50 rounded-xl shadow-sm border border-black/20">
         <h2 className="text-2xl font-semibold mb-6">Informações do usuário</h2>
         
         <div className="flex items-center space-x-4 mb-8">
@@ -149,8 +150,9 @@ export default function UserInfo() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium">Nome</label>
-              <input
+              <Input
                 name="name"
+                type="name"
                 value={formInput.name}
                 placeholder="Seu nome"
                 onChange={handleChange}
@@ -159,27 +161,16 @@ export default function UserInfo() {
               />
             </div>
   
-            {/* <div>
-              <label className="block text-sm font-medium">Phone</label>
-              <input
-                name="phone"
-                value={userForm.phone}
-                onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </div> */}
-  
             <div>
               <label className="block text-sm font-medium">Email</label>
-              <input
+              <Input
+                disabled 
                 name="email"
                 type="email"
-                placeholder="Seu email"
                 value={userForm.email}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 bg-white border border-black text-black rounded focus:outline-none focus:ring-2 focus:ring-black opacity-50 cursor-not-allowed"
+                className="mt-1 block w-full p-2 bg-white border border-black text-black rounded focus:outline-none focus:ring-2 focus:ring-black opacity-50"
                 required
-                readOnly
               />
             </div>
           </div>

@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "@tiptap/extension-code-block-lowlight": "^2.12.0",
+    "@tiptap/extension-floating-menu": "^2.12.0",
     "@tiptap/extension-highlight": "^2.12.0",
     "@tiptap/extension-link": "^2.12.0",
     "@tiptap/extension-table": "^2.12.0",
@@ -18,11 +21,14 @@
     "@tiptap/extension-table-row": "^2.12.0",
     "@tiptap/extension-text-align": "^2.12.0",
     "@tiptap/extension-underline": "^2.12.0",
+    "@tiptap/pm": "^2.12.0",
     "@tiptap/react": "^2.12.0",
     "@tiptap/starter-kit": "^2.12.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.10.1",
+    "highlight.js": "^11.11.1",
     "js-cookie": "^3.0.5",
+    "lowlight": "^3.3.0",
     "lucide-react": "^0.508.0",
     "marked": "^15.0.11",
     "react": "^18.3.1",
@@ -30,7 +36,8 @@
     "react-icons": "^5.5.0",
     "react-input-mask-next": "^3.0.0-alpha.12",
     "react-quill": "^2.0.0",
-    "react-router-dom": "^6.30.0"
+    "react-router-dom": "^6.30.0",
+    "react-switch": "^7.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

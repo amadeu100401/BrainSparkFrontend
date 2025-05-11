@@ -4,6 +4,7 @@ import { httpRequest } from "../../utils/HttpRequestsUtil";
 import LoadingCircle from './components/LoadingComponent'
 import { getTokenSession, saveMainPageInCookie, getMainPageInfo} from '../../utils/CookieManeger';
 import { useNavigate } from "react-router-dom";
+import BaseComponent from '../Main/components/BaseComponent'
 
 interface Document {
   title: string;
@@ -74,7 +75,8 @@ export default function WelcomeScreen() {
   }
 
   return (
-    <div className="p-6 font-sans h-auto flex flex-col items-center bg-gray-50 min-h-screen">
+    <BaseComponent className="p-6 font-sans h-auto flex flex-col items-center bg-gray-50 
+                    min-h-screen">
       <img src={Logo} alt="Logo" className="w-48 h-48 mb-2" />
 
       {!loading && (
@@ -121,6 +123,6 @@ export default function WelcomeScreen() {
           )}
         </div>
       )}
-    </div>
+    </BaseComponent>
   );
 }

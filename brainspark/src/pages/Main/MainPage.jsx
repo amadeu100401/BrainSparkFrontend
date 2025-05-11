@@ -24,7 +24,7 @@ export default function MainPage() {
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col pl-20">
-        <main className="flex-1 bg-gray-50 p-6 overflow-auto">
+        <main className="flex-1 bg-gray-50 p-6 overflow-auto bg-gradient-to-t from-slate-900 to-slate-700">
           <Outlet />
         </main>
       </div>

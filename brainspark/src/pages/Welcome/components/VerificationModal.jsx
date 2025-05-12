@@ -44,7 +44,6 @@ export default function VerificationModal({ isOpen, onClose, onSuccess, isResend
 
         onClose();
         onSuccess();
-        onClose(true);
         navigate("/welcome/login");
       }
 

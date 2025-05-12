@@ -8,9 +8,9 @@ interface UserInfo {
     [key: string]: any; 
 }
 
-export function saveMainPageInCookie(data: MainPageInfo | null | undefined): void {
+export function saveMainPageInSession(data: MainPageInfo | null | undefined): void {
     if (data !== null && data !== undefined) {
-        Cookies.set('mainPage', JSON.stringify(data), { expires: 7 });
+        sessionStorage.setItem('mainPage', JSON.stringify(data));
     }
 }
 
@@ -47,7 +47,7 @@ export function getUserInfo(): UserInfo | null {
 }
 
 export function getMainPageInfo(): MainPageInfo | null {
-    const data = Cookies.get('mainPage');
+    const data = sessionStorage.getItem('mainPage');
 
     if (data !== null && data !== undefined) {
         return JSON.parse(data);

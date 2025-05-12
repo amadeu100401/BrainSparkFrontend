@@ -14,6 +14,7 @@ const clearMemory = () => {
   Cookies.remove('rememberMe');
   sessionStorage.removeItem("token");
   sessionStorage.removeItem("email");
+  sessionStorage.removeItem("mainPage");
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

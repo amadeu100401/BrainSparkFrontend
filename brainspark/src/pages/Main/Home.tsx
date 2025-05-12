@@ -2,7 +2,7 @@ import Logo from '../../assets/logo.png';
 import { useEffect, useState } from "react";
 import { httpRequest } from "../../utils/HttpRequestsUtil"; 
 import LoadingCircle from './components/LoadingComponent'
-import { getTokenSession, saveMainPageInCookie, getMainPageInfo} from '../../utils/CookieManeger';
+import { getTokenSession, saveMainPageInSession, getMainPageInfo} from '../../utils/CookieManeger';
 import { useNavigate } from "react-router-dom";
 import BaseComponent from './components/BaseComponent'
 
@@ -43,7 +43,7 @@ export default function WelcomeScreen() {
           name: data.name,
           documents: data.ideaList || []
         });
-        saveMainPageInCookie(data);
+        saveMainPageInSession(data);
       }
     } catch (error) {
       console.error("Erro ao buscar dados da main page:", error);

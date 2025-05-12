@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../components/AuthContext";
 import { loginUser } from "./LoginUtil";  // Importando a função de login
@@ -50,7 +50,7 @@ export default function LoginForm() {
       }
 
       setError(result.message);
-      setShowToast(true);
+      // setShowToast(true);
     }
   };
 

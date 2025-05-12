@@ -14,7 +14,7 @@ import { AuthProvider } from './components/AuthContext';
 
 import './index.css';
 
-function App() {
+export function App() {
   return (
     <AuthProvider>
       <Routes>
@@ -37,5 +37,3 @@ function App() {
     </AuthProvider>
   );
 }
-
-export default App;

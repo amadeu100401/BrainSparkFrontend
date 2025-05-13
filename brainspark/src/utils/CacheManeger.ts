@@ -1,3 +1,4 @@
+import UserInfo from '@/pages/Main/UserInfo';
 import Cookies from 'js-cookie';
 
 interface MainPageInfo {
@@ -14,9 +15,9 @@ export function saveMainPageInSession(data: MainPageInfo | null | undefined): vo
     }
 }
 
-export function saveUserInfoInCookie(data: UserInfo | null | undefined): void {
+export function saveUserInfoInSession(data: UserInfo | null | undefined): void {
     if (data !== null && data !== undefined) {
-        Cookies.set('userInfo', JSON.stringify(data), { expires: 7 });
+        sessionStorage.setItem('userInfo', JSON.stringify(data));
     }
 }
 
@@ -37,7 +38,7 @@ export function updateUserInfo(value: UserInfo | null | undefined): void {
 }
 
 export function getUserInfo(): UserInfo | null {
-    const data = Cookies.get('userInfo');
+    const data = sessionStorage.getItem('userInfo');
 
     if (data !== null && data !== undefined) {
         return JSON.parse(data);

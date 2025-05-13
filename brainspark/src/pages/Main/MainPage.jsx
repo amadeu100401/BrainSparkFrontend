@@ -18,13 +18,13 @@ export default function MainPage() {
   }, [email, navigate]);
 
   return (
-    <div className="min-h-screen flex overflow-hidden bg-gray-50 text-gray-900">
+    <div className="min-h-screen flex overflow-hidden bg-zinc-900 text-black">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar /> 
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col pl-20">
-        <main className="flex-1 bg-gray-50 p-6 overflow-auto bg-gradient-to-t from-slate-900 to-slate-700">
+        <main className="flex-1 p-6 overflow-auto bg-zinc-850 text-black">
           <Outlet />
         </main>
       </div>

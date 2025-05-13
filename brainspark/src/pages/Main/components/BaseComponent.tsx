@@ -5,7 +5,7 @@ interface BaseComponentProps {
 
 export default function BaseComponent({ children, className }: BaseComponentProps) {
   return (
-    <div className={`w-full max-w-[1700px] min-h-[850px] mx-auto bg-white rounded-xl shadow-sm border border-black/20 ${className}`}>
+    <div className={`relative w-full max-w-[1700px] min-h-[850px] mx-auto bg-white rounded-xl shadow-sm border border-black/20 ${className}`}>
       {children}
     </div>
   );

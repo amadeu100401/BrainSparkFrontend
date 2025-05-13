@@ -7,9 +7,10 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ForgotPassword from './pages/Welcome/ForgetPassword/ForgetPassword';
 import MainPage from './pages/Main/MainPage';
 import SendNewPassword from './pages/Welcome/ForgetPassword/SendNewPassword';
-import WelcomeScreen from './pages/Main/Home';
+import WelcomeScreen from './pages/Main/HomePage/Home';
 import UserInfo from './pages/Main/UserInfo';
 import IdeaDoc from './pages/Main/IdeaDocument/IdeaDoc';
+import DocCollection from './pages/Main/IdeaDocument/DocCollection';
 import { AuthProvider } from './components/AuthContext';
 
 import './index.css';
@@ -32,6 +33,7 @@ export function App() {
           <Route path="main" element={<WelcomeScreen />} />
           <Route path="user-info" element={ <UserInfo /> } />
           <Route path='idea' element={ <IdeaDoc />} />
+          <Route path='docs-collection' element={ <DocCollection /> } />
         </Route>
       </Routes>
     </AuthProvider>

@@ -5,7 +5,7 @@ import Toast from "../../components/Toast.tsx";
 import Loading from "./components/LoadingComponent";
 import DeleteAccountModal from "./components/DeleteAccountModal";
 import Cookies from 'js-cookie';
-import { saveUserInfoInCookie, updateUserInfo, getUserInfo } from '../../utils/CookieManeger.ts'
+import { saveUserInfoInSession, updateUserInfo, getUserInfo } from '../../utils/CacheManeger.ts'
 import { Input } from "@/components/ui/input"
 
 export default function UserInfo() {
@@ -54,8 +54,7 @@ export default function UserInfo() {
                       name: data.name
                   })
                   
-                  data.photoLink = null;
-                  saveUserInfoInCookie(data);
+                  saveUserInfoInSession(data);
 
                   setShowToastError(false);
               }

@@ -91,7 +91,8 @@ export default function Sidebar() {
       </aside>
 
       {/* Névoa com animação suave */}
-      <div className={`fixed top-0 left-0 w-full h-full bg-black z-30 transition-opacity duration-300 pointer-events-none ${isCollapsed ? 'opacity-0' : 'opacity-40 pointer-events-auto'}`}
+      <div
+        className={`fixed top-0 left-0 w-full h-full bg-black z-30 transition-opacity duration-300 pointer-events-none ${isCollapsed ? 'opacity-0' : 'opacity-40 pointer-events-auto'}`}
         onClick={() => setIsCollapsed(true)}
       />
 

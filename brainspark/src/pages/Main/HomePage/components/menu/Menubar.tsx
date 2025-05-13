@@ -18,7 +18,7 @@ export default function MenuFilterBar() {
                 <NavigationMenuList>
                     <NavigationMenuItem>
                         <NavigationMenuTrigger>Criar uma nova&nbsp;
-                            <span className='text-violet-600 font-semibold tracking-wide'>Ideia</span>
+                            <span className='text-brainspark font-semibold tracking-wide'>Ideia</span>
                              </NavigationMenuTrigger>
                         <MenuCreateNewIdea />
                     </NavigationMenuItem>

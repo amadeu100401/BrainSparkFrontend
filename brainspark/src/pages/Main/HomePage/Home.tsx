@@ -2,10 +2,13 @@ import Logo from '../../../assets/logo.png';
 import { useEffect, useState } from "react";
 import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
 import LoadingCircle from '../components/LoadingComponent'
-import { getTokenSession, saveMainPageInSession, getMainPageInfo} from '../../../utils/CacheManeger';
+import { getTokenSession, saveMainPageInSession} from '../../../utils/CacheManeger';
 import BaseComponent from '../components/BaseComponent'
 import { IdeaCarousel } from './components/IdeaCarousel';
 import MenuFilterBar from './components/menu/Menubar';
+import { TextAreaAI } from './components/CreateWIthAI/TextArea';
+import { Label } from "@/components/ui/label"
+import { Clock } from "lucide-react";
 
 interface Document {
   title: string;
@@ -66,7 +69,7 @@ export default function WelcomeScreen() {
 
         {!loading && (
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center">
-            {getGreeting()} {mainPage.name || ""}!
+            {getGreeting()}, {mainPage.name || "usuário"}!
           </h1>
         )}
 
@@ -79,9 +82,17 @@ export default function WelcomeScreen() {
       {loading ? (
         <LoadingCircle />
       ) : (
-        <div className="flex justify-center flex-wrap gap-6">
-          <IdeaCarousel ideas={mainPage.documents}/>
-        </div>
+        <>
+          <Label className="flex items-center gap-2">
+            <Clock className="w-4 h-4 text-muted-foreground" />
+            Documentos recentes
+          </Label>
+          <div className="flex justify-center flex-wrap gap-6">
+            <IdeaCarousel ideas={mainPage.documents}/>
+          </div>
+
+          <TextAreaAI></TextAreaAI>
+        </>
       )}
     </BaseComponent>
   );

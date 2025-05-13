@@ -5,11 +5,11 @@ import FullSidebar from '../components/FullSidebar';
 
 import {
   Home,
-  LineChart,
   Briefcase,
   LogOut,
   ChevronLeft,
-  User
+  User,
+  Clock
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -48,11 +48,11 @@ export default function Sidebar() {
           <button onClick={handleHomeClick} title="Home" className="p-2 hover:bg-zinc-800 rounded">
             <Home className={iconStyle} />
           </button>
-          <button title="Analytics" className="p-2 hover:bg-zinc-800 rounded">
-            <LineChart className={iconStyle} />
-          </button>
           <button title="Projects" className="p-2 hover:bg-zinc-800 rounded">
             <Briefcase className={iconStyle} />
+          </button>
+          <button title="Focus" className="p-2 hover:bg-zinc-800 rounded">
+            <Clock className={iconStyle} />
           </button>
           <button
             title="User"

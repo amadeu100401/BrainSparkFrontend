@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from '../../../components/AuthContext';
+import { useAuth } from '../../../components/AuthContext'
 import FullSidebar from '../components/FullSidebar';
 
 import {
@@ -14,7 +14,7 @@ import {
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const logout = useAuth();
+  const { logout } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const handleHomeClick = () => {
@@ -22,9 +22,8 @@ export default function Sidebar() {
     navigate("/brainspark/main");
   };
 
-  const handleLogout = () => {
-    logout.logout();
-    navigate("/welcome");
+  const handleLogout = async () => {
+    await logout();
   };
 
   const iconStyle = "w-6 h-6";
@@ -64,9 +63,9 @@ export default function Sidebar() {
         </div>
 
         {/* Logout fixado embaixo */}
-        <div className="mb-4">
+        <div className="mb-4 relative z-50">
           <button
-            onClick={handleLogout}
+            onClick={() => handleLogout()}
             title="Sair"
             className="p-2 hover:bg-zinc-800 rounded"
           >

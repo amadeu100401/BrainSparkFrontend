@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 
 export default function LoginForm() {
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const [error, setError] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -37,10 +36,8 @@ export default function LoginForm() {
     const result = await loginUser(email, password, rememberMe);
 
     if (result.success) {
-      login(result.token, email, rememberMe);
       navigate("/brainspark/main");
     } else {
-      //Email não autenticado
       if (result.code === "001") {
           setIsVerifying(false);
           setLoginForm({
@@ -50,7 +47,6 @@ export default function LoginForm() {
       }
 
       setError(result.message);
-      // setShowToast(true);
     }
   };
 

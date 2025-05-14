@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { httpRequest } from "../../utils/HttpRequestsUtil"; 
-import { useAuth } from '../../components/AuthContext';
 import Toast from "../../components/Toast.tsx";
 import Loading from "./components/LoadingComponent";
 import DeleteAccountModal from "./components/DeleteAccountModal";
@@ -9,7 +8,6 @@ import { saveUserInfoInSession, updateUserInfo, getUserInfo } from '../../utils/
 import { Input } from "@/components/ui/input"
 
 export default function UserInfo() {
-    var context = useAuth();
     var token = Cookies.get("token") || sessionStorage.getItem("token");
 
     const [showToastError, setShowToastError] = useState(false);
@@ -216,7 +214,6 @@ export default function UserInfo() {
             onClose={() => setShowDeleteModal(false)}
             onSuccess={() => {
             setShowDeleteModal(false);
-            context.logout();
             }}
         />
         )}

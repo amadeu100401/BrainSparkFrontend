@@ -1,20 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from './AuthContext';
-import Cookies from 'js-cookie';
+import { httpRequest } from '../utils/HttpRequestsUtil';
+import Loding from './Loading';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  var { token } = useAuth();
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  if (Cookies.get("rememberMe") === true) {
-    token = Cookies.get("token");
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isAuth = await httpRequest("/api/v1/auth/validate-auth", "POST");
+      setIsAuthenticated(isAuth.ok);
+    };
+
+    checkAuth();
+  }, []);
+
+  if (isAuthenticated === null) {
+    return <Loding />;
   }
 
-  if (!token) {
+  if (!isAuthenticated) {
     return <Navigate to="/welcome" replace />;
   }
 
@@ -22,4 +31,3 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default ProtectedRoute;
-

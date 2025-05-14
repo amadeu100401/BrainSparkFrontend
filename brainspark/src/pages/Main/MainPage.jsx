@@ -1,21 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from '../../components/AuthContext';
 import Cookies from 'js-cookie';
 import Sidebar from "./components/Sidebar";
 import { Outlet } from "react-router-dom"; 
 
 export default function MainPage() {
-  const logout = useAuth();
   const navigate = useNavigate();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const email = Cookies.get("email") || sessionStorage.getItem("email");
-
-  useEffect(() => {
-    if (!email) {
-      navigate("/welcome");
-    }
-  }, [email, navigate]);
 
   return (
     <div className="min-h-screen flex overflow-hidden bg-zinc-900 text-black">

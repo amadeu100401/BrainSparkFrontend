@@ -2,7 +2,7 @@ import Logo from '../../../assets/logo.png';
 import { useEffect, useState } from "react";
 import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
 import LoadingCircle from '../components/LoadingComponent'
-import { getTokenSession, saveMainPageInSession} from '../../../utils/CacheManeger';
+import { saveMainPageInSession } from '../../../utils/CacheManeger';
 import BaseComponent from '../components/BaseComponent'
 import { IdeaCarousel } from './components/IdeaCarousel';
 import MenuFilterBar from './components/menu/Menubar';
@@ -38,8 +38,7 @@ export default function WelcomeScreen() {
   const fetchData = async () => {
     try {
       setLoading(true); 
-      const token = getTokenSession() || sessionStorage.getItem("token");
-      const { ok, data } = await httpRequest("/api/v1/users/main-page", "GET", null, {}, token);
+      const { ok, data } = await httpRequest("/api/v1/users/main-page", "GET", null);
       if (ok) {
         setMainPage({
           name: data.name,

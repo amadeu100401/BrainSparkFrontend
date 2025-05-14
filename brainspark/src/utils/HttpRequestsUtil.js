@@ -1,3 +1,5 @@
+import { logout } from '../components/AuthContext'
+
 export async function httpRequest(
     url,
     method = 'GET',
@@ -36,11 +38,14 @@ export async function httpRequest(
         : await response.text();
 
       if (!response.ok) {
-        console.log(responseData.message)
         const rawMessage = responseData.message || "";
         const codeMatch = rawMessage.match(/\[(.*?)\]/);
         const code = codeMatch ? codeMatch[1] : null;
         const message = rawMessage.split("]:")[1]?.trim() || rawMessage;
+
+        if (code === "003") {
+          logout();
+        }
 
         return {
           status: response.status,
@@ -69,4 +74,21 @@ export async function httpRequest(
       };
     }
   }
+
+const ErrorCode = (code) => {
+  switch(code) {
+    case "001":
+      return "Conta não validada";
+    case "002":
+       return "Conta já validada";
+    case "003":
+      return "Token expirado";
+    case "004":
+      return "Email já cadastrado";
+    case "005":
+      return "Conta excluída";
+    case "006":
+      return "Credenciais inválidas";
+  }
+}
   

@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../components/AuthContext";
-import { loginUser } from "./LoginUtil";  // Importando a função de login
+import { loginUser } from "./LoginUtil";
 import InputGroup from "../../../components/InputGroup";
-import ErrorToast from "../../../components/ErrorToast";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import Switch from "react-switch";
 import VerificationModal from "../components/VerificationModal";
@@ -16,12 +14,21 @@ export default function LoginForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isVerifying, setIsVerifying] = useState(true);
-  const [showToast, setShowToast] = useState(false);
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
   });
 
+  useEffect(() => {
+    const sesseionEmail = sessionStorage.getItem("email");
+      if (sesseionEmail) {
+        setLoginForm({
+          email:sesseionEmail,
+          password: ""
+        });
+      }
+  }, []);
+  
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginForm((prev) => ({ ...prev, [name]: value }));
@@ -38,6 +45,7 @@ export default function LoginForm() {
     if (result.success) {
       navigate("/brainspark/main");
     } else {
+      setError(result.message);
       if (result.code === "001") {
           setIsVerifying(false);
           setLoginForm({
@@ -45,8 +53,6 @@ export default function LoginForm() {
             password:""
           })
       }
-
-      setError(result.message);
     }
   };
 
@@ -133,12 +139,6 @@ export default function LoginForm() {
         }}
         onClose={() => setIsVerifying(true)}
       />
-      {showToast && (
-        <ErrorToast
-          message={error}
-          onClose={() => setShowToast(false)}
-        />
-      )}
     </div>
   );
 }

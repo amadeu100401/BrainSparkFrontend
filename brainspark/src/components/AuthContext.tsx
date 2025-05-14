@@ -29,12 +29,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     clearMemory();
+    navigate("/welcome");
     try {
       await httpRequest("/api/v1/auth/logout", "POST");
     } catch (e) {
       console.error("Erro ao fazer logout:", e);
     }
-    navigate("/welcome");
   };
 
   return (

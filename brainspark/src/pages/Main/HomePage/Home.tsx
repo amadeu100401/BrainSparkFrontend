@@ -1,8 +1,7 @@
 import Logo from '../../../assets/logo.png';
 import { useEffect, useState } from "react";
-import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
+import httpRequest from "../../../utils/HttpUtil"; 
 import LoadingCircle from '../components/LoadingComponent'
-import { saveMainPageInSession } from '../../../utils/CacheManeger';
 import BaseComponent from '../components/BaseComponent'
 import { IdeaCarousel } from './components/IdeaCarousel';
 import MenuFilterBar from './components/menu/Menubar';
@@ -38,14 +37,15 @@ export default function WelcomeScreen() {
   const fetchData = async () => {
     try {
       setLoading(true); 
-      const { ok, data } = await httpRequest("/api/v1/users/main-page", "GET", null);
-      if (ok) {
-        setMainPage({
-          name: data.name,
-          documents: data.ideaList || []
-        });
-        saveMainPageInSession(data);
-      }
+      const response = await httpRequest({
+        url:"/api/v1/users/main-page",
+        method:"GET",
+      });
+
+      setMainPage({
+        name: response.name,
+        documents: response.ideaList || []
+      });
     } catch (error) {
       console.error("Erro ao buscar dados da main page:", error);
     } finally {

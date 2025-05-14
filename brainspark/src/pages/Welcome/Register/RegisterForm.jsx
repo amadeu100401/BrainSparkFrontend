@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaUser, FaEnvelope, FaLock} from "react-icons/fa";
-import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
+import httpUtil from "../../../utils/HttpUtil"; 
 import InputGroup from "../../../components/InputGroup";
 import VerificationModal from "../components/VerificationModal";
 import { useNavigate } from "react-router-dom";
@@ -11,17 +11,17 @@ export default function RegisterForm({ setView }) {
     const navigate = useNavigate();
     const [showToast, setShowToast] = useState(false);
 
+    const [error, setError] = useState("");
+    const [isVerifying, setIsVerifying] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     const [registerForm, setRegisterForm] = useState({
         name: "",
         email: "",
         password: "",
         confirmPassword: "",
       });    
-
-    const [error, setError] = useState("");
-    const [isVerifying, setIsVerifying] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleRegisterChange = (e) => {
         const { name, value } = e.target;
@@ -33,7 +33,7 @@ export default function RegisterForm({ setView }) {
         setError("");
     
         if (registerForm.password !== registerForm.confirmPassword) {
-        setError("As senhas não coincidem.");
+            setError("As senhas não coincidem.");
         return;
         }
     
@@ -45,22 +45,23 @@ export default function RegisterForm({ setView }) {
             birthDate: "2000-01-01"
         }
     
-        const { ok, data } = await httpRequest("/api/v1/users/signup", "POST", payload);
+        const response = await httpUtil({
+            url: "/api/v1/users/signup",
+            method: "POST",
+            data: payload
+        });
     
-        if (ok) {
-            sessionStorage.setItem("email", data.email);
-            setIsVerifying(true);
-            setRegisterForm({
-                name: "",
-                email: "",
-                password: "",
-                confirmPassword: "",
-              });
-            setShowToast(false);
-        } else {
-            setError("Erro ao cadastrar. Tente novamente.");
-            setShowToast(false);
-        }
+        sessionStorage.setItem("email", response.email);
+        setIsVerifying(true);
+        setRegisterForm({
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            });
+
+        setShowToast(false);
+
         } catch(error) {
             setShowToast(true);
         }

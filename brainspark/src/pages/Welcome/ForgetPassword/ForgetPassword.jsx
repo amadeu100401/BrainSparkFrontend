@@ -2,7 +2,7 @@ import InputGroup from "../../../components/InputGroup";
 import { useState } from "react";
 import { FaEnvelope } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
+import httpUtil from "../../../utils/HttpUtil"; 
 import ResetPasswordlModal from "../components/ResetPasswordModal"
 import ErrorToast from "../../../components/ErrorToast";
 import { Button } from "@/components/ui/button";
@@ -23,9 +23,17 @@ export default function ForgotPassword() {
           if (!email.email) {
             setError("O email deve ser informado.");
           }
+
           const data = { email: email.email }
-          await httpRequest("/api/v1/auth/forgetPassword", "POST", data);
+
+          await httpUtil({
+            url:"/api/v1/auth/forget-password",
+            method:"POST",
+            data:data
+          });
+
           setShowSuccessModal(true);
+
         } catch (error) {
           setShowErrorToast(true);
         }

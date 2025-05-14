@@ -1,21 +1,32 @@
 import { Button } from "@/components/ui/button";
-import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
+import httpUtil  from "../../../utils/HttpUtil";
+import ErrorToast from "@/components/ErrorToast"; 
+import { useState } from "react";
 
 export default function ResendEmail({ onSuccess }) {
+
+    const [errorMessage, setErrorMessage] = useState("");
+    const [showToast, setShowToast] = useState(false);
 
     const handleRedenEmail = async () => {
         const email = sessionStorage.getItem("email");
         const payload = { email };
 
-        const { ok } = await httpRequest(
-            "/api/v1/auth/resend-validate-email",
-             "POST", 
-             payload);
-        
-        if(ok && onSuccess) {
-            onSuccess();
-        }
+        try{
+            const { ok } = await httpUtil({
+            url:"/api/v1/auth/resend-validate-email",
+            method:"POST", 
+            data:payload
+            });
+            
+            if(ok && onSuccess) {
+                onSuccess();
+            }
 
+        } catch(error: any) {
+            setShowToast(true);
+            setErrorMessage(error.message);
+        }
     }
 
     return(
@@ -35,6 +46,12 @@ export default function ResendEmail({ onSuccess }) {
                 >
                 Solicitar um novo código
             </Button>
+            {showToast && (
+                <ErrorToast
+                message={errorMessage}
+                onClose={() => setShowToast(false)}
+                />
+            )}
         </div>
     );
 }

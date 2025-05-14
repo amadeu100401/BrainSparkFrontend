@@ -1,25 +1,26 @@
-import { httpRequest } from "../../../utils/HttpRequestsUtil";
+import httpUtil from "../../../utils/HttpUtil";
 
 export const loginUser = async (email: string, password: string, rememberMe: boolean) => {
   try {
     const payload = { email, password, rememberMe };
-    const response = await httpRequest("/api/v1/auth/login", "POST", payload);
-    const ok = response.ok;
-    
-    if (ok) {
-      sessionStorage.setItem("email", email)
-      return { success: true, email };
-    } else {
-      const isNotVerify = response.code === '001' ? true : false;
+
+    await httpUtil<any>({
+       url: "/api/v1/auth/login",
+       method: 'POST',
+       data: payload
+      });
+
+      sessionStorage.setItem("email", email);
+      return { success: true, email, message: ""};
+  } catch (error: any) {
+      const isNotVerify = error.code === '001' ? true : false;
 
       if(isNotVerify) {
         sessionStorage.setItem("email", email)
       }
 
-      const errorMessage = isNotVerify ? response.message : (response.message || "Erro desconhecido");
-      return { success: false, message: errorMessage, code: response.code};
-    }
-  } catch (error) {
-    return { success: false, message: "Erro ao fazer login: " + error.message, code: null};
+      const errorMessage = isNotVerify ? error.message : (error.message || "Erro desconhecido");
+
+      return { success: false, message: ("Erro ao fazer login: " + errorMessage), code: error.code};
   }
 };

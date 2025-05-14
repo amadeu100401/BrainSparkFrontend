@@ -1,11 +1,8 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import Sidebar from "./components/Sidebar";
 import { Outlet } from "react-router-dom"; 
 
 export default function MainPage() {
-  const navigate = useNavigate();
   const email = Cookies.get("email") || sessionStorage.getItem("email");
 
   return (

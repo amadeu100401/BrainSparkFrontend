@@ -1,4 +1,4 @@
-import httpUtil from "../../../utils/HttpUtil";
+import httpUtil from "../utils/HttpUtil";
 
 export const loginUser = async (email: string, password: string, rememberMe: boolean) => {
   try {
@@ -11,13 +11,15 @@ export const loginUser = async (email: string, password: string, rememberMe: boo
       });
 
       sessionStorage.setItem("email", email);
-      return { success: true, email, message: ""};
+      return { success: true, email, message: "", code: ""};
   } catch (error: any) {
-      const isNotVerify = error.code === '001' ? true : false;
+      const isNotVerify = error.code == '001' ? true : false;
 
       if(isNotVerify) {
         sessionStorage.setItem("email", email)
       }
+
+      console.log(error)
 
       const errorMessage = isNotVerify ? error.message : (error.message || "Erro desconhecido");
 

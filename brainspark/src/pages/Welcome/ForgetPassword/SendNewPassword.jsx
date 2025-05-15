@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import InputGroup from "../../../components/InputGroup"; 
 import { FaLock } from 'react-icons/fa'; 
 import { httpRequest } from "../../../utils/HttpRequestsUtil"; 
-import PasswordResetSuccess from "../components/PasswordResetSuccessModal";
+import PasswordResetSuccess from "../../../components/login/PasswordResetSuccessModal";
 import ErrorToast from "../../../components/ErrorToast";
 import { Button } from "@/components/ui/button";
 

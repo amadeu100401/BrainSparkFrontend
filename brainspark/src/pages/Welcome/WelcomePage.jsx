@@ -1,4 +1,4 @@
-import FixedContent from "./FixedContent";
+import FixedContent from "../../components/login/FixedContent";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Cookies from 'js-cookie';

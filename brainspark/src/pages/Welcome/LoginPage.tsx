@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "./LoginUtil";
-import InputGroup from "../../../components/InputGroup";
+import { loginUser } from "../../features/Login";
+import InputGroup from "../../components/InputGroup";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import Switch from "react-switch";
-import VerificationModal from "../components/VerificationModal";
+import VerificationModal from "../../components/login/VerificationModal";
 import { Button } from "@/components/ui/button";
 
 export default function LoginForm() {
@@ -20,8 +20,9 @@ export default function LoginForm() {
   });
 
   useEffect(() => {
-    const sesseionEmail = sessionStorage.getItem("email");
-      if (sesseionEmail) {
+    const sesseionEmail = sessionStorage.getItem("email") || "";
+
+      if (sesseionEmail && sesseionEmail !== undefined && sesseionEmail !== "undefined") {
         setLoginForm({
           email:sesseionEmail,
           password: ""

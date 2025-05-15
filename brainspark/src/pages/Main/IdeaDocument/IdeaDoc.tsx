@@ -1,5 +1,5 @@
 import React from 'react';
-import BaseComponent from '../components/BaseComponent';
+import BaseComponent from '../components/ContentComponentBase';
 import { Editor } from './components/Editor';
 
 const DocumentEditor = () => {

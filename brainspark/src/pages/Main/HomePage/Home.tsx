@@ -2,7 +2,7 @@ import Logo from '../../../assets/logo.png';
 import { useEffect, useState } from "react";
 import httpRequest from "../../../utils/HttpUtil"; 
 import LoadingCircle from '../components/LoadingComponent'
-import BaseComponent from '../components/BaseComponent'
+import BaseComponent from '../components/ContentComponentBase'
 import { IdeaCarousel } from './components/IdeaCarousel';
 import MenuFilterBar from './components/menu/Menubar';
 import { TextAreaAI } from './components/CreateWIthAI/TextArea';

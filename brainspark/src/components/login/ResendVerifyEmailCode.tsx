@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import httpUtil  from "../../../utils/HttpUtil";
+import httpUtil  from "../../utils/HttpUtil";
 import ErrorToast from "@/components/ErrorToast"; 
 import { useState } from "react";
 
@@ -13,15 +13,14 @@ export default function ResendEmail({ onSuccess }) {
         const payload = { email };
 
         try{
-            const { ok } = await httpUtil({
+            const response = await httpUtil({
             url:"/api/v1/auth/resend-validate-email",
             method:"POST", 
             data:payload
             });
             
-            if(ok && onSuccess) {
-                onSuccess();
-            }
+
+            onSuccess();
 
         } catch(error: any) {
             setShowToast(true);

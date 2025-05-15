@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaUser, FaEnvelope, FaLock} from "react-icons/fa";
-import httpUtil from "../../../utils/HttpUtil"; 
-import InputGroup from "../../../components/InputGroup";
-import VerificationModal from "../components/VerificationModal";
 import { useNavigate } from "react-router-dom";
-import ErrorToast from "../../../components/ErrorToast";
 import { Button } from "@/components/ui/button";
+
+import { signup } from '../../features/SignUp'
+import InputGroup from "../../components/InputGroup";
+import VerificationModal from "../../components/login/VerificationModal";
+import ErrorToast from "../../components/ErrorToast";
 
 export default function RegisterForm({ setView }) {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function RegisterForm({ setView }) {
         password: "",
         confirmPassword: "",
       });    
-
+ 
     const handleRegisterChange = (e) => {
         const { name, value } = e.target;
         setRegisterForm((prev) => ({ ...prev, [name]: value }));
@@ -31,41 +32,44 @@ export default function RegisterForm({ setView }) {
     const handleRegisterSubmit = async (e) => {
         e.preventDefault();
         setError("");
-    
+        
+        setShowToast(false);
+        validatePassword();
+
+        try {
+            const payload = {
+                name: registerForm.name,
+                email: registerForm.email,
+                password: registerForm.password,
+                birthDate: "2000-01-01"
+            }
+
+            await signup({payload});
+
+            clearForm();
+
+            setIsVerifying(true);
+        } catch(error) {
+            setError(error.message)
+            setShowToast(true);
+        }
+    };
+
+    const validatePassword = () => {
         if (registerForm.password !== registerForm.confirmPassword) {
             setError("As senhas não coincidem.");
         return;
         }
-    
-        try {
-        const payload = {
-            name: registerForm.name,
-            email: registerForm.email,
-            password: registerForm.password,
-            birthDate: "2000-01-01"
-        }
-    
-        const response = await httpUtil({
-            url: "/api/v1/users/signup",
-            method: "POST",
-            data: payload
-        });
-    
-        sessionStorage.setItem("email", response.email);
-        setIsVerifying(true);
+    }
+
+    const clearForm = () => {
         setRegisterForm({
             name: "",
             email: "",
             password: "",
             confirmPassword: "",
             });
-
-        setShowToast(false);
-
-        } catch(error) {
-            setShowToast(true);
-        }
-    };
+    }
 
     return (
             <div className="w-full max-w-md space-y-6">
@@ -147,7 +151,7 @@ export default function RegisterForm({ setView }) {
             />
             {showToast && (
             <ErrorToast
-                message="Erro ao realizar o cadastro. Tente novamente mais tarde."
+                message={error || "Erro ao realizar o cadastro. Tente novamente mais tarde."}
                 onClose={() => setShowToast(false)}
             />
             )}

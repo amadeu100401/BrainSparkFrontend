@@ -58,7 +58,6 @@ export default function UserInfo() {
               }
 
           } catch(erro) {
-              console.error("Erro ao buscar dados do cliente:", erro);
               setError("Falha ao buscar os dados do cliente.");
               setShowToastError(true);
           } finally {

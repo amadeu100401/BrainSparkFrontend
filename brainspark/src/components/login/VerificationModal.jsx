@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import Modal from "../../../components/Modal";
-import ResendEmail from './ResendVarifyEmailCode';
-import httpUtil from "../../../utils/HttpUtil"; 
+import Modal from "../Modal";
+import ResendEmail from './ResendVerifyEmailCode';
+import httpUtil from "../../utils/HttpUtil"; 
 import { useNavigate } from "react-router-dom";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 
@@ -30,22 +30,25 @@ export default function VerificationModal({ isOpen, onClose, onSuccess, isResend
   const verifyCode = async (value) => {
     try {
       const email = sessionStorage.getItem("email");
-      const payload = { email };
+      const payload = {
+        email: email,
+        code: value,
+      };
 
-      const response = await httpUtil({
+      await httpUtil({
         url:"/api/v1/auth/validate",
         method:"POST",
         data:payload
       });
 
-      sessionStorage.setItem("email", response.email);
-
-      onClose();
-      onSuccess();
+      
+      setCode("");
       navigate("/welcome/login");
+      onClose(true);
+      onSuccess();
     
     } catch (err) {
-      setError("Erro na verificação. Tente novamente mais tarde.");
+      setError(err.message ||  "Erro na verificação. Tente novamente mais tarde.");
       setCode("");
     }
   };

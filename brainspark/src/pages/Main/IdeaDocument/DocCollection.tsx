@@ -1,4 +1,4 @@
-import BaseComponent from '../components/BaseComponent'
+import BaseComponent from '../components/ContentComponentBase'
 
 export default function DocCollection() {
     return (

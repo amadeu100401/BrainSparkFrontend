@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FaEnvelope } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import httpUtil from "../../../utils/HttpUtil"; 
-import ResetPasswordlModal from "../components/ResetPasswordModal"
+import ResetPasswordlModal from "../../../components/login/ResetPasswordModal"
 import ErrorToast from "../../../components/ErrorToast";
 import { Button } from "@/components/ui/button";
 

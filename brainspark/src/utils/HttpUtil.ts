@@ -7,7 +7,6 @@ interface HttpRequestOption {
   method: HttpMethods;
   data?: any;
   headers?: Record<string, string>;
-  timeout?: number;
 }
 
 interface HttpError {
@@ -20,8 +19,7 @@ export default async function httpUtil<T = any>({
   url,
   method,
   data,
-  headers = {},
-  timeout = 5000,
+  headers = {}
 }: HttpRequestOption): Promise<T> {
   const urlBase = "http://localhost:8080";
   const fullUrl = urlBase + url;
@@ -36,17 +34,17 @@ export default async function httpUtil<T = any>({
     data,
     withCredentials: true,
     validateStatus: () => true,
-    timeout,
   };
 
   try {
     const response = await axios.request<T>(config);
 
     if (response.status >= 400) {
-      const rawMessage = (response.data as any)?.message || 'Erro desconhecido';
-      const codeMatch = rawMessage.match(/\[(.*?)\]/);
-      const code = codeMatch ? codeMatch[1] : null;
-      const cleanedMessage = rawMessage.replace(/\[.*?\]:?\s?/, '');
+
+      var data = response.data as any;
+
+      const cleanedMessage = data?.message || 'Erro desconhecido';
+      const code = data?.code;
 
       throw {
         message: cleanedMessage,
@@ -58,6 +56,13 @@ export default async function httpUtil<T = any>({
     return response.data;
 
   } catch (error: any) {
+    if (error.code === 'ERR_NETWORK') {
+      throw {
+        message: "O serviço encontra-se indisponível. Tente novamente mais tarde.",
+        code: 500
+      }
+    }
+
     if (error.code === 'ECONNABORTED') {
       throw {
         message: 'Tempo limite da requisição excedido.',
@@ -67,14 +72,12 @@ export default async function httpUtil<T = any>({
     }
 
     const rawMessage = error?.response?.data?.message || error.message || 'Erro desconhecido';
-    const codeMatch = rawMessage.match(/\[(.*?)\]/);
-    const code = codeMatch ? codeMatch[1] : null;
-    const cleanedMessage = rawMessage.replace(/\[.*?\]:?\s?/, '');
+    const code = error.code;
 
     throw {
-      message: cleanedMessage,
+      message: rawMessage,
       code,
-      status: error.response?.status || 500,
+      status: error.status || 500,
     } as HttpError;
   }
 }

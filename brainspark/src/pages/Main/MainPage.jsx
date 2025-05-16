@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import Sidebar from "./components/Sidebar";
+import Sidebar from "../../components/home/sidebar/Sidebar";
 import { Outlet } from "react-router-dom"; 
 
 export default function MainPage() {

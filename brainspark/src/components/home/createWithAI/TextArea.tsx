@@ -1,4 +1,4 @@
-import { MenuTextArea } from "./Menu";
+import { MenuTextArea } from "./AIOptionMenu";
 
 export function TextAreaAI() {
   return (

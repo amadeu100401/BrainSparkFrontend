@@ -1,11 +1,11 @@
-import Logo from '../../../assets/logo.png';
+import Logo from '../../assets/Logo.png';
 import { useEffect, useState } from "react";
-import httpRequest from "../../../utils/HttpUtil"; 
-import LoadingCircle from '../components/LoadingComponent'
-import BaseComponent from '../components/ContentComponentBase'
-import { IdeaCarousel } from './components/IdeaCarousel';
-import MenuFilterBar from './components/menu/Menubar';
-import { TextAreaAI } from './components/CreateWIthAI/TextArea';
+import httpRequest from "../../utils/HttpUtil"; 
+import LoadingCircle from './LoadingComponent'
+import BaseComponent from './ContentComponentBase'
+import { IdeaCarousel } from './IdeaCarousel';
+import MenuFilterBar from './menu/Menubar';
+import { TextAreaAI } from './createWithAI/TextArea';
 import { Label } from "@/components/ui/label"
 import { Clock } from "lucide-react";
 

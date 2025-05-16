@@ -1,6 +1,5 @@
-import React from 'react';
-import BaseComponent from '../components/ContentComponentBase';
-import { Editor } from './components/Editor';
+import BaseComponent from '../../components/home/ContentComponentBase';
+import { Editor } from '../../components/IdeaDocument/Editor';
 
 const DocumentEditor = () => {
   return (

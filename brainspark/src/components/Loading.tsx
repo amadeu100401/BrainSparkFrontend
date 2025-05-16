@@ -1,5 +1,5 @@
 import React from 'react';
-import LoadingComponent from '../pages/Main/components/LoadingComponent';
+import LoadingComponent from './home/LoadingComponent';
 
 const Loading: React.FC = () => {
   return (

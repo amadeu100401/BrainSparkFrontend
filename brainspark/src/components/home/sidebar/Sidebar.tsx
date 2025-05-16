@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from '../../../components/AuthContext'
-import FullSidebar from '../components/FullSidebar';
+import { useAuth } from '../../AuthContext'
+import FullSidebar from './FullSidebar';
 
 import {
   Home,

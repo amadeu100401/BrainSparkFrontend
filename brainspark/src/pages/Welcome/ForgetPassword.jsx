@@ -1,10 +1,10 @@
-import InputGroup from "../../../components/InputGroup";
+import InputGroup from "../../components/InputGroup";
 import { useState } from "react";
 import { FaEnvelope } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import httpUtil from "../../../utils/HttpUtil"; 
-import ResetPasswordlModal from "../../../components/login/ResetPasswordModal"
-import ErrorToast from "../../../components/ErrorToast";
+import httpUtil from "../../utils/HttpUtil"; 
+import ResetPasswordlModal from "../../components/login/ResetPasswordModal"
+import ErrorToast from "../../components/ErrorToast";
 import { Button } from "@/components/ui/button";
 
 export default function ForgotPassword() {
@@ -90,8 +90,7 @@ export default function ForgotPassword() {
             <ErrorToast
                 message="Erro ao realizar a redefinição de senha. Tente novamente mais tarde."
                 onClose={() => setShowToast(false)}
-            />
-            )}
+            /> )}
       </div>
     );
 }

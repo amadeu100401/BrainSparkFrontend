@@ -4,7 +4,7 @@ import {
   NavigationMenuContent,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
-import CreateNewDoc from '../../../../../assets/createDocIa.jpg'
+import CreateNewDoc from '../../../assets/createDocIa.jpg'
 
 export default function MenuItem() {
   return (

@@ -1,7 +1,7 @@
 import { useEditor, EditorContent, FloatingMenu, BubbleMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import { all, createLowlight } from 'lowlight'
+import { createLowlight } from 'lowlight'
 import js from 'highlight.js/lib/languages/javascript'
 import 'highlight.js/styles/atom-one-dark.css'
 import { BubbleButton } from './BubbleButton'

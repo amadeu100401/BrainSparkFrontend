@@ -19,8 +19,6 @@ export const loginUser = async (email: string, password: string, rememberMe: boo
         sessionStorage.setItem("email", email)
       }
 
-      console.log(error)
-
       const errorMessage = isNotVerify ? error.message : (error.message || "Erro desconhecido");
 
       return { success: false, message: ("Erro ao fazer login: " + errorMessage), code: error.code};

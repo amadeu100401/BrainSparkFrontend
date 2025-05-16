@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { httpRequest } from "../../utils/HttpRequestsUtil"; 
+import { httpRequest } from "../../utils/HttpRequestsUtil.js"; 
 import Toast from "../../components/Toast.tsx";
-import Loading from "./components/LoadingComponent";
-import DeleteAccountModal from "./components/DeleteAccountModal";
+import Loading from "../../components/home/LoadingComponent.tsx";
+import DeleteAccountModal from "../../components/home/DeleteAccountModal.tsx";
 import Cookies from 'js-cookie';
 import { saveUserInfoInSession, updateUserInfo, getUserInfo } from '../../utils/CacheManeger.ts'
 import { Input } from "@/components/ui/input"

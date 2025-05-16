@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Cookies from "js-cookie";
-import { httpRequest } from "../../../utils/HttpRequestsUtil";
-import Modal from "../../../components/Modal";
-import ErrorToast from "../../../components/ErrorToast";
+import  httpRequest from "../../utils/HttpUtil";
+import Modal from "../Modal";
+import ErrorToast from "../ErrorToast";
+import { useAuth } from '../../components/AuthContext';
 
 interface DeleteAccountModalProps {
   isOpen: boolean;
@@ -15,33 +15,27 @@ export default function DeleteAccountModal({
   onClose,
   onSuccess,
 }: DeleteAccountModalProps) {
-  const token = Cookies.get("token") || sessionStorage.getItem("token");
+
+  const { logout } = useAuth();
   const [error, setError] = useState<string>("");
   const [showToast, setShowToast] = useState<boolean>(false);
 
   const handleDeleteAccount = async () => {
     try {
-      if (token) {
-        const { status, ok } = await httpRequest(
-          "/api/v1/users/delete-account",
-          "PUT",
-          null,
-          {},
-          token
-        );
+        await httpRequest({
+          url: "/api/v1/users/delete-account",
+          method: "PUT"
+        });
 
-        if (ok) {
-          onSuccess();  // Chama a função de sucesso após excluir a conta
-          onClose();    // Fecha o modal
-        } else {
-          throw new Error("Falha ao excluir a conta.");
-        }
-      } else {
-        throw new Error("Token ausente");
-      }
-    } catch (err) {
-      setError("Erro ao excluir a conta. Tente novamente mais tarde.");
-      setShowToast(true);  // Exibe a mensagem de erro caso algo falhe
+        await logout();
+
+        onSuccess();  
+
+        onClose();   
+
+    } catch (err: any) {
+      setError(err.message || "Erro ao excluir a conta. Tente novamente mais tarde.");
+      setShowToast(true);
     }
   };
 

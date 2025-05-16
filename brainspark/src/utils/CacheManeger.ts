@@ -1,4 +1,4 @@
-import UserInfo from '@/pages/Main/UserInfo';
+import UserInfo from '@/pages/Main/UserInfoPage';
 import Cookies from 'js-cookie';
 
 interface MainPageInfo {

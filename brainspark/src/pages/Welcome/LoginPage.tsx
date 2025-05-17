@@ -44,7 +44,7 @@ export default function LoginForm() {
     const result = await loginUser(email, password, rememberMe);
 
     if (result.success) {
-      navigate("/brainspark/main");
+      navigate("/brainspark/home");
     } else {
       setError(result.message);
       if (result.code === "001") {

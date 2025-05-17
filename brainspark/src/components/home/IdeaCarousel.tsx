@@ -56,13 +56,13 @@ export function IdeaCarousel({ ideas }: IdeaCarouselProps) {
 
           <CarouselItem className="basis-full flex justify-center">
             <div
-              className="w-64 h-64 border-2 border-dashed border-green-500 rounded-lg p-4 flex 
+              className="w-64 h-64 border-2 border-dashed border-zinc-500 rounded-lg p-4 flex 
               flex-col justify-center items-center shadow-md cursor-pointer 
               transition-transform duration-150 active:scale-[.98] ease-in-out"
               onClick={handleNewDoc}
             >
               <svg
-                className="h-10 w-10 text-green-500 mb-2"
+                className="h-10 w-10 text-zinc-600 mb-2"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -70,7 +70,7 @@ export function IdeaCarousel({ ideas }: IdeaCarouselProps) {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
-              <p className="text-green-600 font-semibold">Novo Documento</p>
+              <p className="text-zinc-600 font-semibold">Novo Documento</p>
             </div>
           </CarouselItem>
         </CarouselContent>

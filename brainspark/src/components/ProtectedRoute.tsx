@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { httpRequest } from '../utils/HttpRequestsUtil';
+import httpRequest from '../utils/HttpUtil';
 import Loding from './Loading';
 
 interface ProtectedRouteProps {
@@ -12,8 +12,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const isAuth = await httpRequest("/api/v1/auth/validate-auth", "POST");
-      setIsAuthenticated(isAuth.ok);
+      await httpRequest({
+        url: "/api/v1/auth/validate-auth",
+        method: "POST"
+      });
+      setIsAuthenticated(true);
     };
 
     checkAuth();

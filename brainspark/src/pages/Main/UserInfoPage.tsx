@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { httpRequest } from "../../utils/HttpRequestsUtil.js"; 
+import httpRequest from "../../utils/HttpUtil.ts"; 
 import Toast from "../../components/Toast.tsx";
 import Loading from "../../components/home/LoadingComponent.tsx";
 import DeleteAccountModal from "../../components/home/DeleteAccountModal.tsx";
@@ -34,29 +34,24 @@ export default function UserInfo() {
 
     const fetchData = async () => {
           try {
-              const { status, ok, data } = await httpRequest(
-                  "/api/v1/users/get-info", 
-                  "GET", 
-                  null, 
-                  {}, 
-                  token);
+              const response = await httpRequest({
+                  url: "/api/v1/users/get-info", 
+                  method: "GET"
+                });
 
-              if (ok) {
                   setUserForm({
-                      email: data.email,
-                      name: data.name,
-                      photoLink: data.photoLink
+                      email: response.email,
+                      name: response.name,
+                      photoLink: response.photoLink
                   })
                   setFormInput({
-                      email: data.email,
-                      name: data.name
+                      email: response.email,
+                      name: response.name
                   })
                   
-                  saveUserInfoInSession(data);
+                  saveUserInfoInSession(response);
 
                   setShowToastError(false);
-              }
-
           } catch(erro) {
               setError("Falha ao buscar os dados do cliente.");
               setShowToastError(true);

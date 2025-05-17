@@ -5,11 +5,11 @@ import FullSidebar from './FullSidebar';
 
 import {
   Home,
-  Briefcase,
   LogOut,
   ChevronLeft,
   User,
-  Clock
+  Clock,
+  SquareLibrary
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -17,9 +17,9 @@ export default function Sidebar() {
   const { logout } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(true);
 
-  const handleHomeClick = () => {
+  const handleHomeClick = (path: string) => {
     setIsCollapsed(true);
-    navigate("/brainspark/main");
+    navigate(path);
   };
 
   const handleLogout = async () => {
@@ -44,17 +44,17 @@ export default function Sidebar() {
 
         {/* Ícones centralizados verticalmente */}
         <div className="flex-1 flex flex-col justify-center items-center space-y-4 mt-4">
-          <button onClick={handleHomeClick} title="Home" className="p-2 hover:bg-zinc-800 rounded">
+          <button onClick={() => handleHomeClick("/brainspark/home")} title="Home" className="p-2 hover:bg-zinc-800 rounded">
             <Home className={iconStyle} />
           </button>
-          <button title="Projects" className="p-2 hover:bg-zinc-800 rounded">
-            <Briefcase className={iconStyle} />
+          <button onClick={() => handleHomeClick("/brainspark/docs-collection")} title="Biblioteca" className="p-2 hover:bg-zinc-800 rounded">
+            <SquareLibrary className={iconStyle} />
           </button>
-          <button title="Focus" className="p-2 hover:bg-zinc-800 rounded">
+          <button onClick={() => handleHomeClick("/brainspark/focus")} title="Focus" className="p-2 hover:bg-zinc-800 rounded">
             <Clock className={iconStyle} />
           </button>
           <button
-            title="User"
+            title="Usuário"
             className="p-2 hover:bg-zinc-800 rounded"
             onClick={() => navigate("/brainspark/user-info")}
           >

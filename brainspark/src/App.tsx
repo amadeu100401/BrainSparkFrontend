@@ -7,10 +7,11 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ForgotPassword from './pages/Welcome/ForgetPassword';
 import MainPage from './pages/Main/MainPage';
 import SendNewPassword from './pages/Welcome/SendNewPassword';
-import WelcomeScreen from './components/home/Home';
+import WelcomeScreen from './pages/Main/HomePage';
 import UserInfo from './pages/Main/UserInfoPage';
 import IdeaDoc from './pages/Main/IdeaDocPage';
 import DocCollection from './pages/Main/DocCollectionPage';
+import FocusTimePage from './pages/Main/FocusTimePage';
 import { AuthProvider } from './components/AuthContext';
 
 import './index.css';
@@ -35,10 +36,11 @@ export function App() {
           
           
           <Route path='/brainspark' element={<ProtectedRoute> <MainPage /> </ProtectedRoute>}>
-            <Route path="main" element={<WelcomeScreen />} />
+            <Route path="home" element={<WelcomeScreen />} />
             <Route path="user-info" element={ <UserInfo /> } />
             <Route path='idea' element={ <IdeaDoc />} />
             <Route path='docs-collection' element={ <DocCollection /> } />
+            <Route path='focus' element={ <FocusTimePage /> } />
           </Route>
         </Routes>
       </AuthProvider>

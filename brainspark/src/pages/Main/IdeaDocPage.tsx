@@ -1,7 +1,7 @@
 import BaseComponent from '../../components/home/ContentComponentBase';
 import { Editor } from '../../components/IdeaDocument/Editor';
 
-const DocumentEditor = () => {
+export default function DocumentEditor() {
   return (
     <BaseComponent className="p-4">
       <main className="p-4">
@@ -10,5 +10,3 @@ const DocumentEditor = () => {
     </BaseComponent>
   );
 };
-
-export default DocumentEditor;

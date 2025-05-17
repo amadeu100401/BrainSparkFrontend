@@ -27,11 +27,11 @@ export default function MenuFilterBar() {
                         <MenuItemFilter />
                     </NavigationMenuItem>
                     <NavigationMenuItem>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                         <Link to="/brainspark/docs-collection">
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Ir para biblioteca 
-                            </NavigationMenuLink>
+                        Ir para biblioteca
                         </Link>
+                    </NavigationMenuLink>
                     </NavigationMenuItem>
                 </NavigationMenuList>
             </NavigationMenu>

@@ -1,11 +1,11 @@
 import Logo from '../../assets/Logo.png';
 import { useEffect, useState } from "react";
 import httpRequest from "../../utils/HttpUtil"; 
-import LoadingCircle from './LoadingComponent'
-import BaseComponent from './ContentComponentBase'
-import { IdeaCarousel } from './IdeaCarousel';
-import MenuFilterBar from './menu/Menubar';
-import { TextAreaAI } from './createWithAI/TextArea';
+import LoadingCircle from '../../components/home/LoadingComponent'
+import BaseComponent from '../../components/home/ContentComponentBase'
+import { IdeaCarousel } from '../../components/home/IdeaCarousel';
+import MenuFilterBar from '../../components/home/menu/Menubar';
+import { TextAreaAI } from '../../components/home/createWithAI/TextArea';
 import { Label } from "@/components/ui/label"
 import { Clock } from "lucide-react";
 
@@ -41,7 +41,7 @@ export default function WelcomeScreen() {
         url:"/api/v1/users/main-page",
         method:"GET",
       });
-
+      
       setMainPage({
         name: response.name,
         documents: response.ideaList || []

@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
-import { httpRequest } from '../utils/HttpRequestsUtil';
+import httpRequest from '../utils/HttpUtil';
 
 interface AuthContextType {
   logout: () => void;
@@ -31,9 +31,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     clearMemory();
     navigate("/welcome");
     try {
-      await httpRequest("/api/v1/auth/logout", "POST");
-    } catch (e) {
-      console.error("Erro ao fazer logout:", e);
+      await httpRequest({
+        url: "/api/v1/auth/logout",
+        method: "POST"
+      });
+    } catch (e: any) {
+      console.error("Erro ao fazer logout:", e.message);
     }
   };
 

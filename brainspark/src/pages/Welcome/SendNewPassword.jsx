@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import InputGroup from "../../components/InputGroup"; 
 import { FaLock } from 'react-icons/fa'; 
-import { httpRequest } from "../../utils/HttpRequestsUtil"; 
+import httpRequest from "../../utils/HttpUtil"; 
 import PasswordResetSuccess from "../../components/login/PasswordResetSuccessModal";
 import ErrorToast from "../../components/ErrorToast";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,11 @@ export default function SendNewPassword() {
     try {
       setError("");
       var data = {password: newPasswordForm.password, jwt: sessionStorage.getItem("jwt")};
-      const response = await httpRequest("/api/v1/auth/send-new-password", "POST", data);
+      const response = await httpRequest({
+        url:"/api/v1/auth/send-new-password", 
+        method: "POST",
+        data: data
+      });
       setShowSuccessModal(true);
     } catch (err) {
       setShowToast(true);

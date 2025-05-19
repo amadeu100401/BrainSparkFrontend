@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button"
 
-export default function Modal({ isOpen, onClose=false, children }) {
+export default function Modal({ isOpen, onClose = () => {}, children }) {
+  const [visible, setVisible] = useState(isOpen);
+
+  // Atualiza visibilidade quando isOpen muda
+  useEffect(() => {
+    if (isOpen) setVisible(true);
+  }, [isOpen]);
+
+  // Ao sair da animação, chama onClose
+  const handleClose = () => {
+    setVisible(false);
+  };
+
+  const handleExited = () => {
+    onClose(); // chama função de fechar depois da animação
+  };
+
   return createPortal(
-    <AnimatePresence>
-      {isOpen && (
+    <AnimatePresence onExitComplete={handleExited}>
+      {visible && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -19,13 +36,13 @@ export default function Modal({ isOpen, onClose=false, children }) {
             transition={{ duration: 0.2 }}
             className="bg-gray-900 text-white w-full max-w-md p-6 rounded-2xl shadow-xl relative"
           >
-            <button
-              onClick={onClose}
-              className="absolute top-3 right-3 text-white/60 hover:text-white text-sm p-1 bg-transparent border-none shadow-none outline-none"
+            <Button
+              onClick={handleClose}
+              className="absolute top-3 right-3 transition text-white/60 text-sm p-1 bg-transparent border-none shadow-none outline-none hover:text-white hover:bg-transparent active:border-none"
               aria-label="Fechar modal"
             >
               ×
-            </button>
+            </Button>
             {children}
           </motion.div>
         </motion.div>

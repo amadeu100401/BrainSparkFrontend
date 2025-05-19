@@ -59,8 +59,7 @@ export default function WelcomeScreen() {
   }, []);
 
   return (
-    <BaseComponent className="p-6 font-sans h-auto flex flex-col items-center bg-gray-50 
-                    min-h-screen space-y-4">
+    <BaseComponent className="p-6 font-sans flex flex-col items-center bg-gray-50 space-y-4">
                       
       {/* Header com logo + saudação */}
       <div className="flex flex-col items-center space-y-2 mb-2">
@@ -90,7 +89,7 @@ export default function WelcomeScreen() {
             <IdeaCarousel ideas={mainPage.documents}/>
           </div>
 
-          <TextAreaAI></TextAreaAI>
+          <TextAreaAI />
         </>
       )}
     </BaseComponent>

@@ -1,128 +1,63 @@
-import { useEffect, useState } from "react";
-import httpRequest from "../../utils/HttpUtil.ts"; 
-import Toast from "../../components/Toast.tsx";
+import { useEffect, useState } from "react"; 
 import Loading from "../../components/home/LoadingComponent.tsx";
 import DeleteAccountModal from "../../components/home/DeleteAccountModal.tsx";
-import Cookies from 'js-cookie';
-import { saveUserInfoInSession, updateUserInfo, getUserInfo } from '../../utils/CacheManeger.ts'
 import { Input } from "@/components/ui/input"
+import BaseComponent from "../../components/home/ContentComponentBase.tsx"
+import { GetAccounData, UpdateUsersInfo } from '../../features/UsersInfo.ts';
 
 export default function UserInfo() {
-    var token = Cookies.get("token") || sessionStorage.getItem("token");
-
-    const [showToastError, setShowToastError] = useState(false);
-    const [showToast, setShowToast] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const [userForm, setUserForm] = useState({
         name: "",
         email: "",
         photoLink: ""
-      });
+    });
       
       const [formInput, setFormInput] = useState({
         name: "",
         email: ""
-      });
+    });
       
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormInput((prev) => ({ ...prev, [name]: value }));
-      };
-
-    const fetchData = async () => {
-          try {
-              const response = await httpRequest({
-                  url: "/api/v1/users/get-info", 
-                  method: "GET"
-                });
-
-                  setUserForm({
-                      email: response.email,
-                      name: response.name,
-                      photoLink: response.photoLink
-                  })
-                  setFormInput({
-                      email: response.email,
-                      name: response.name
-                  })
-                  
-                  saveUserInfoInSession(response);
-
-                  setShowToastError(false);
-          } catch(erro) {
-              setError("Falha ao buscar os dados do cliente.");
-              setShowToastError(true);
-          } finally {
-              setLoading(false);
-          }
-      }
-
     useEffect(() => {
-        const cookieData = getDataFromCookie();
-
-        if (cookieData !== null) {
-            setUserForm({
-                email: cookieData.email,
-                name: cookieData.name,
-                photoLink: cookieData.photoLink
-            });
-            setFormInput({
-                email: cookieData.email,
-                name: cookieData.name
-            });
-        } else {
-            fetchData();
-        }
+      fetchData();
     }, []);
 
-    const getDataFromCookie = () => {
-      const cookieData = getUserInfo();
+    async function fetchData() {
+      setLoading(true)
+      var response  = await GetAccounData();
 
-      if (cookieData && typeof cookieData === 'object' && Object.keys(cookieData).length > 0) {
-          setLoading(false);
-          return cookieData;
-      } else {
-          return null;
+      if (response !== null) {
+          setLoading(false)
+          setUserForm({
+            email: response.email,
+            name: response.name,
+            photoLink: response.photoLink || ""
+          })
+          setFormInput({
+            email: response.email,
+            name: response.name
+          })
       }
     }
     
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-        const formData = new FormData();
-        formData.append("image", "");
-        formData.append("request", new Blob(
-        [JSON.stringify({ name: formInput.name, birthDate: "2001-01-01" })],
-        { type: "application/json" }
-        ));
+      e.preventDefault();
+      await UpdateUsersInfo({
+        name: formInput.name
+      });
+    };
 
-        const { status, ok } = await httpRequest(
-        "/api/v1/users/update", 
-        "PUT",
-        formData, 
-        {}, 
-        token);
-
-        if (!ok) {
-          alert("Erro ao atualizar informações: Status: " + status);
-          setShowToastError(true);
-        }
-
-        updateUserInfo(formInput);
-        setShowToast(true);
-    } catch (error) {
-        setError("Erro ao realizar atualizar de perfil. Tente novamente mais tarde.");
-        setShowToastError(true);
-    }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setFormInput((prev) => ({ ...prev, [name]: value }));
     };
 
     if (loading) return <Loading />;
 
     return(
-        <div className="w-full p-8 bg-gray-50 rounded-xl shadow-sm border border-black/20">
+        <BaseComponent className="w-full p-8 bg-gray-50 rounded-xl shadow-sm border border-black/20">
         <h2 className="text-2xl font-semibold mb-6">Informações do usuário</h2>
         
         <div className="flex items-center space-x-4 mb-8">
@@ -182,26 +117,12 @@ export default function UserInfo() {
             Após requisitar a exclusão, você terá <strong>1 dia</strong> para manter essa conta.
           </p>
           <button 
-          className="text-red-600 border border-red-600 px-4 py-2 rounded hover:bg-red-50"
+          className="text-red-600 border border-red-600 px-4 py-2 rounded hover:bg-red-500/55"
           onClick={() => setShowDeleteModal(true)}
           >
             Excluir minha conta
           </button>
         </div>
-        {showToast && (
-          <Toast 
-            message={"Dados salvos com sucesso!"}
-            onClose={() => console.log()}
-            type="success"
-          />
-        )}
-        {showToastError && (
-          <Toast 
-            message={error}
-            onClose={() => console.log()}
-            type="error"
-          />
-        )}
         {showDeleteModal && (
         <DeleteAccountModal 
             isOpen={showDeleteModal}
@@ -211,6 +132,6 @@ export default function UserInfo() {
             }}
         />
         )}
-      </div>
+      </BaseComponent>
     );
 }

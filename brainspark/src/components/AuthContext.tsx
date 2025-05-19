@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
-import httpRequest from '../utils/HttpUtil';
+import httpRequest, { ContextEnum } from '../utils/HttpUtil';
 
 interface AuthContextType {
   logout: () => void;
@@ -32,7 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     navigate("/welcome");
     try {
       await httpRequest({
-        url: "/api/v1/auth/logout",
+        url: ContextEnum.auth + "/logout",
         method: "POST"
       });
     } catch (e: any) {

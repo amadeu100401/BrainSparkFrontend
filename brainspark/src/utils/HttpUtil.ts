@@ -1,6 +1,12 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-type HttpMethods = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+export type HttpMethods = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+
+export enum ContextEnum {
+  user = "/api/v1/users",
+  idea = "/api/v1/ideas",
+  auth = "/api/v1/auth"
+}
 
 interface HttpRequestOption {
   url: string;
@@ -19,7 +25,7 @@ export default async function httpUtil<T = any>({
   url,
   method,
   data,
-  headers = {}
+  headers = {},
 }: HttpRequestOption): Promise<T> {
   const urlBase = "http://localhost:8080";
   const fullUrl = urlBase + url;

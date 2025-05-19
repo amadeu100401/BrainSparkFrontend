@@ -1,8 +1,7 @@
-import  httpRequest from "../../utils/HttpUtil";
 import Modal from "../Modal";
-import { useAuth } from '../../components/AuthContext';
+import DeleteAccount from "../../features/DeleteAccount"
 import { Button } from "@/components/ui/button"
-import { showErrorToast } from "../ToastContext.tsx";
+import { useAuth } from '../../components/AuthContext';
 
 interface DeleteAccountModalProps {
   isOpen: boolean;
@@ -15,25 +14,13 @@ export default function DeleteAccountModal({
   onClose,
   onSuccess,
 }: DeleteAccountModalProps) {
-
   const { logout } = useAuth();
 
   const handleDeleteAccount = async () => {
-    try {
-        await httpRequest({
-          url: "/api/v1/users/delete-account",
-          method: "PUT"
-        });
+      await DeleteAccount(logout)
 
-        await logout();
-
-        onSuccess();  
-
-        onClose();   
-
-    } catch (err: any) {
-      showErrorToast(err.message || "Erro ao excluir a conta. Tente novamente mais tarde.")
-    }
+      onSuccess();  
+      onClose();   
   };
 
   return (

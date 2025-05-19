@@ -1,11 +1,11 @@
 import InputGroup from "../../components/InputGroup";
 import { useState } from "react";
 import { FaEnvelope } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import httpUtil from "../../utils/HttpUtil"; 
+import { useNavigate } from "react-router-dom"; 
 import ResetPasswordlModal from "../../components/login/ResetPasswordModal"
 import ErrorToast from "../../components/ErrorToast";
 import { Button } from "@/components/ui/button";
+import ForgetPassword from "../../features/ForgetPassword"
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState({
@@ -13,30 +13,20 @@ export default function ForgotPassword() {
     }); 
 
     const [error, setError] = useState(""); 
-    const [showErrorToast, setShowErrorToast] = useState("");
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const handleForgetPasswordSubmit = async (e) => {
-        e.preventDefault();
+      e.preventDefault();
 
-        try {
-          if (!email.email) {
-            setError("O email deve ser informado.");
-          }
+      if (!email.email) {
+        setError("O email deve ser informado.");
+      }
 
-          const data = { email: email.email }
+      await ForgetPassword({
+          email: email.email 
+      });
 
-          await httpUtil({
-            url:"/api/v1/auth/forget-password",
-            method:"POST",
-            data:data
-          });
-
-          setShowSuccessModal(true);
-
-        } catch (error) {
-          setShowErrorToast(true);
-        }
+      setShowSuccessModal(true);
     };
 
     const handleForgetPasswordChange = (e) => {
@@ -86,11 +76,6 @@ export default function ForgotPassword() {
         </div>
         </p>
         <ResetPasswordlModal isOpen={showSuccessModal} onClose={() => setShowSuccessModal(false)} />
-        {showErrorToast && (
-            <ErrorToast
-                message="Erro ao realizar a redefinição de senha. Tente novamente mais tarde."
-                onClose={() => setShowToast(false)}
-            /> )}
       </div>
     );
 }

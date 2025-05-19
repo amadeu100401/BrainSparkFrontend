@@ -38,7 +38,8 @@ export default function Modal({ isOpen, onClose = () => {}, children }) {
           >
             <Button
               onClick={handleClose}
-              className="absolute top-3 right-3 transition text-white/60 text-sm p-1 bg-transparent border-none shadow-none outline-none hover:text-white hover:bg-transparent active:border-none"
+              className="absolute top-3 right-3 transition text-white/60 text-sm p-1 bg-transparent border-none shadow-none outline-none
+               hover:text-white hover:bg-transparent active:border-none"
               aria-label="Fechar modal"
             >
               ×

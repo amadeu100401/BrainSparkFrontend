@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import InputGroup from "../../components/InputGroup"; 
 import { FaLock } from 'react-icons/fa'; 
-import httpRequest from "../../utils/HttpUtil"; 
+import sendNewPassword from '../../features/SendNewPassword'
 import PasswordResetSuccess from "../../components/login/PasswordResetSuccessModal";
 import ErrorToast from "../../components/ErrorToast";
 import { Button } from "@/components/ui/button";
@@ -43,25 +43,24 @@ export default function SendNewPassword() {
 
   const handleSendNewPassword = async (e) => {
     e.preventDefault();
+    setError("");
 
+    validatePasswords();
+
+    const isSucess = await sendNewPassword({
+      password: newPasswordForm.password, 
+      jwt: sessionStorage.getItem("jwt")
+    });
+
+    setShowSuccessModal(isSucess);
+  };
+
+  const validatePasswords = () => {
     if (newPasswordForm.password !== newPasswordForm.confirmPassword) {
       setError("As senhas não coincidem!");
       return;
     }
-
-    try {
-      setError("");
-      var data = {password: newPasswordForm.password, jwt: sessionStorage.getItem("jwt")};
-      const response = await httpRequest({
-        url:"/api/v1/auth/send-new-password", 
-        method: "POST",
-        data: data
-      });
-      setShowSuccessModal(true);
-    } catch (err) {
-      setShowToast(true);
-    }
-  };
+  }
 
   return (
     <div className="w-full max-w-md space-y-6">

@@ -5,7 +5,8 @@ export type HttpMethods = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 export enum ContextEnum {
   user = "/api/v1/users",
   idea = "/api/v1/ideas",
-  auth = "/api/v1/auth"
+  auth = "/api/v1/auth",
+  focus = "/api/v1/focus"
 }
 
 interface HttpRequestOption {

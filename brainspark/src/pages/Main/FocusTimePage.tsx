@@ -1,5 +1,5 @@
 import ComponentBase from '../../components/home/ContentComponentBase'
-import Stopwatch from '../../components/focus/stopwatch/stopwatch'
+import Stopwatch from '../../components/focus/stopwatch/Stopwatch'
 import TimerHistory from '@/components/focus/TimerHistory';
 import Tips from '@/components/focus/Tips';
 import CurrentProject from '@/components/focus/CurrentProject';

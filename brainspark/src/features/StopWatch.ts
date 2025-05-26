@@ -1,4 +1,4 @@
-import Stopwatch from "@/components/focus/stopwatch/stopwatch";
+import Stopwatch from "@/components/focus/stopwatch/Stopwatch";
 import httpRequest, { ContextEnum } from "@/utils/HttpUtil";
 import { showErrorToast, showSuccessToast } from "@/components/ToastContext";
 

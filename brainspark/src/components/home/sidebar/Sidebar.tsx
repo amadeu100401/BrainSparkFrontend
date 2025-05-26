@@ -38,7 +38,8 @@ export default function Sidebar() {
           className="p-2 rounded hover:bg-zinc-800"
         >
           <ChevronLeft
-            className={`w-5 h-5 transition-transform ${isCollapsed ? "rotate-180" : ""}`}
+            className={`w-5 h-5 transition-transform duration-300 ease-in-out
+               focus:ring-0 focus:outline-none ring-0 active:shadow-inner ${isCollapsed ? "rotate-180" : ""}`}
           />
         </button>
 

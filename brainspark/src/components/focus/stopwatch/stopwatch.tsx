@@ -1,13 +1,17 @@
-import { AlarmClock, Tag, Play, Pause, History, ArrowDownToLine  } from 'lucide-react';
+import { AlarmClock, Play, Pause, History, ArrowDownToLine  } from 'lucide-react';
 import TimeBlock from './TimeBlock';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from 'react';
 import { FormatTimer, SaveFocusTime } from '@/features/StopWatch';
+import AddNewTag from './AddNewTag';
 
 export default function Stopwatch() {
   const [isRunning, setIsRunning] = useState(false);
   const [timeInSeconds, setTimeInSeconds] = useState(0);
+
+  const [tag, setTag] = useState("Estudos");
+  const [project, setProject] = useState("Concurso PF");
 
   var hasCurrentTime = timeInSeconds > 0 ? true : false;
 
@@ -58,14 +62,22 @@ export default function Stopwatch() {
 
       {/* Linha com tag e botões de controle em lados opostos */}
       <div className="flex justify-between items-center">
+
         {/* Tag e projeto à esquerda */}
         <div className="flex items-center gap-4">
-          <Button variant={'outline'} className="text-sm">
-            <Tag /> Adicionar tag
-          </Button>
-          <span className="text-sm text-gray-700">
-            Projeto: <strong>{}</strong>
-          </span>
+          <AddNewTag />
+
+          {tag && (
+            <span className="text-sm space-x-4 text-gray-700">
+              Tag: <strong>{tag}</strong>
+            </span>
+          )}
+
+          {project && (
+            <span className="text-sm space-x-4 text-gray-700">
+              Projeto: <strong>{project}</strong>
+            </span>
+          )}
         </div>
 
         {/* Botões de controle à direita */}

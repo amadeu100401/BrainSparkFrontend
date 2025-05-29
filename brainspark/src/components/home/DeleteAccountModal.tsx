@@ -1,7 +1,7 @@
 import Modal from "../Modal";
 import DeleteAccount from "../../features/DeleteAccount"
 import { Button } from "@/components/ui/button"
-import { useAuth } from '../../components/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface DeleteAccountModalProps {
   isOpen: boolean;

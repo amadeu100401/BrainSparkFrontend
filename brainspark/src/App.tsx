@@ -12,7 +12,8 @@ import UserInfo from './pages/Main/UserInfoPage';
 import IdeaDoc from './pages/Main/IdeaDocPage';
 import DocCollection from './pages/Main/DocCollectionPage';
 import FocusTimePage from './pages/Main/FocusTimePage';
-import { AuthProvider } from './components/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { FocusProvider } from './contexts/FocusContext';
 
 import './index.css';
 
@@ -40,7 +41,7 @@ export function App() {
             <Route path="user-info" element={ <UserInfo /> } />
             <Route path='idea' element={ <IdeaDoc />} />
             <Route path='docs-collection' element={ <DocCollection /> } />
-            <Route path='focus' element={ <FocusTimePage /> } />
+            <Route path='focus' element={<FocusProvider> <FocusTimePage /> </FocusProvider>} />        
           </Route>
         </Routes>
       </AuthProvider>

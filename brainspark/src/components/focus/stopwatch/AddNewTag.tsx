@@ -1,108 +1,151 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-  } from "@/components/ui/popover"
-import { Tag, Palette } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Tag, Palette, X } from "lucide-react";
 import { UUID } from "node:crypto";
 import UUIDUtil from "@/utils/UUIDUtil";
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+
+const pastelColors = [
+    "#7289a8", "#8c74a1", "#96a88c", "#b086a8", "#f5cd89",
+    "#8bcca8", "#e38b76", "#c78794", "#88ebeb", "#c5e68e"
+];
 
 export default function AddNewTag() {
-    const [existingTags] = useState<{ id: UUID; name: string; color?: string }[]>([]);
-    const [tagName, setTagName] = useState("");
-    const [tagColor, setTagColor] = useState("#8B5CF6");
-    const colorPickerRef = useRef<HTMLInputElement>(null);
     const MAX_LENGTH = 25;
-    
+
+    const [existingTags, setExistingTags] = useState<{ id: UUID; name: string; color?: string }[]>([]);
+    const [selectedTag, setSelectedTag] = useState<{ id: UUID; name: string; color?: string } | null>(null);
+    const [tagName, setTagName] = useState("");
+    const [tagColor, setTagColor] = useState(pastelColors[0]);
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
     useEffect(() => {
-        // setExistingTags([
-        //     { id: UUIDUtil(), name: 'Tag 1', color: '#8B5CF6' },
-        //     { id: UUIDUtil(), name: 'Tag 2', color: '#8B5CF6' },
-        //     { id: UUIDUtil(), name: 'Tag 3', color: '#8B5CF6' },
-        // ]);
-    }, []);
+        let timer: NodeJS.Timeout;
+        if (showColorPicker) {
+            timer = setTimeout(() => {
+                setShowColorPicker(false);
+            }, 5000);
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [showColorPicker]);
+
+    useEffect(() => {
+        if (!isPopoverOpen) {
+            setShowColorPicker(false);
+        }
+    }, [isPopoverOpen]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        if (value.length <= MAX_LENGTH) {
-            setTagName(value);
+        if (e.target.value.length <= MAX_LENGTH) {
+            setTagName(e.target.value);
         }
     };
 
-    const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTagColor(e.target.value);
-    };
-
-    const handleColorClick = () => {
-        colorPickerRef.current?.click();
-    };
-
     const handleNewTag = () => {
-        existingTags.push({ id: UUIDUtil(), name: tagName, color: tagColor });
+        if (!tagName.trim()) return;
+        const newTag = { id: UUIDUtil(), name: tagName.trim(), color: tagColor };
+        setExistingTags((prev) => [...prev, newTag]);
+        setSelectedTag(newTag);
         setTagName("");
     };
 
+    const handleTagClick = (tag: { id: UUID; name: string; color?: string }) => {
+        setSelectedTag(tag);
+    };
+
+    const handleTagRemove = (tagId: UUID) => {
+        setExistingTags((prev) => prev.filter(tag => tag.id !== tagId));
+        if (selectedTag?.id === tagId) setSelectedTag(null);
+    };
+
+    const handleColorSelect = (color: string) => {
+        setTagColor(color);
+        setShowColorPicker(false);
+    };
+
     return (
-        <Popover>
+        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
             <PopoverTrigger asChild>
-                <Button 
-                    className="text-sm border-none bg-transparent text-black hover:bg-violet-400 
-                    focus:ring-0 focus:outline-none ring-0 active:shadow-inner transition duration-100"
+                <Button
+                    className={`flex items-center justify-start text-sm ${selectedTag ? 'w-[150px]' : 'w-[150px]'}
+                        h-[40px] border-none bg-transparent text-black hover:bg-violet-400 overflow-hidden
+                        text-ellipsis whitespace-nowrap focus:ring-0 focus:outline-none transition duration-100`}
+                    style={{ backgroundColor: selectedTag?.color }}
                 >
-                <Tag /> Adicionar tag
+                    <Tag className={`flex-shrink-0 ${selectedTag?.color ? 'text-white' : 'text-black'}`} />
+                    {selectedTag ? (
+                        <span className={`truncate ${selectedTag?.color ? 'text-white' : 'text-black'}`}>
+                            {selectedTag.name}
+                        </span>
+                    ) : "Adicionar Tag"}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-70 select-none">
-                <div className="flex flex-col gap-2">  
-
-                    <div className="flex flex-col gap-1">
-                        {existingTags.map((tag) => (
-                            <div 
-                                key={tag.id} 
-                                className="flex items-center rounded-md gap-2 w-full p-2 bg-violet-400
-                                        text-white border-none hover:bg-violet-500 focus:ring-0
-                                        focus:outline-none focus:ring-offset-0 cursor-pointer"
-                                style={{ backgroundColor: tag.color }}
-                            >
-                                <Tag /> {tag.name}
-                            </div>
-                        ))}
-
-                        <div className="relative w-full flex gap-2 items-center">
-                            <Input 
-                                placeholder="Nova tag" 
-                                value={tagName}
-                                onChange={handleInputChange}
-                                maxLength={MAX_LENGTH}
-                                className="w-full focus:outline-none focus:ring-0 focus:border-0 border-0
-                                        shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' && tagName.trim()) {
-                                        handleNewTag();
-                                    }
+            <PopoverContent className="w-56 select-none py-2">
+                <div className="flex flex-col gap-2">
+                    {existingTags.map((tag) => (
+                        <div
+                            key={tag.id}
+                            className="flex items-center rounded-md w-full gap-2 py-1 px-2
+                            hover:opacity-90 cursor-pointer text-white font-semibold"
+                            style={{ backgroundColor: tag.color }}
+                            onClick={() => handleTagClick(tag)}
+                        >
+                            <Tag className="w-5 h-5" />
+                            <span className="truncate">{tag.name}</span>
+                            <X
+                                className="ml-auto text-transparent hover:text-white cursor-pointer w-4 h-4"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleTagRemove(tag.id);
                                 }}
                             />
-                            <div className="relative flex items-center">
-                                <Palette 
-                                    className="w-6 h-6 cursor-pointer hover:opacity-80 transition-opacity"
-                                    onClick={handleColorClick}
-                                    style={{ color: tagColor }}
-                                />
-                                <input
-                                    ref={colorPickerRef}
-                                    type="color"
-                                    value={tagColor}
-                                    onChange={handleColorChange}
-                                    className="absolute left-0 opacity-0 w-6 h-6 cursor-pointer"
-                                />
-                            </div>
+                        </div>
+                    ))}
+                    <div className="flex gap-2 items-center">
+                        <Input
+                            placeholder="Nova tag"
+                            value={tagName}
+                            onChange={handleInputChange}
+                            maxLength={MAX_LENGTH}
+                            onKeyDown={(e) => e.key === 'Enter' && handleNewTag()}
+                            className="flex-1 border border-gray-200 focus:border-gray-200 focus:ring-0
+                             focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-gray-200"
+                        />
+                        <div
+                            className="relative flex items-center"
+                        >
+                            <Palette 
+                                className="w-5 h-5 cursor-pointer" 
+                                style={{ color: tagColor }}
+                                onClick={() => setShowColorPicker(!showColorPicker)}
+                            />
+                            {showColorPicker && (
+                                <div className="absolute top-full mt-1 flex gap-1 bg-white p-1 rounded shadow">
+                                    {pastelColors.map((color) => (
+                                        <div
+                                            key={color}
+                                            className="w-5 h-5 rounded-full cursor-pointer border border-gray-300"
+                                            style={{ backgroundColor: color }}
+                                            onClick={() => handleColorSelect(color)}
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
+                    <Button
+                        variant="ghost"
+                        className="w-full bg-transparent border-none focus:ring-0 focus:outline-none hover:bg-violet-300"
+                        onClick={handleNewTag}
+                    >
+                        Adicionar
+                    </Button>
                 </div>
             </PopoverContent>
         </Popover>
-    )
+    );
 }

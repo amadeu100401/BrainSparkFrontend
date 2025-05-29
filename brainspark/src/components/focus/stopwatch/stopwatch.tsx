@@ -3,16 +3,17 @@ import TimeBlock from './TimeBlock';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from 'react';
-import { FormatTimer, SaveFocusTime } from '@/features/StopWatch';
+import { FormatTimer, SaveFocusTime } from '@/features/Focus';
 import AddNewTag from './AddNewTag';
+import { useFocus } from '@/contexts/FocusContext';
+import { X } from "lucide-react";
 
 export default function Stopwatch() {
+  const { selectedProject, setSelectedProject } = useFocus();
   const [isRunning, setIsRunning] = useState(false);
   const [timeInSeconds, setTimeInSeconds] = useState(0);
-
-  const [tag, setTag] = useState("Estudos");
-  const [project, setProject] = useState("Concurso PF");
-
+  const [project, setProject] = useState(selectedProject?.name || "");
+  const [inputValue, setInputValue] = useState(selectedProject?.name || "");
   var hasCurrentTime = timeInSeconds > 0 ? true : false;
 
   useEffect(() => {
@@ -24,8 +25,12 @@ export default function Stopwatch() {
       }, 1000);
     }
 
+    if(selectedProject?.name) {
+      setProject(selectedProject.name);
+    }
+
     return () => clearInterval(interval);
-  }, [isRunning]);
+  }, [isRunning, selectedProject]);
 
   const handleReset = () => {
         setIsRunning(false);
@@ -58,7 +63,11 @@ export default function Stopwatch() {
         <TimeBlock label='Segundos' value={timeBlockContent.seconds} />
       </div>
 
-      <Input placeholder="No que você está trabalhando hoje?" />
+      <Input 
+        placeholder="No que você está trabalhando hoje?"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value) }
+      />
 
       {/* Linha com tag e botões de controle em lados opostos */}
       <div className="flex justify-between items-center">
@@ -66,16 +75,10 @@ export default function Stopwatch() {
         {/* Tag e projeto à esquerda */}
         <div className="flex items-center gap-4">
           <AddNewTag />
-
-          {tag && (
-            <span className="text-sm space-x-4 text-gray-700">
-              Tag: <strong>{tag}</strong>
-            </span>
-          )}
-
           {project && (
-            <span className="text-sm space-x-4 text-gray-700">
+            <span className="flex items-center gap-1 text-sm text-gray-700">
               Projeto: <strong>{project}</strong>
+              <X className="w-4 h-4 ml-1 cursor-pointer text-transparent hover:text-red-500" onClick={() => setProject("")}/>
             </span>
           )}
         </div>

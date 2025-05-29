@@ -4,10 +4,40 @@ import TimerHistory from '@/components/focus/TimerHistory';
 import Tips from '@/components/focus/Tips';
 import CurrentProject from '@/components/focus/CurrentProject';
 import TimeResume from '@/components/focus/TimeResume';
-
-// TODO: Fazer os componentes se comunicarem
+import { GetProjects, Focus, focusTags, currentProject } from '@/features/Focus';
+import { useEffect, useState } from 'react';
 
 export default function FocusTimePage() {
+  
+  const [focusHistory, setFocusHistory] = useState<Focus[]>([]);
+  const [usersFocusProject, setUsersFocusProject] = useState<currentProject[]>([]);
+  const [focusTags, setFocusTags] = useState<focusTags[]>([]);
+
+  const getProjects = async () => {
+    try {
+      const response = await GetProjects();
+
+      if (response) {
+        setFocusHistory(response.focusHistory ?? []);
+        setUsersFocusProject(response.currentProjects ?? []);
+        setFocusTags(response.focusTags ?? []);
+      } else {
+        setFocusHistory([]);
+        setUsersFocusProject([]);
+        setFocusTags([]);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar projetos:", error);
+      setFocusHistory([]);
+      setUsersFocusProject([]);
+      setFocusTags([]);
+    }
+  };
+
+  useEffect(() => {
+    getProjects();
+  }, []);
+
   return (
     <ComponentBase className="min-h-screen w-screen bg-gray-50 p-6">
         
@@ -26,11 +56,12 @@ export default function FocusTimePage() {
 
         {/* Coluna da direita (Projeto atual, Resumo e Dicas rápidas) */}
         <div className="w-full lg:w-[280px] flex flex-col gap-4">
-          <CurrentProject />
+          <CurrentProject currentProjects={usersFocusProject} />
           <TimeResume />
           <Tips />
         </div>
-      </div>
+        {/* Fim da coluna da direita */}
+        </div>
     </ComponentBase>
   );
 }

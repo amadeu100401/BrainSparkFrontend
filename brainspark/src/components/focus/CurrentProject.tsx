@@ -36,8 +36,10 @@ export default function CurrentProject({ currentProjects }: ProjectProps) {
 
   const handleAddProject = async () => {
     const trimmedName = newProjectName.trim();
-    
-    if (trimmedName === "") return;
+    if (!trimmedName) {
+      // Se estiver vazio ou só com espaços
+      return;
+    }
 
     const newProject = {
       id: Date.now().toString(),
@@ -125,13 +127,15 @@ export default function CurrentProject({ currentProjects }: ProjectProps) {
           onChange={(e) => setNewProjectName(e.target.value)}
           className="flex-1 focus-visible:ring-0"
           onKeyDown={(e) => {
-            if (e.key === "Enter") handleAddProject();
+            if (e.key === "Enter" && newProjectName.trim()) handleAddProject();
           }}
         />
         <Button
           onClick={handleAddProject}
+          disabled={!newProjectName.trim()}
           className="px-4 py-2 rounded bg-transparent shadow-black/20 text-black hover:bg-violet-400 
-          border-none focus:ring-0 focus:outline-none ring-0 active:shadow-inner transition duration-100"
+          border-none focus:ring-0 focus:outline-none ring-0 active:shadow-inner transition duration-100
+          disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
         >
           Adicionar
         </Button>

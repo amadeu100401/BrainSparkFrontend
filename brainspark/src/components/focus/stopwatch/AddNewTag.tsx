@@ -45,7 +45,7 @@ export default function AddNewTag() {
         }
     };
 
-    const handleNewTag = () => {
+    const handleNewTag = () => { 
         if (!tagName.trim()) return;
         const newTag = { id: UUIDUtil(), name: tagName.trim(), color: tagColor };
         setExistingTags((prev) => [...prev, newTag]);
@@ -139,8 +139,10 @@ export default function AddNewTag() {
                     </div>
                     <Button
                         variant="ghost"
-                        className="w-full bg-transparent border-none focus:ring-0 focus:outline-none hover:bg-violet-300"
+                        className="w-full bg-transparent border-none focus:ring-0 focus:outline-none hover:bg-violet-300
+                        disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
                         onClick={handleNewTag}
+                        disabled={!tagName.trim()}
                     >
                         Adicionar
                     </Button>

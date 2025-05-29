@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Tag, Palette, X } from "lucide-react";
 import { UUID } from "node:crypto";
 import UUIDUtil from "@/utils/UUIDUtil";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const pastelColors = [

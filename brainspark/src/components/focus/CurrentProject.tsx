@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useFocus } from "@/contexts/FocusContext";
 import { useState, useEffect } from "react";
-import { currentProject, SaveFocusProject } from "@/features/Focus";
+import { currentProject, SaveFocusProject, DeleteFocusProject } from "@/features/Focus";
 import { X } from "lucide-react";
 
 interface ProjectProps {
@@ -20,11 +20,9 @@ interface ProjectProps {
 export default function CurrentProject({ currentProjects }: ProjectProps) {
   const { selectedProject, setSelectedProject } = useFocus();
 
-  // Inicializa projetos e sincroniza com props
   const [projects, setProjects] = useState<currentProject[]>(currentProjects ?? []);
   const [newProjectName, setNewProjectName] = useState("");
 
-  // Sincroniza quando currentProjects mudar
   useEffect(() => {
     setProjects(currentProjects ?? []);
   }, [currentProjects]);
@@ -38,6 +36,7 @@ export default function CurrentProject({ currentProjects }: ProjectProps) {
 
   const handleAddProject = async () => {
     const trimmedName = newProjectName.trim();
+    
     if (trimmedName === "") return;
 
     const newProject = {
@@ -45,35 +44,74 @@ export default function CurrentProject({ currentProjects }: ProjectProps) {
       name: trimmedName,
     };
 
-    // Adiciona novo projeto e define como selecionado
     setProjects((prev) => [...prev, newProject]);
     setSelectedProject(newProject);
     setNewProjectName("");
 
-    // Salva no backend (assumindo que SaveFocusProject é assíncrono)
     await SaveFocusProject(newProject);
+  };
+
+  const handleDeleteProject = async (projectId: string) => {
+    const success = await DeleteFocusProject(projectId);
+
+    if (success) {
+      const updatedProjects = projects.filter((p) => p.id !== projectId);
+      setProjects(updatedProjects);
+      
+      if (selectedProject?.id === projectId) {
+        setSelectedProject(null);
+      } else if (updatedProjects.length === 0) {
+        setSelectedProject(null);
+      }
+    }
   };
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 border-gray-200">
       <p className="text-sm text-gray-500 mb-1">Projeto atual</p>
 
-      <Select value={selectedProject?.id} onValueChange={handleSelect} disabled={projects.length === 0}>
-        <SelectTrigger className="w-full rounded p-2 text-sm">
-          <SelectValue placeholder="Selecione o projeto" />
+      <Select value={selectedProject?.id || ""} onValueChange={handleSelect} disabled={projects.length === 0}>
+        <SelectTrigger
+          className="w-full rounded p-2 text-sm !outline-none !ring-0 !focus:outline-none !focus:ring-0 !focus:shadow-none !hover:outline-none !hover:ring-0 !hover:shadow-none flex items-center"
+        >
+          <SelectValue className="m-0 p-0" placeholder="Selecione o projeto" />
         </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
+        <SelectContent 
+          position="popper" 
+          align="center" 
+          className="w-[220px] bg-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-md z-[999] 
+          border border-gray-300 backdrop-blur-sm p-1 pb-2"
+        >
+          <SelectGroup className="w-full space-y-1">
             {projects.map((project) => (
-              <SelectItem 
-                key={project.id} 
-                value={project.id} 
-                className="flex items-center justify-between cursor-pointer data-[highlighted]:bg-violet-400 data-[highlighted]:text-white transition-colors duration-200 ease-in-out relative group"
-              >
-                <span className="transition-transform duration-200 ease-in-out group-data-[highlighted]:translate-x-1">
-                  {project.name}
-                </span>
-              </SelectItem>
+                <div key={project.id} className="flex items-center relative group w-[208px] has-[button:hover]:data-[highlighted]">
+                  <SelectItem 
+                    value={project.id} 
+                    className="w-[200px] cursor-pointer transition duration-100 data-[highlighted]:bg-violet-400
+                    data-[highlighted]:text-white transition-colors duration-200 ease-in-out pl-5 py-1 text-sm truncate pr-2
+                    group-has-[button:hover]:bg-violet-400 group-has-[button:hover]:text-white"
+                  >
+                    {project.name}
+                  </SelectItem>
+                  <button 
+                    className="absolute left-1 p-0.5 bg-transparent border-0 shadow-none 
+                    hover:bg-transparent focus:outline-none focus:ring-0 active:shadow-none z-10
+                    transition-colors duration-200 ease-in-out
+                    group-hover:text-black group-data-[highlighted]:text-white hover:text-white"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleDeleteProject(project.id);
+                    }}
+                    type="button"
+                  >
+                    <X 
+                      size={11}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 
+                      hover:text-red-500 cursor-pointer text-white"
+                    />
+                  </button>
+                </div>
             ))}
           </SelectGroup>
         </SelectContent>

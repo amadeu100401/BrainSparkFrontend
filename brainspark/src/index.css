@@ -137,3 +137,25 @@ button:focus-visible {
     @apply bg-background text-foreground;
   }
 }
+
+/* Estilo global para remover a linha azul do foco/hover no Radix SelectTrigger */
+[data-state] {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Para garantir ainda mais, focamos no botão do trigger (caso seja um button) */
+[data-state][role="combobox"]:focus,
+[data-state][role="combobox"]:hover,
+[data-state][role="combobox"]:focus-visible,
+[data-state][role="combobox"]:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Para um reset ainda mais completo (caso use pseudo-elementos) */
+[data-state][role="combobox"]::after,
+[data-state][role="combobox"]::before {
+  outline: none !important;
+  box-shadow: none !important;
+}

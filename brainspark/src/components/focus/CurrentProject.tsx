@@ -10,17 +10,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useFocus } from "@/contexts/FocusContext";
 import { useState, useEffect } from "react";
-import { currentProject, SaveFocusProject, DeleteFocusProject } from "@/features/Focus";
+import { focusProject, SaveFocusProject, DeleteFocusProject } from "@/features/Focus";
 import { X } from "lucide-react";
 
 interface ProjectProps {
-  currentProjects: currentProject[];
+  currentProjects: focusProject[];
 }
 
 export default function CurrentProject({ currentProjects }: ProjectProps) {
   const { selectedProject, setSelectedProject } = useFocus();
 
-  const [projects, setProjects] = useState<currentProject[]>(currentProjects ?? []);
+  const [projects, setProjects] = useState<focusProject[]>(currentProjects ?? []);
   const [newProjectName, setNewProjectName] = useState("");
 
   useEffect(() => {
@@ -82,45 +82,47 @@ export default function CurrentProject({ currentProjects }: ProjectProps) {
         >
           <SelectValue className="m-0 p-0" placeholder="Selecione o projeto" />
         </SelectTrigger>
-        <SelectContent 
-          position="popper" 
-          align="center" 
-          className="w-[220px] bg-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-md z-[999] 
-          border border-gray-300 backdrop-blur-sm p-1 pb-2"
-        >
-          <SelectGroup className="w-full space-y-1">
-            {projects.map((project) => (
-                <div key={project.id} className="flex items-center relative group w-[208px] has-[button:hover]:data-[highlighted]">
-                  <SelectItem 
-                    value={project.id} 
-                    className="w-[200px] cursor-pointer transition duration-100 data-[highlighted]:bg-violet-400
-                    data-[highlighted]:text-white transition-colors duration-200 ease-in-out pl-5 py-1 text-sm truncate pr-2
-                    group-has-[button:hover]:bg-violet-400 group-has-[button:hover]:text-white"
-                  >
-                    {project.name}
-                  </SelectItem>
-                  <button 
-                    className="absolute left-1 p-0.5 bg-transparent border-0 shadow-none 
-                    hover:bg-transparent focus:outline-none focus:ring-0 active:shadow-none z-10
-                    transition-colors duration-200 ease-in-out
-                    group-hover:text-black group-data-[highlighted]:text-white hover:text-white"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleDeleteProject(project.id);
-                    }}
-                    type="button"
-                  >
-                    <X 
-                      size={11}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 
-                      hover:text-red-500 cursor-pointer text-white"
-                    />
-                  </button>
-                </div>
-            ))}
-          </SelectGroup>
-        </SelectContent>
+        {projects.length > 0 && (
+          <SelectContent 
+            position="popper" 
+            align="center" 
+            className="w-[240px] bg-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-md z-[999] 
+            border border-gray-300 backdrop-blur-sm p-1 pb-2"
+          >
+            <SelectGroup className="w-full space-y-1">
+              {projects.map((project) => (
+                  <div key={project.id} className="flex items-center relative group w-[222px] has-[button:hover]:data-[highlighted]">
+                    <SelectItem 
+                      value={project.id} 
+                      className="w-[240px] cursor-pointer data-[highlighted]:bg-violet-400
+                      data-[highlighted]:text-white transition-colors duration-200 ease-in-out pl-5 py-1 text-sm truncate pr-2
+                      group-has-[button:hover]:bg-violet-400 group-has-[button:hover]:text-white"
+                    >
+                      {project.name}
+                    </SelectItem>
+                    <button 
+                      className="absolute left-1 p-0.5 bg-transparent border-0 shadow-none 
+                      hover:bg-transparent focus:outline-none focus:ring-0 active:shadow-none z-10
+                      transition-colors duration-200 ease-in-out
+                      group-hover:text-black group-data-[highlighted]:text-white hover:text-white"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleDeleteProject(project.id);
+                      }}
+                      type="button"
+                    >
+                      <X 
+                        size={11}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 
+                        hover:text-red-500 cursor-pointer text-white"
+                      />
+                    </button>
+                  </div>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        )}
       </Select>
 
       {/* Input para novo projeto */}

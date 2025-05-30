@@ -3,14 +3,14 @@ import Stopwatch from '../../components/focus/stopwatch/Stopwatch'
 import TimerHistory from '@/components/focus/TimerHistory';
 import Tips from '@/components/focus/Tips';
 import CurrentProject from '@/components/focus/CurrentProject';
-import TimeResume from '@/components/focus/TimeResume';
-import { GetProjects, Focus, focusTags, currentProject } from '@/features/Focus';
+import TimeResume from '@/components/focus/projectTimeResume/TimeResume';
+import { GetProjects, Focus, focusTags, focusProject } from '@/features/Focus';
 import { useEffect, useState } from 'react';
 
 export default function FocusTimePage() {
   
   const [focusHistory, setFocusHistory] = useState<Focus[]>([]);
-  const [usersFocusProject, setUsersFocusProject] = useState<currentProject[]>([]);
+  const [usersFocusProject, setUsersFocusProject] = useState<focusProject[]>([]);
   const [focusTags, setFocusTags] = useState<focusTags[]>([]);
 
   const getProjects = async () => {
@@ -26,6 +26,7 @@ export default function FocusTimePage() {
         setUsersFocusProject([]);
         setFocusTags([]);
       }
+
     } catch (error) {
       console.error("Erro ao buscar projetos:", error);
       setFocusHistory([]);
@@ -47,7 +48,7 @@ export default function FocusTimePage() {
         {/* Coluna da esquerda (Cronômetro + Registros) */}
         <div className="flex-1 space-y-6">
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <Stopwatch />
+            <Stopwatch focusTags={focusTags} />
           </div>
 
           <TimerHistory />

@@ -1,25 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tag, Palette, X } from "lucide-react";
-import { UUID } from "node:crypto";
 import UUIDUtil from "@/utils/UUIDUtil";
 import { useState, useEffect } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { DeleteTag, SaveFocusTag, focusTags } from "@/features/Focus";
 
 const pastelColors = [
     "#7289a8", "#8c74a1", "#96a88c", "#b086a8", "#f5cd89",
     "#8bcca8", "#e38b76", "#c78794", "#88ebeb", "#c5e68e"
 ];
 
-export default function AddNewTag() {
+interface AddNewTagProps {
+    focusTags: focusTags[];
+    onTagSelect?: (tag: focusTags | null) => void;
+}
+
+export default function AddNewTag({ focusTags, onTagSelect }: AddNewTagProps) {
     const MAX_LENGTH = 25;
 
-    const [existingTags, setExistingTags] = useState<{ id: UUID; name: string; color?: string }[]>([]);
-    const [selectedTag, setSelectedTag] = useState<{ id: UUID; name: string; color?: string } | null>(null);
+    const [existingTags, setExistingTags] = useState<focusTags[]>(focusTags);
+    const [selectedTag, setSelectedTag] = useState<focusTags | null>(null);
     const [tagName, setTagName] = useState("");
     const [tagColor, setTagColor] = useState(pastelColors[0]);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+    useEffect(() => {
+        setExistingTags(focusTags);
+    }, [focusTags]);
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -45,21 +54,44 @@ export default function AddNewTag() {
         }
     };
 
-    const handleNewTag = () => { 
+    const handleNewTag = async () => { 
         if (!tagName.trim()) return;
-        const newTag = { id: UUIDUtil(), name: tagName.trim(), color: tagColor };
+        
+        const newTag: focusTags = { 
+            id: UUIDUtil(),
+            name: tagName.trim(), 
+            color: tagColor 
+        };
+
         setExistingTags((prev) => [...prev, newTag]);
         setSelectedTag(newTag);
         setTagName("");
+
+        const tagId = await SaveFocusTag(newTag);
+
+        if (tagId) {
+            const savedTag: focusTags = { 
+                id: tagId,
+                name: tagName.trim(), 
+                color: tagColor 
+            };
+            setExistingTags((prev) => [...prev, savedTag]);
+            setSelectedTag(savedTag);
+        }
     };
 
-    const handleTagClick = (tag: { id: UUID; name: string; color?: string }) => {
+    const handleTagClick = (tag: focusTags) => {
         setSelectedTag(tag);
+        onTagSelect?.(tag);
     };
 
-    const handleTagRemove = (tagId: UUID) => {
+    const handleTagRemove = async (tagId: string) => {
         setExistingTags((prev) => prev.filter(tag => tag.id !== tagId));
-        if (selectedTag?.id === tagId) setSelectedTag(null);
+        if (selectedTag?.id === tagId) {
+            setSelectedTag(null);
+            onTagSelect?.(null);
+        }
+        await DeleteTag(tagId);
     };
 
     const handleColorSelect = (color: string) => {

@@ -2,18 +2,52 @@ import httpRequest, { ContextEnum } from "@/utils/HttpUtil";
 import { showErrorToast, showSuccessToast } from "@/components/ToastContext";
 import { UUID } from "node:crypto";
 
+export type focusProject = {
+    id: string;
+    name: string;
+}
+
+export type focusTags = {
+    id: string;
+    name: string;
+    color: string;
+}
+
+export type Focus = {
+    id: string;
+    focusTime: number;
+    currentProject: focusProject;
+    focusTagResponse: focusTags;
+}
+
+type resumeProjectList = {
+    name: string;
+    time: number;
+}
+
+export type GetFocusTimeResumeResponse = {
+    totalTime: number;
+    projectList: resumeProjectList[];
+}
+
+export type formatTimeResume = {
+    hours: number;
+    minutes: number;
+    seconds: number;
+}
+
 interface FormatTimerProps {
     totalSeconds: number
 }
 
-interface result  {
+interface formatStopwatchResult {
     days: number,
     hours: number,
     minutes: number,
     seconds: number
 }
 
-export function FormatTimer( number: FormatTimerProps ): result {
+export function FormatTimer( number: FormatTimerProps ): formatStopwatchResult {
     const days = Math.floor(number.totalSeconds / (3600 * 24));
     const hours = Math.floor((number.totalSeconds % (3600 * 24)) / 3600);
     const minutes = Math.floor((number.totalSeconds % 3600 / 60));
@@ -21,6 +55,18 @@ export function FormatTimer( number: FormatTimerProps ): result {
 
     return {
         days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds
+    }
+}
+
+export function FormatTimeResume(time: number): formatTimeResume {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+
+    return {
         hours: hours,
         minutes: minutes,
         seconds: seconds
@@ -59,27 +105,9 @@ export async function SaveFocusTime(request: SaveFocusTimeProps) : Promise<boole
     }
 } 
 
-export type currentProject = {
-    id: string;
-    name: string;
-}
-
-export type focusTags = {
-    id: string;
-    name: string;
-    color: string;
-}
-
-export type Focus = {
-    id: string;
-    focusTime: number;
-    currentProject: currentProject;
-    focusTagResponse: focusTags;
-}
-
 interface GetProjectsResponse {
     focusHistory: Focus[];
-    currentProjects: currentProject[];
+    currentProjects: focusProject[];
     focusTags: focusTags[];
 }
 
@@ -109,7 +137,7 @@ export async function GetProjects() : Promise<GetProjectsResponse> {
     }
 }
 
-export async function SaveFocusProject(project: currentProject): Promise<UUID | undefined> {
+export async function SaveFocusProject(project: focusProject): Promise<UUID | undefined> {
     try {
         var response = await httpRequest({
             url: ContextEnum.focus + "/users-projects",
@@ -119,7 +147,7 @@ export async function SaveFocusProject(project: currentProject): Promise<UUID | 
 
         return response;
     } catch (error: any) {
-        showErrorToast(error.message);
+        showErrorToast("Erro ao salvar projeto. Tente novamente mais tarde.");
     }
 }
 
@@ -131,7 +159,56 @@ export async function DeleteFocusProject(projectId: string) {
         });
         return true;
     } catch (error: any) {
-        showErrorToast(error.message);
+        showErrorToast("Erro ao deletar projeto. Tente novamente mais tarde.");
+        return false;
+    }
+}
+
+interface SaveFocusTagProps {
+    name: string;
+    color: string;
+}
+
+export async function SaveFocusTag(tag: SaveFocusTagProps): Promise<UUID | undefined> {
+    try {
+        var response = await httpRequest({
+            url: `${ContextEnum.focus}/users-tag`,
+            method: "POST",
+            data: tag
+        });
+
+        return response;
+    } catch (error: any) {
+        showErrorToast("Erro ao salvar tag. Tente novamente mais tarde.");
+        return undefined;
+    }
+}
+
+export async function GetFocusTimeResume() : Promise<GetFocusTimeResumeResponse> {
+    try {
+        const response = await httpRequest({
+            url: `${ContextEnum.focus}/project-resume`,
+            method: "GET"
+        });
+
+        return response;
+    } catch (error: any) {
+        showErrorToast("Não foi possível obter o resumo do tempo");
+        return {
+            totalTime: 0,
+            projectList: []
+        };
+    }
+}
+
+export async function DeleteTag(tagId: string) {
+    try {
+        await httpRequest({
+            url: `${ContextEnum.focus}/focus-tag/${tagId}`,
+            method: "DELETE"
+        });
+    } catch (error: any) {
+        showErrorToast("Erro ao deletar tag. Tente novamente mais tarde.");
         return false;
     }
 }

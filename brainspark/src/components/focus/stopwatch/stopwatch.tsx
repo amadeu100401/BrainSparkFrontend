@@ -8,14 +8,15 @@ import AddNewTag from './AddNewTag';
 import { useFocus } from '@/contexts/FocusContext';
 import { X } from "lucide-react";
 import { UUID } from 'node:crypto';
+import { focusTags } from '@/features/Focus';
 
-export default function Stopwatch() {
+export default function Stopwatch({ focusTags }: { focusTags: focusTags[] }) {
   const [isRunning, setIsRunning] = useState(false);
   const [timeInSeconds, setTimeInSeconds] = useState(0);
   const { selectedProject, setSelectedProject } = useFocus();
-  const [selectedTag, setSelectedTag] = useState<UUID | null>(null);
+  const [selectedTag, setSelectedTag] = useState<focusTags | null>(null);
   const [project, setProject] = useState(selectedProject?.name || "");
-  const [inputValue, setInputValue] = useState(selectedProject?.name || "");
+  const [title, setTitle] = useState(selectedProject?.name || "");
   var hasCurrentTime = timeInSeconds > 0 ? true : false;
 
   useEffect(() => {
@@ -44,19 +45,21 @@ export default function Stopwatch() {
   const handleSubimit = async () => {
     const isSucess = await SaveFocusTime({
         time: timeInSeconds,
-        title: inputValue,
+        title: title,
         currentProject: selectedProject?.id,
-        tagId: selectedTag?.toString()
+        tagId: selectedTag?.id
     });
 
     if (isSucess) {
         setIsRunning(false);
         setTimeInSeconds(0);
+        setTitle("");
+        setSelectedTag(null);
     }
   }
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 space-y-4 select-none">
+    <div className="bg-white rounded-xl space-y-4 select-none">
       <h2 className="text-2xl mb-4 flex items-center gap-2">
         <AlarmClock /> Cronômetro
       </h2>
@@ -70,8 +73,8 @@ export default function Stopwatch() {
 
       <Input 
         placeholder="No que você está trabalhando hoje?"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value) }
+        value={title}
+        onChange={(e) => setTitle(e.target.value) }
       />
 
       {/* Linha com tag e botões de controle em lados opostos */}
@@ -79,7 +82,11 @@ export default function Stopwatch() {
 
         {/* Tag e projeto à esquerda */}
         <div className="flex items-center gap-4">
-          <AddNewTag />
+          <AddNewTag 
+            focusTags={focusTags} 
+            onTagSelect={setSelectedTag}
+          />
+
           {project && (
             <span className="flex items-center gap-1 text-sm text-gray-700">
               Projeto: <strong>{project}</strong>

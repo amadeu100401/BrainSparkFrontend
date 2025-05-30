@@ -7,11 +7,13 @@ import { FormatTimer, SaveFocusTime } from '@/features/Focus';
 import AddNewTag from './AddNewTag';
 import { useFocus } from '@/contexts/FocusContext';
 import { X } from "lucide-react";
+import { UUID } from 'node:crypto';
 
 export default function Stopwatch() {
-  const { selectedProject, setSelectedProject } = useFocus();
   const [isRunning, setIsRunning] = useState(false);
   const [timeInSeconds, setTimeInSeconds] = useState(0);
+  const { selectedProject, setSelectedProject } = useFocus();
+  const [selectedTag, setSelectedTag] = useState<UUID | null>(null);
   const [project, setProject] = useState(selectedProject?.name || "");
   const [inputValue, setInputValue] = useState(selectedProject?.name || "");
   var hasCurrentTime = timeInSeconds > 0 ? true : false;
@@ -42,6 +44,9 @@ export default function Stopwatch() {
   const handleSubimit = async () => {
     const isSucess = await SaveFocusTime({
         time: timeInSeconds,
+        title: inputValue,
+        currentProject: selectedProject?.id,
+        tagId: selectedTag?.toString()
     });
 
     if (isSucess) {

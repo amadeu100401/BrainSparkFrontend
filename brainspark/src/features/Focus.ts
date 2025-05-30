@@ -1,5 +1,6 @@
 import httpRequest, { ContextEnum } from "@/utils/HttpUtil";
 import { showErrorToast, showSuccessToast } from "@/components/ToastContext";
+import { UUID } from "node:crypto";
 
 interface FormatTimerProps {
     totalSeconds: number
@@ -28,8 +29,9 @@ export function FormatTimer( number: FormatTimerProps ): result {
 
 interface SaveFocusTimeProps {
     time: number,
-    projectName?: string,
-    projectId?: string,
+    title?: string,
+    currentProject?: string,
+    tagId?: string,
     startDate?: Date;
     stopwatch?: number
 }
@@ -37,6 +39,8 @@ interface SaveFocusTimeProps {
 export async function SaveFocusTime(request: SaveFocusTimeProps) : Promise<boolean> {
     try {
         const currentTime = new Date();
+
+        console.log(request);
 
         request.startDate = currentTime;
         request.stopwatch = request.time;
@@ -105,13 +109,15 @@ export async function GetProjects() : Promise<GetProjectsResponse> {
     }
 }
 
-export async function SaveFocusProject(project: currentProject) {
+export async function SaveFocusProject(project: currentProject): Promise<UUID | undefined> {
     try {
-        await httpRequest({
+        var response = await httpRequest({
             url: ContextEnum.focus + "/users-projects",
             method: "POST",
             data: project
         });
+
+        return response;
     } catch (error: any) {
         showErrorToast(error.message);
     }

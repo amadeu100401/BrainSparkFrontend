@@ -50,7 +50,11 @@ export default function CurrentProject({ currentProjects }: ProjectProps) {
     setSelectedProject(newProject);
     setNewProjectName("");
 
-    await SaveFocusProject(newProject);
+    var projectId = await SaveFocusProject(newProject);
+
+    if (projectId) {
+      newProject.id = projectId;
+    }
   };
 
   const handleDeleteProject = async (projectId: string) => {

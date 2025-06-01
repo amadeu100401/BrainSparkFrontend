@@ -7,10 +7,14 @@ import { FormatTimer, SaveFocusTime } from '@/features/Focus';
 import AddNewTag from './AddNewTag';
 import { useFocus } from '@/contexts/FocusContext';
 import { X } from "lucide-react";
-import { UUID } from 'node:crypto';
-import { focusTags } from '@/features/Focus';
+import { focusTags, Focus } from '@/features/Focus';
 
-export default function Stopwatch({ focusTags }: { focusTags: focusTags[] }) {
+interface StopwatchProps {
+  focusTags: focusTags[];
+  onCreate: (focus: Focus) => void;
+}
+
+export default function Stopwatch({ focusTags, onCreate }: StopwatchProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [timeInSeconds, setTimeInSeconds] = useState(0);
   const { selectedProject, setSelectedProject } = useFocus();
@@ -43,18 +47,21 @@ export default function Stopwatch({ focusTags }: { focusTags: focusTags[] }) {
   const timeBlockContent = FormatTimer({totalSeconds: timeInSeconds});
 
   const handleSubimit = async () => {
-    const isSucess = await SaveFocusTime({
-        time: timeInSeconds,
-        title: title,
-        currentProject: selectedProject?.id,
-        tagId: selectedTag?.id
-    });
+    const newFocus = {
+      time: timeInSeconds,
+      title: title,
+      currentProject: selectedProject?.id,
+      tagId: selectedTag?.id
+    }
 
-    if (isSucess) {
+    const response = await SaveFocusTime(newFocus);
+
+    if (response) {
         setIsRunning(false);
         setTimeInSeconds(0);
         setTitle("");
         setSelectedTag(null);
+        onCreate(response);
     }
   }
 

@@ -39,6 +39,11 @@ export default function FocusTimePage() {
     getProjects();
   }, []);
 
+  const handleCreateFocus = (focus: Focus) => {
+    setFocusHistory([...focusHistory, focus]);
+    getProjects();
+  }
+
   return (
     <ComponentBase className="min-h-screen w-screen bg-gray-50 p-6">
         
@@ -48,10 +53,10 @@ export default function FocusTimePage() {
         {/* Coluna da esquerda (Cronômetro + Registros) */}
         <div className="flex-1 space-y-6">
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <Stopwatch focusTags={focusTags} />
+            <Stopwatch focusTags={focusTags} onCreate={handleCreateFocus} />
           </div>
 
-          <TimerHistory focusHistory={focusHistory} />
+          <TimerHistory focusHistory={focusHistory} setFocusHistory={setFocusHistory} />
 
         </div>
 

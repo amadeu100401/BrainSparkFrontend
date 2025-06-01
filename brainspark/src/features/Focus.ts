@@ -18,7 +18,7 @@ export type Focus = {
     title: string;
     focusTime: number;
     currentProject: focusProject;
-    focusTagResponse: focusTags;
+    tagResponse: focusTags;
 }
 
 type resumeProjectList = {
@@ -83,26 +83,24 @@ interface SaveFocusTimeProps {
     stopwatch?: number
 }
 
-export async function SaveFocusTime(request: SaveFocusTimeProps) : Promise<boolean> {
+export async function SaveFocusTime(request: SaveFocusTimeProps) : Promise<Focus | null> {
     try {
         const currentTime = new Date();
-
-        console.log(request);
 
         request.startDate = currentTime;
         request.stopwatch = request.time;
 
-        await httpRequest({
+        var response = await httpRequest({
             url: ContextEnum.focus + "/save",
             method: "POST",
             data: request
         });
 
         showSuccessToast("Focus salvo com sucesso")
-        return true;
+        return response;
     } catch (error: any) {
         showErrorToast(error.message);
-        return false;
+        return null;
     }
 } 
 
@@ -210,6 +208,18 @@ export async function DeleteTag(tagId: string) {
         });
     } catch (error: any) {
         showErrorToast("Erro ao deletar tag. Tente novamente mais tarde.");
+        return false;
+    }
+}
+
+export async function DeleteFocus(focusId: string) {
+    try {
+        await httpRequest({
+            url: `${ContextEnum.focus}/${focusId}`,
+            method: "DELETE"
+        });
+    } catch (error: any) {
+        showErrorToast("Erro ao deletar focus. Tente novamente mais tarde.");
         return false;
     }
 }

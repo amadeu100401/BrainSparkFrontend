@@ -1,7 +1,7 @@
-import { focusTags } from "@/features/Focus"
+import { FocusTags } from "@/features/Focus"
 
 interface TagProps {
-    tag: focusTags
+    tag: FocusTags
 }
 
 export default function Tag({ tag }: TagProps) {

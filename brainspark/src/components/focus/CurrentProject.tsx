@@ -10,17 +10,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useFocus } from "@/contexts/FocusContext";
 import { useState, useEffect } from "react";
-import { focusProject, SaveFocusProject, DeleteFocusProject } from "@/features/Focus";
+import { FocusProject, SaveFocusProject, DeleteFocusProject } from "@/features/Focus";
 import { X } from "lucide-react";
 
 interface ProjectProps {
-  currentProjects: focusProject[];
+  currentProjects: FocusProject[];
 }
 
 export default function CurrentProject({ currentProjects }: ProjectProps) {
   const { selectedProject, setSelectedProject } = useFocus();
 
-  const [projects, setProjects] = useState<focusProject[]>(currentProjects ?? []);
+  const [projects, setProjects] = useState<FocusProject[]>(currentProjects ?? []);
   const [newProjectName, setNewProjectName] = useState("");
 
   useEffect(() => {

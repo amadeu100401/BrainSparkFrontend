@@ -2,12 +2,12 @@ import httpRequest, { ContextEnum } from "@/utils/HttpUtil";
 import { showErrorToast, showSuccessToast } from "@/components/ToastContext";
 import { UUID } from "node:crypto";
 
-export type focusProject = {
+export type FocusProject = {
     id: string;
     name: string;
 }
 
-export type focusTags = {
+export type FocusTags = {
     id: string;
     name: string;
     color: string;
@@ -17,8 +17,8 @@ export type Focus = {
     id: string;
     title: string;
     focusTime: number;
-    currentProject: focusProject;
-    tagResponse: focusTags;
+    currentProject: FocusProject;
+    tagResponse: FocusTags;
 }
 
 type resumeProjectList = {
@@ -106,8 +106,8 @@ export async function SaveFocusTime(request: SaveFocusTimeProps) : Promise<Focus
 
 interface GetProjectsResponse {
     focusHistory: Focus[];
-    currentProjects: focusProject[];
-    focusTags: focusTags[];
+    currentProjects: FocusProject[];
+    focusTags: FocusTags[];
 }
 
 export async function GetProjects() : Promise<GetProjectsResponse> {
@@ -136,7 +136,7 @@ export async function GetProjects() : Promise<GetProjectsResponse> {
     }
 }
 
-export async function SaveFocusProject(project: focusProject): Promise<UUID | undefined> {
+export async function SaveFocusProject(project: FocusProject): Promise<UUID | undefined> {
     try {
         var response = await httpRequest({
             url: ContextEnum.focus + "/users-projects",
@@ -168,7 +168,7 @@ interface SaveFocusTagProps {
     color: string;
 }
 
-export async function SaveFocusTag(tag: SaveFocusTagProps): Promise<UUID | undefined> {
+export async function SaveFocusTag(tag: SaveFocusTagProps): Promise<FocusTags | undefined> {
     try {
         var response = await httpRequest({
             url: `${ContextEnum.focus}/users-tag`,

@@ -1,17 +1,16 @@
 import ComponentBase from '../../components/home/ContentComponentBase'
-import Stopwatch from '../../components/focus/stopwatch/stopwatch'
+import Stopwatch from '../../components/focus/stopwatch/Stopwatch'
 import TimerHistory from '@/components/focus/history/TimerHistory';
 import Tips from '@/components/focus/Tips';
 import CurrentProject from '@/components/focus/CurrentProject';
 import TimeResume from '@/components/focus/projectTimeResume/TimeResume';
-import { GetProjects, Focus, focusTags, focusProject } from '@/features/Focus';
+import { GetProjects, Focus, FocusTags, FocusProject } from '@/features/Focus';
 import { useEffect, useState } from 'react';
 
 export default function FocusTimePage() {
-  
   const [focusHistory, setFocusHistory] = useState<Focus[]>([]);
-  const [usersFocusProject, setUsersFocusProject] = useState<focusProject[]>([]);
-  const [focusTags, setFocusTags] = useState<focusTags[]>([]);
+  const [usersFocusProject, setUsersFocusProject] = useState<FocusProject[]>([]);
+  const [focusTags, setFocusTags] = useState<FocusTags[]>([]);
 
   const getProjects = async () => {
     try {
@@ -40,24 +39,30 @@ export default function FocusTimePage() {
   }, []);
 
   const handleCreateFocus = (focus: Focus) => {
-    setFocusHistory([...focusHistory, focus]);
+    setFocusHistory(prev => [...prev, focus]);
+    getProjects();
+  }
+
+  const handleDeleteTag = (deletedTagId: string) => {
+    setFocusTags(prev => prev.filter(t => t.id !== deletedTagId));
     getProjects();
   }
 
   return (
     <ComponentBase className="min-h-screen w-screen bg-gray-50 p-6">
-        
       {/* Layout de 2 colunas */}
       <div className="flex flex-col lg:flex-row gap-6 h-full">
-        
         {/* Coluna da esquerda (Cronômetro + Registros) */}
         <div className="flex-1 space-y-6">
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <Stopwatch focusTags={focusTags} onCreate={handleCreateFocus} />
+            <Stopwatch 
+              initialFocusTags={focusTags} 
+              onDeleteTag={handleDeleteTag}
+              onCreate={handleCreateFocus} 
+            />
           </div>
 
           <TimerHistory focusHistory={focusHistory} setFocusHistory={setFocusHistory} />
-
         </div>
 
         {/* Coluna da direita (Projeto atual, Resumo e Dicas rápidas) */}
@@ -66,8 +71,7 @@ export default function FocusTimePage() {
           <TimeResume />
           <Tips />
         </div>
-        {/* Fim da coluna da direita */}
-        </div>
+      </div>
     </ComponentBase>
   );
 }

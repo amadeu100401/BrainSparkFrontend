@@ -1,38 +1,47 @@
-import { AlarmClock, Play, Pause, History, ArrowDownToLine  } from 'lucide-react';
-import TimeBlock from './TimeBlock';
+import { AlarmClock } from 'lucide-react';
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useState, useEffect } from 'react';
-import { FormatTimer, SaveFocusTime } from '@/features/Focus';
-import AddNewTag from './AddNewTag';
+import { DeleteTag, FormatTimer, SaveFocusTag, SaveFocusTime } from '@/features/Focus';
 import { useFocus } from '@/contexts/FocusContext';
 import { X } from "lucide-react";
-import { focusTags, Focus } from '@/features/Focus';
+import { FocusTags, Focus } from '@/features/Focus';
+import TimerClock from './Timer/Timer';
+import SaveFocusButton from './SaveFocusButton';
+import FocusTag from './Tag/FocusTag';
+
+import { Badge } from "@/components/ui/badge"
 
 interface StopwatchProps {
-  focusTags: focusTags[];
+  initialFocusTags: FocusTags[];
   onCreate: (focus: Focus) => void;
+  onDeleteTag: (deletedTagId: string) => void;
 }
 
-export default function Stopwatch({ focusTags, onCreate }: StopwatchProps) {
+export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: StopwatchProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [timeInSeconds, setTimeInSeconds] = useState(0);
   const { selectedProject, setSelectedProject } = useFocus();
-  const [selectedTag, setSelectedTag] = useState<focusTags | null>(null);
+  const [selectedTag, setSelectedTag] = useState<FocusTags[] | null>(null);
   const [project, setProject] = useState(selectedProject?.name || "");
   const [title, setTitle] = useState(selectedProject?.name || "");
-  var hasCurrentTime = timeInSeconds > 0 ? true : false;
+  const [focusTags, setFocusTags] = useState<FocusTags[]>(initialFocusTags ?? []);
+
+  useEffect(() => {
+    setFocusTags(initialFocusTags ?? []);
+  }, [initialFocusTags]);
+
+  const hasCurrentTime = timeInSeconds > 0;
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
     if (isRunning) {
       interval = setInterval(() => {
-        setTimeInSeconds((prev) => prev + 1);
+        setTimeInSeconds(prev => prev + 1);
       }, 1000);
     }
 
-    if(selectedProject?.name) {
+    if (selectedProject?.name) {
       setProject(selectedProject.name);
     }
 
@@ -40,30 +49,58 @@ export default function Stopwatch({ focusTags, onCreate }: StopwatchProps) {
   }, [isRunning, selectedProject]);
 
   const handleReset = () => {
-        setIsRunning(false);
-        setTimeInSeconds(0);
+    setIsRunning(false);
+    setTimeInSeconds(0);
   };
 
-  const timeBlockContent = FormatTimer({totalSeconds: timeInSeconds});
+  const timeBlockContent = FormatTimer({ totalSeconds: timeInSeconds });
 
   const handleSubimit = async () => {
     const newFocus = {
       time: timeInSeconds,
-      title: title,
-      currentProject: selectedProject?.id,
-      tagId: selectedTag?.id
-    }
+      title: title
+      // TODO: Add currentProject and tagId
+    };
 
     const response = await SaveFocusTime(newFocus);
 
     if (response) {
-        setIsRunning(false);
-        setTimeInSeconds(0);
-        setTitle("");
-        setSelectedTag(null);
-        onCreate(response);
+      setIsRunning(false);
+      setTimeInSeconds(0);
+      setTitle("");
+      setSelectedTag(null);
+      onCreate(response);
     }
-  }
+  };
+
+  const handleAddTag = async (tagName: string, tagColor: string) => {
+    const newTag = {
+      name: tagName,
+      color: tagColor,
+    };
+  
+    const response = await SaveFocusTag(newTag);
+  
+    if (response) {
+      const createdTag: FocusTags = {
+        id: response.id,
+        name: tagName,
+        color: tagColor,
+      };
+  
+      setFocusTags(prev => [...prev, createdTag]);
+      setSelectedTag(prev => [...(prev || []), createdTag]);
+    }
+  };
+
+  const handleDeleteTag = async (tag: FocusTags) => {
+    const response = await DeleteTag(tag.id);
+    if (response) {
+      setSelectedTag(prev => prev?.filter(t => t.id !== tag.id) || null);
+      setFocusTags(prev => prev.filter(t => t.id !== tag.id));
+      onDeleteTag(tag.id);
+    }
+  };
 
   return (
     <div className="bg-white rounded-xl space-y-4 select-none">
@@ -71,70 +108,57 @@ export default function Stopwatch({ focusTags, onCreate }: StopwatchProps) {
         <AlarmClock /> Cronômetro
       </h2>
 
-      <div className='flex justify-center gap-6 text-4xl font-mono'>
-        <TimeBlock label='Dias' value={timeBlockContent.days} />
-        <TimeBlock label='Horas' value={timeBlockContent.hours} /> :
-        <TimeBlock label='Minutos' value={timeBlockContent.minutes} /> :
-        <TimeBlock label='Segundos' value={timeBlockContent.seconds} />
-      </div>
+      <TimerClock timeBlockContent={timeBlockContent} />
 
-      <Input 
+      <Input
         placeholder="No que você está trabalhando hoje?"
         value={title}
-        onChange={(e) => setTitle(e.target.value) }
+        onChange={(e) => setTitle(e.target.value)}
       />
+
+      <div className="flex items-center gap-4 h-1">
+        {selectedTag && (
+          <div className="flex items-center gap-1">
+            {selectedTag.map((tag) => (
+              <Badge key={tag.id} style={{ backgroundColor: tag.color }}>
+                {tag.name}
+              </Badge>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Linha com tag e botões de controle em lados opostos */}
       <div className="flex justify-between items-center">
 
         {/* Tag e projeto à esquerda */}
         <div className="flex items-center gap-4">
-          <AddNewTag 
-            focusTags={focusTags} 
-            onTagSelect={setSelectedTag}
+          <FocusTag
+            tags={focusTags}
+            selectedTag={selectedTag || []}
+            setSelectedTag={setSelectedTag}
+            handleDeleteTag={handleDeleteTag}
+            handleNewTag={handleAddTag}
           />
 
           {project && (
             <span className="flex items-center gap-1 text-sm text-gray-700">
               Projeto: <strong>{project}</strong>
-              <X className="w-4 h-4 ml-1 cursor-pointer text-transparent hover:text-red-500" onClick={() => setProject("")}/>
+              <X
+                className="w-4 h-4 ml-1 cursor-pointer text-transparent hover:text-red-500"
+                onClick={() => setProject("")}
+              />
             </span>
           )}
         </div>
 
-        {/* Botões de controle à direita */}
-        <div className="flex items-center gap-2">
-            <Button
-                disabled={!hasCurrentTime}
-                className="px-4 py-2 rounded bg-transparent text-black hover:bg-violet-400
-                border-none focus:ring-0 focus:outline-none ring-0 active:shadow-inner transition duration-100"
-                onClick={handleReset}
-            >
-                <History className="w-4 h-4 mr-1" /> Resetar
-            </Button>
-
-            <Button
-                className={`px-4 py-2 rounded hover:bg-violet-700 border-none focus:ring-0 focus:outline-none ring-0
-                ${isRunning ? 'bg-red-500 hover:bg-red-700' : 'bg-violet-500'}`}
-                onClick={() => setIsRunning((prev) => !prev)}
-            >
-            {isRunning ? (
-              <Pause className="w-4 h-4 mr-1" />
-            ) : (
-              <Play className="w-4 h-4 mr-1" />
-            )}
-            {isRunning ? 'Pausar' : 'Iniciar'}
-          </Button>
-          {(!isRunning && hasCurrentTime)&& (
-            <Button
-                className="px-4 py-2 rounded bg-transparent text-black hover:bg-violet-400
-                border-none focus:ring-0 focus:outline-none ring-0 active:shadow-inner transition duration-100"
-                onClick={handleSubimit}
-            >
-                <ArrowDownToLine className="w-4 h-4 mr-1" /> Salvar
-            </Button>
-          )}
-        </div>
+        <SaveFocusButton
+          hasCurrentTime={hasCurrentTime}
+          handleReset={handleReset}
+          isRunning={isRunning}
+          setIsRunning={setIsRunning}
+          handleSubimit={handleSubimit}
+        />
       </div>
     </div>
   );

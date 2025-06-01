@@ -4,7 +4,7 @@ import { Tag, Palette, X } from "lucide-react";
 import UUIDUtil from "@/utils/UUIDUtil";
 import { useState, useEffect } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { DeleteTag, SaveFocusTag, focusTags } from "@/features/Focus";
+import { DeleteTag, SaveFocusTag, FocusTags } from "@/features/Focus";
 
 const pastelColors = [
     "#7289a8", "#8c74a1", "#96a88c", "#b086a8", "#f5cd89",
@@ -12,15 +12,15 @@ const pastelColors = [
 ];
 
 interface AddNewTagProps {
-    focusTags: focusTags[];
-    onTagSelect?: (tag: focusTags | null) => void;
+    focusTags: FocusTags[];
+    onTagSelect?: (tag: FocusTags | null) => void;
 }
 
 export default function AddNewTag({ focusTags, onTagSelect }: AddNewTagProps) {
     const MAX_LENGTH = 25;
 
-    const [existingTags, setExistingTags] = useState<focusTags[]>(focusTags);
-    const [selectedTag, setSelectedTag] = useState<focusTags | null>(null);
+    const [existingTags, setExistingTags] = useState<FocusTags[]>(focusTags);
+    const [selectedTag, setSelectedTag] = useState<FocusTags | null>(null);
     const [tagName, setTagName] = useState("");
     const [tagColor, setTagColor] = useState(pastelColors[0]);
     const [showColorPicker, setShowColorPicker] = useState(false);
@@ -57,7 +57,7 @@ export default function AddNewTag({ focusTags, onTagSelect }: AddNewTagProps) {
     const handleNewTag = async () => { 
         if (!tagName.trim()) return;
         
-        const newTag: focusTags = { 
+        const newTag: FocusTags = { 
             id: UUIDUtil(),
             name: tagName.trim(), 
             color: tagColor 
@@ -70,8 +70,8 @@ export default function AddNewTag({ focusTags, onTagSelect }: AddNewTagProps) {
         const tagId = await SaveFocusTag(newTag);
 
         if (tagId) {
-            const savedTag: focusTags = { 
-                id: tagId,
+            const savedTag: FocusTags = { 
+                id: "erds",
                 name: tagName.trim(), 
                 color: tagColor 
             };
@@ -80,7 +80,7 @@ export default function AddNewTag({ focusTags, onTagSelect }: AddNewTagProps) {
         }
     };
 
-    const handleTagClick = (tag: focusTags) => {
+    const handleTagClick = (tag: FocusTags) => {
         setSelectedTag(tag);
         onTagSelect?.(tag);
     };

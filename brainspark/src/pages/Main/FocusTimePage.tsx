@@ -1,6 +1,6 @@
 import ComponentBase from '../../components/home/ContentComponentBase'
-import Stopwatch from '../../components/focus/stopwatch/Stopwatch'
-import TimerHistory from '@/components/focus/TimerHistory';
+import Stopwatch from '../../components/focus/stopwatch/stopwatch'
+import TimerHistory from '@/components/focus/history/TimerHistory';
 import Tips from '@/components/focus/Tips';
 import CurrentProject from '@/components/focus/CurrentProject';
 import TimeResume from '@/components/focus/projectTimeResume/TimeResume';
@@ -51,7 +51,7 @@ export default function FocusTimePage() {
             <Stopwatch focusTags={focusTags} />
           </div>
 
-          <TimerHistory />
+          <TimerHistory focusHistory={focusHistory} />
 
         </div>
 

@@ -15,6 +15,7 @@ export type focusTags = {
 
 export type Focus = {
     id: string;
+    title: string;
     focusTime: number;
     currentProject: focusProject;
     focusTagResponse: focusTags;

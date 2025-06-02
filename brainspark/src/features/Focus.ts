@@ -78,7 +78,7 @@ interface SaveFocusTimeProps {
     time: number,
     title?: string,
     currentProject?: string,
-    tagId?: string,
+    tagIdList?: string[],
     startDate?: Date;
     stopwatch?: number
 }

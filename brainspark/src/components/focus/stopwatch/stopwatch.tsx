@@ -58,9 +58,11 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
   const handleSubimit = async () => {
     const newFocus = {
       time: timeInSeconds,
-      title: title
-      // TODO: Add currentProject and tagId
+      title: title,
+      tagIdList: selectedTag?.map(tag => tag.id)
     };
+
+    console.log(newFocus);
 
     const response = await SaveFocusTime(newFocus);
 

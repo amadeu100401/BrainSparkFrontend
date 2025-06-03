@@ -13,16 +13,13 @@ interface AddNewTagSectionProps {
     setTagName: (tagName: string) => void;
     handleNewTag: (title: string, color: string) => void;
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleColorSelect: (color: string) => void;
 }
 
-export default function AddNewTagSection({ tagName, isTagListEmpty, setTagName, handleNewTag, handleInputChange }: AddNewTagSectionProps) {
+export default function AddNewTagSection({ tagName, isTagListEmpty, setTagName, handleNewTag, handleInputChange, handleColorSelect }: AddNewTagSectionProps) {
   const [showPalette, setShowPalette] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [tagColor, setTagColor] = useState("#7289a8");
-
-  const handleColorSelect = (color: string) => {
-    setTagColor(color);
-  };
 
   return (
     <div className="flex flex-col items-center gap-2 pb-2">
@@ -44,31 +41,33 @@ export default function AddNewTagSection({ tagName, isTagListEmpty, setTagName, 
 
       {showPalette && (
         <div className="flex flex-col items-center gap-2">
-          <div className="flex items-center gap-2">
+
+          <div className="flex flex-col items-center gap-2">
             <Input
                 placeholder="Nova tag"
                 value={tagName}
                 onChange={handleInputChange}
                 maxLength={MAX_LENGTH}
                 onKeyDown={(e) => e.key === 'Enter' && handleNewTag(tagName.trim(), tagColor)}
-                className="flex-1 border border-gray-200 focus:border-gray-200 focus:ring-0
+                className="w-100 flex-1 border border-gray-200 focus:border-gray-200 focus:ring-0
                     focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-gray-200"
             />
 
-            {showColorPicker && (
-                <ColorSelect
-                tagColor={tagColor}
-                setShowColorPicker={setShowColorPicker}
-                showColorPicker={showColorPicker}
-                handleColorSelect={handleColorSelect}
-                />
-            )}
+            <ColorSelect
+              tagColor={tagColor}
+              setShowColorPicker={setShowColorPicker}
+              showColorPicker={showColorPicker}
+              handleColorSelect={(color) => {
+                setTagColor(color);         
+                handleColorSelect(color);   
+              }}
+            />
           </div>
           
           <div className="flex items-center gap-1">
             <Button 
                 variant={"default"} 
-                className="w-20 h-7 bg-green-500 hover:bg-green-600" 
+                className="w-24 h-7 bg-green-500 hover:bg-green-600" 
                 onClick={() => handleNewTag(tagName.trim(), tagColor)}
             >
                 Adicionar

@@ -117,6 +117,7 @@ export default function TagContent({
           handleNewTag={onCreateNewTag}
           handleInputChange={handleInputChange}
           isTagListEmpty={tags.length === 0}
+          handleColorSelect={handleColorSelect}
         />
       </Command>
     </PopoverContent>

@@ -15,6 +15,7 @@ export default function Tag({ tagList: tag }: TagProps) {
                         width: "fit-content",
                         maxWidth: "120px",
                     }}
+                    key={tag.id}
                     >
                         <p className="text-sm text-white">{tag.name}</p>
                 </div>

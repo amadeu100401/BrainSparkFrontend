@@ -7,7 +7,6 @@ interface MainContentProps {
 }
 
 export default function MainContent({ focusHistory, onDelete }: MainContentProps) {
-
     const getFormatedFocusTime = () => {
         const formatedFocusTime = FormatTimeResume(focusHistory.focusTime);
         if(formatedFocusTime.hours > 0) {

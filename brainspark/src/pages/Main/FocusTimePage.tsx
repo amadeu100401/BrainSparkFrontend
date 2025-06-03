@@ -1,11 +1,11 @@
 import ComponentBase from '../../components/home/ContentComponentBase'
-import Stopwatch from '../../components/focus/stopwatch/Stopwatch'
+import Stopwatch from '../../components/focus/stopwatch/StopwatchMain'
 import TimerHistory from '@/components/focus/history/TimerHistory';
 import Tips from '@/components/focus/Tips';
-import CurrentProject from '@/components/focus/CurrentProject';
 import TimeResume from '@/components/focus/projectTimeResume/TimeResume';
 import { GetProjects, Focus, FocusTags, FocusProject } from '@/features/Focus';
 import { useEffect, useState } from 'react';
+import Project from '@/components/focus/FocusProject/Project';
 
 export default function FocusTimePage() {
   const [focusHistory, setFocusHistory] = useState<Focus[]>([]);
@@ -67,7 +67,8 @@ export default function FocusTimePage() {
 
         {/* Coluna da direita (Projeto atual, Resumo e Dicas rápidas) */}
         <div className="w-full lg:w-[280px] flex flex-col gap-4">
-          <CurrentProject currentProjects={usersFocusProject} />
+          {/* <CurrentProject currentProjects={usersFocusProject} /> */}
+          <Project currentProjects={usersFocusProject} />
           <TimeResume />
           <Tips />
         </div>

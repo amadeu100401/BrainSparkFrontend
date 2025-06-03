@@ -20,7 +20,7 @@ interface StopwatchProps {
 export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: StopwatchProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [timeInSeconds, setTimeInSeconds] = useState(0);
-  const { selectedProject } = useFocus();
+  const { selectedProject, setSelectedProject } = useFocus();
   const [selectedTag, setSelectedTag] = useState<FocusTags[] | null>(null);
   const [project, setProject] = useState(selectedProject?.name || "");
   const [title, setTitle] = useState(selectedProject?.name || "");
@@ -30,10 +30,13 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
     setFocusTags(initialFocusTags ?? []);
   }, [initialFocusTags]);
 
-  const hasCurrentTime = timeInSeconds > 0;
+  useEffect(() => {
+    setProject(selectedProject?.name || "");
+    setTitle(selectedProject?.name || "");
+  }, [selectedProject]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: NodeJS.Timeout | undefined;
 
     if (isRunning) {
       interval = setInterval(() => {
@@ -41,12 +44,12 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
       }, 1000);
     }
 
-    if (selectedProject?.name) {
-      setProject(selectedProject.name);
-    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isRunning]);
 
-    return () => clearInterval(interval);
-  }, [isRunning, selectedProject]);
+  const hasCurrentTime = timeInSeconds > 0;
 
   const handleReset = () => {
     setIsRunning(false);
@@ -55,14 +58,15 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
 
   const timeBlockContent = FormatTimer({ totalSeconds: timeInSeconds });
 
-  const handleSubimit = async () => {
+  const handleSubmit = async () => {
     const newFocus = {
       time: timeInSeconds,
       title: title,
-      tagIdList: selectedTag?.map(tag => tag.id)
+      currentProject: selectedProject?.id,
+      tagIdList: selectedTag?.map(tag => tag.id),
     };
 
-    console.log(newFocus);
+    console.log("newFocus", newFocus);
 
     const response = await SaveFocusTime(newFocus);
 
@@ -80,16 +84,16 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
       name: tagName,
       color: tagColor,
     };
-  
+
     const response = await SaveFocusTag(newTag);
-  
+
     if (response) {
       const createdTag: FocusTags = {
         id: response.id,
         name: tagName,
         color: tagColor,
       };
-  
+
       setFocusTags(prev => [...prev, createdTag]);
       setSelectedTag(prev => [...(prev || []), createdTag]);
     }
@@ -103,7 +107,12 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
       onDeleteTag(tag.id);
     }
   };
-  
+
+  const handleClearProject = () => {
+    setProject("");
+    if (setSelectedProject) setSelectedProject(null);
+  };
+
   return (
     <div className="bg-white rounded-xl space-y-4 select-none">
       <h2 className="text-2xl mb-4 flex items-center gap-2">
@@ -114,7 +123,6 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
 
       <Input
         placeholder="No que você está trabalhando hoje?"
-        value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
 
@@ -148,7 +156,7 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
               Projeto: <strong>{project}</strong>
               <X
                 className="w-4 h-4 ml-1 cursor-pointer text-transparent hover:text-red-500"
-                onClick={() => setProject("")}
+                onClick={handleClearProject}
               />
             </span>
           )}
@@ -159,7 +167,7 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
           handleReset={handleReset}
           isRunning={isRunning}
           setIsRunning={setIsRunning}
-          handleSubimit={handleSubimit}
+          handleSubimit={handleSubmit}
         />
       </div>
     </div>

@@ -18,10 +18,6 @@ import { FocusProvider } from './contexts/FocusContext';
 import './index.css';
 
 export function App() {
-  // const renderCount = useRef(0);
-  // renderCount.current += 1;
-  // console.log("Esse componente re-renderizou", renderCount.current, "vezes");
-
   return (
     <AuthProvider>
       <Routes>

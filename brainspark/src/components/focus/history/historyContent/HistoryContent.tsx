@@ -1,4 +1,4 @@
-import { Focus, FocusTags } from "@/features/Focus";
+import { Focus } from "@/features/Focus";
 import HistoryTitle from "./HistoryTitle";
 import MainContent from "./MainContent";
 import Tag from "./Tag";
@@ -16,10 +16,7 @@ export default function HistoryContent({ focusHistory, onDelete }: HistoryConten
         <div className="flex flex-col gap-2 border border-gray-200 rounded-lg p-2">
             <HistoryTitle title={focusHistory.title} />
             <MainContent focusHistory={focusHistory} onDelete={onDelete} />
-            {tags.map((tag: FocusTags) => (
-                <Tag key={tag.id} tagList={[tag]} />
-            ))}
-
+            <Tag tagList={tags} />
         </div>
     )
 }

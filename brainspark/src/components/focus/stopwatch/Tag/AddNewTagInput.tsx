@@ -4,19 +4,19 @@ import { Input } from "@/components/ui/input";
 
 const MAX_LENGTH = 20;
 
-interface AddNewTagProps {
+interface AddNewTagInputProps {
   tagName: string;
   setTagName: (tagName: string) => void;
   handleNewTag: () => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function AddNewTag({
+export default function AddNewTagInput({
   tagName,
   setTagName,
   handleNewTag,
   handleInputChange,
-}: AddNewTagProps) {
+}: AddNewTagInputProps) {
   const [tagColor, setTagColor] = useState<string>("#7289a8");
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
 
@@ -33,7 +33,8 @@ export default function AddNewTag({
         onChange={handleInputChange}
         maxLength={MAX_LENGTH}
         onKeyDown={(e) => e.key === "Enter" && handleNewTag()}
-        className="flex-1 border border-gray-200 focus:border-gray-200 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-gray-200"
+        className="flex-1 border border-gray-200 focus:border-gray-200 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0
+         focus-visible:border-gray-200"
       />
       <ColorSelect
         tagColor={tagColor}

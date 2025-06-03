@@ -2,7 +2,7 @@ import { Command } from "@/components/ui/command";
 import { PopoverContent } from "@/components/ui/popover";
 import { CommandList, CommandItem, CommandGroup } from "cmdk";
 import { Check, X } from "lucide-react";
-import AddNewTagButton from "./AddNewTagButton";
+import AddNewTagSection from "./AddNewTagSector";
 import { FocusTags } from "@/features/Focus";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -111,7 +111,7 @@ export default function TagContent({
           </CommandGroup>
         </CommandList>
 
-        <AddNewTagButton
+        <AddNewTagSection
           tagName={tagName}
           setTagName={setTagName}
           handleNewTag={onCreateNewTag}

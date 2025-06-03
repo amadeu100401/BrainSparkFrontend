@@ -20,7 +20,7 @@ interface StopwatchProps {
 export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: StopwatchProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [timeInSeconds, setTimeInSeconds] = useState(0);
-  const { selectedProject, setSelectedProject } = useFocus();
+  const { selectedProject } = useFocus();
   const [selectedTag, setSelectedTag] = useState<FocusTags[] | null>(null);
   const [project, setProject] = useState(selectedProject?.name || "");
   const [title, setTitle] = useState(selectedProject?.name || "");
@@ -103,7 +103,7 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
       onDeleteTag(tag.id);
     }
   };
-
+  
   return (
     <div className="bg-white rounded-xl space-y-4 select-none">
       <h2 className="text-2xl mb-4 flex items-center gap-2">

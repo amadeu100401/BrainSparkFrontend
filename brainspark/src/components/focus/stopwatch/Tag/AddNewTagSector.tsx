@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 
 const MAX_LENGTH = 20;
 
-interface AddNewTagButtonProps {
+interface AddNewTagSectionProps {
     tagName: string;
     isTagListEmpty: boolean;
     setTagName: (tagName: string) => void;
@@ -15,7 +15,7 @@ interface AddNewTagButtonProps {
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function AddNewTagButton({ tagName, isTagListEmpty, setTagName, handleNewTag, handleInputChange }: AddNewTagButtonProps) {
+export default function AddNewTagSection({ tagName, isTagListEmpty, setTagName, handleNewTag, handleInputChange }: AddNewTagSectionProps) {
   const [showPalette, setShowPalette] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [tagColor, setTagColor] = useState("#7289a8");

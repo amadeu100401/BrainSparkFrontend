@@ -18,7 +18,9 @@ export type Focus = {
     title: string;
     focusTime: number;
     currentProject: FocusProject;
-    tagResponse: FocusTags;
+    tagResponse: FocusTags[];
+    startDate: Date;
+    stopwatch: number;
 }
 
 type resumeProjectList = {

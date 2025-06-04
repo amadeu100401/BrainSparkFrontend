@@ -8,10 +8,13 @@ import { FocusTags, Focus } from '@/features/Focus';
 import TimerClock from './Timer/Timer';
 import SaveFocusButton from './SaveFocusButton';
 import FocusTag from './Tag/FocusTag';
-
 import { Badge } from "@/components/ui/badge"
 import { triggerResumeReload } from '../slice/FocusSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetFocus, stopFocus } from '../slice/FocusClockSlice';
+
+import { RootState } from '@/Store';
+import { showErrorToast } from '@/components/ToastContext';
 
 interface StopwatchProps {
   initialFocusTags: FocusTags[];
@@ -27,7 +30,15 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
   const [project, setProject] = useState(selectedProject?.name || "");
   const [title, setTitle] = useState("");
   const [focusTags, setFocusTags] = useState<FocusTags[]>(initialFocusTags ?? []);
+  const [error, setError] = useState<string | null>(null);
+  const [isTitleValid, setIsTitleValid] = useState(true);
   const dispatch = useDispatch();
+
+  const hasCurrentTime = timeInSeconds > 0;
+
+  const timeBlockContent = FormatTimer({ totalSeconds: timeInSeconds });
+
+  const startedAt = useSelector((state: RootState) => state.focusClock.startedAt);
 
   useEffect(() => {
     setFocusTags(initialFocusTags ?? []);
@@ -51,21 +62,36 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
     };
   }, [isRunning]);
 
-  const hasCurrentTime = timeInSeconds > 0;
-
-  const timeBlockContent = FormatTimer({ totalSeconds: timeInSeconds });
-
   const handleReset = () => {
     setIsRunning(false);
     setTimeInSeconds(0);
+    dispatch(resetFocus());
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+
+    if (error && e.target.value.trim() !== "") {
+      setError("Este campo é obrigatório");
+    }
+
+    setIsTitleValid(true);
+    setError(null);
   };
 
   const handleSubmit = async () => {
+    if (!title) {
+      setError("O título é obrigatório");
+      setIsTitleValid(false);
+      return;
+    }
+
     const newFocus = {
       time: timeInSeconds,
       title: title,
       currentProject: selectedProject?.id,
       tagIdList: selectedTag?.map(tag => tag.id),
+      startedAt: startedAt,
     };
 
     const response = await SaveFocusTime(newFocus);
@@ -78,6 +104,7 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
       onCreate(response);
       dispatch(triggerResumeReload());
     }
+    dispatch(stopFocus());
   };
 
   const handleAddTag = async (tagName: string, tagColor: string) => {
@@ -111,7 +138,6 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
     }
   };
   
-
   const handleClearProject = () => {
     setProject("");
     if (setSelectedProject) setSelectedProject(null);
@@ -125,10 +151,22 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
 
       <TimerClock timeBlockContent={timeBlockContent} />
 
+      <div className="h-5">
+        {error && (
+          <p   className={`text-red-500 text-sm transition-opacity duration-300 ${
+            error ? "opacity-100" : "opacity-0"
+          }`}>Este campo é obrigatório.</p>
+        )}
+      </div>
+
       <Input
         placeholder="No que você está trabalhando hoje?"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={(e) => handleChange(e)}
+        required
+        className={`border rounded px-2 py-1 outline-none decoration-none focus:border-none ${
+          !isTitleValid ? "border-red-500" : "border-gray-300"
+        }`}
       />
 
       <div className="flex items-center gap-4 h-1">
@@ -145,7 +183,6 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
 
       {/* Linha com tag e botões de controle em lados opostos */}
       <div className="flex justify-between items-center">
-
         {/* Tag e projeto à esquerda */}
         <div className="flex items-center gap-4">
           <FocusTag

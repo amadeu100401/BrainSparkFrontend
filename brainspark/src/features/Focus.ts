@@ -87,11 +87,10 @@ interface SaveFocusTimeProps {
 
 export async function SaveFocusTime(request: SaveFocusTimeProps) : Promise<Focus | null> {
     try {
-        const currentTime = new Date();
-
-        request.startDate = currentTime;
         request.stopwatch = request.time;
 
+        console.log(request);
+        
         var response = await httpRequest({
             url: ContextEnum.focus + "/save",
             method: "POST",

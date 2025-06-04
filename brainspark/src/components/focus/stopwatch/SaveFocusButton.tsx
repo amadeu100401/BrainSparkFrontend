@@ -12,6 +12,7 @@ interface SaveFocusButtonProps {
 }
 
 export default function SaveFocusButton({ hasCurrentTime, handleReset, isRunning, setIsRunning, handleSubimit }: SaveFocusButtonProps) {
+
     return (
         <div className="flex items-center gap-2">
             <ResetClockButton

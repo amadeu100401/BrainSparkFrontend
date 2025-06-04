@@ -10,6 +10,8 @@ import SaveFocusButton from './SaveFocusButton';
 import FocusTag from './Tag/FocusTag';
 
 import { Badge } from "@/components/ui/badge"
+import { triggerResumeReload } from '../slice/FocusSlice';
+import { useDispatch } from 'react-redux';
 
 interface StopwatchProps {
   initialFocusTags: FocusTags[];
@@ -23,8 +25,9 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
   const { selectedProject, setSelectedProject } = useFocus();
   const [selectedTag, setSelectedTag] = useState<FocusTags[] | null>(null);
   const [project, setProject] = useState(selectedProject?.name || "");
-  const [title, setTitle] = useState(selectedProject?.name || "");
+  const [title, setTitle] = useState("");
   const [focusTags, setFocusTags] = useState<FocusTags[]>(initialFocusTags ?? []);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setFocusTags(initialFocusTags ?? []);
@@ -32,7 +35,6 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
 
   useEffect(() => {
     setProject(selectedProject?.name || "");
-    setTitle(selectedProject?.name || "");
   }, [selectedProject]);
 
   useEffect(() => {
@@ -51,12 +53,12 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
 
   const hasCurrentTime = timeInSeconds > 0;
 
+  const timeBlockContent = FormatTimer({ totalSeconds: timeInSeconds });
+
   const handleReset = () => {
     setIsRunning(false);
     setTimeInSeconds(0);
   };
-
-  const timeBlockContent = FormatTimer({ totalSeconds: timeInSeconds });
 
   const handleSubmit = async () => {
     const newFocus = {
@@ -66,8 +68,6 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
       tagIdList: selectedTag?.map(tag => tag.id),
     };
 
-    console.log("newFocus", newFocus);
-
     const response = await SaveFocusTime(newFocus);
 
     if (response) {
@@ -76,6 +76,7 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
       setTitle("");
       setSelectedTag(null);
       onCreate(response);
+      dispatch(triggerResumeReload());
     }
   };
 
@@ -106,6 +107,7 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
       setSelectedTag(prev => prev?.filter(t => t.id !== tag.id) || null);
       setFocusTags(prev => prev.filter(t => t.id !== tag.id));
       onDeleteTag(tag.id);
+      dispatch(triggerResumeReload());
     }
   };
   
@@ -125,6 +127,7 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
 
       <Input
         placeholder="No que você está trabalhando hoje?"
+        value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
 

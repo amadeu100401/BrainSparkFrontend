@@ -2,8 +2,12 @@ import { Clock  } from 'lucide-react';
 import { FormatTimeResume, GetFocusTimeResume, GetFocusTimeResumeResponse } from '@/features/Focus';
 import { useEffect, useState } from 'react';
 import PrincipalProjects from './PrincipalProjects';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../Store';
 
 export default function TimeResume() {
+    const reloadTrigger = useSelector((state: RootState) => state.focus.resumeReloadTrigger);
+
     const [timeResume, setTimeResume] = useState<GetFocusTimeResumeResponse>({
         totalTime: 0,
         projectList: []
@@ -11,7 +15,7 @@ export default function TimeResume() {
 
     useEffect(() => {
         getProjectResume();
-    }, []);
+    }, [reloadTrigger]);
 
     const getProjectResume = async () => {
         const response = await GetFocusTimeResume();

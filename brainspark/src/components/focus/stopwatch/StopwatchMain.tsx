@@ -12,9 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { triggerResumeReload } from '../slice/FocusSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetFocus, stopFocus } from '../slice/FocusClockSlice';
-
 import { RootState } from '@/Store';
-import { showErrorToast } from '@/components/ToastContext';
 
 interface StopwatchProps {
   initialFocusTags: FocusTags[];

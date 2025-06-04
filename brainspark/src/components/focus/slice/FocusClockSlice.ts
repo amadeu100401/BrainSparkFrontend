@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getHourUTC3 } from '@/utils/TimeUtils';
 
 interface FocusClockState {
   startedAt: string | null;
@@ -20,7 +21,7 @@ const focusClockSlice = createSlice({
   reducers: {
     startFocus(state) {
       console.log("startFocus");
-      state.startedAt = new Date().toISOString();
+      state.startedAt = getHourUTC3();
       state.isRunning = true;
       state.state = 'running';
     },

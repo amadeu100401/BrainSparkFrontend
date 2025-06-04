@@ -14,7 +14,7 @@ interface TagContentProps {
   setIsOpen: (isOpen: boolean) => void;
   selectedTag: FocusTags[];
   setSelectedTag: (tag: FocusTags[]) => void;
-  handleDeleteTag: (tag: FocusTags) => void;
+  handleDeleteTag: (tagId: FocusTags) => void;
   handleNewTag: (title: string, color: string) => void;
 }
 
@@ -49,6 +49,10 @@ export default function TagContent({
     if (tagName.trim().length === 0) return;
     handleNewTag(tagName.trim(), tagColor);
     setTagName("");
+  };
+
+  const onDeleteTag = (tag: FocusTags) => {
+    handleDeleteTag(tag);
   };
 
   return (
@@ -94,7 +98,7 @@ export default function TagContent({
                       size="icon"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteTag(item);
+                        onDeleteTag(item);
                       }}
                       className={cn(
                         "p-2 absolute inset-0 w-5 h-5 flex items-center justify-center outline-none focus:outline-none bg-transparent transition-opacity duration-300 ease-in-out",

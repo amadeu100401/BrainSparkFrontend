@@ -202,12 +202,13 @@ export async function GetFocusTimeResume() : Promise<GetFocusTimeResumeResponse>
     }
 }
 
-export async function DeleteTag(tagId: string) {
+export async function DeleteTag(tagId: string): Promise<boolean> {
     try {
         await httpRequest({
             url: `${ContextEnum.focus}/focus-tag/${tagId}`,
             method: "DELETE"
         });
+        return true;
     } catch (error: any) {
         showErrorToast("Erro ao deletar tag. Tente novamente mais tarde.");
         return false;

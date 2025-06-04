@@ -1,5 +1,5 @@
-import ComponentBase from '../../components/home/ContentComponentBase'
-import Stopwatch from '../../components/focus/stopwatch/StopwatchMain'
+import ComponentBase from '../../components/home/ContentComponentBase';
+import Stopwatch from '../../components/focus/stopwatch/StopwatchMain';
 import TimerHistory from '@/components/focus/history/TimerHistory';
 import Tips from '@/components/focus/Tips';
 import TimeResume from '@/components/focus/projectTimeResume/TimeResume';
@@ -16,16 +16,9 @@ export default function FocusTimePage() {
     try {
       const response = await GetProjects();
 
-      if (response) {
-        setFocusHistory(response.focusHistory ?? []);
-        setUsersFocusProject(response.currentProjects ?? []);
-        setFocusTags(response.focusTags ?? []);
-      } else {
-        setFocusHistory([]);
-        setUsersFocusProject([]);
-        setFocusTags([]);
-      }
-
+      setFocusHistory(response?.focusHistory ?? []);
+      setUsersFocusProject(response?.currentProjects ?? []);
+      setFocusTags(response?.focusTags ?? []);
     } catch (error) {
       console.error("Erro ao buscar projetos:", error);
       setFocusHistory([]);
@@ -41,12 +34,11 @@ export default function FocusTimePage() {
   const handleCreateFocus = (focus: Focus) => {
     setFocusHistory(prev => [...prev, focus]);
     getProjects();
-  }
+  };
 
   const handleDeleteTag = (deletedTagId: string) => {
     setFocusTags(prev => prev.filter(t => t.id !== deletedTagId));
-    getProjects();
-  }
+  };
 
   return (
     <ComponentBase className="min-h-screen w-screen bg-gray-50 p-6">
@@ -56,18 +48,20 @@ export default function FocusTimePage() {
         <div className="flex-1 space-y-6">
           <div className="bg-white rounded-lg shadow-sm p-6">
             <Stopwatch 
-              initialFocusTags={focusTags} 
+              initialFocusTags={focusTags}
               onDeleteTag={handleDeleteTag}
-              onCreate={handleCreateFocus} 
+              onCreate={handleCreateFocus}
             />
           </div>
 
-          <TimerHistory focusHistory={focusHistory} setFocusHistory={setFocusHistory} />
+          <TimerHistory
+            focusHistory={focusHistory}
+            setFocusHistory={setFocusHistory}
+          />
         </div>
 
         {/* Coluna da direita (Projeto atual, Resumo e Dicas rápidas) */}
         <div className="w-full lg:w-[280px] flex flex-col gap-4">
-          {/* <CurrentProject currentProjects={usersFocusProject} /> */}
           <Project currentProjects={usersFocusProject} />
           <TimeResume />
           <Tips />

@@ -101,12 +101,14 @@ export default function Stopwatch({ initialFocusTags, onCreate, onDeleteTag }: S
 
   const handleDeleteTag = async (tag: FocusTags) => {
     const response = await DeleteTag(tag.id);
+
     if (response) {
       setSelectedTag(prev => prev?.filter(t => t.id !== tag.id) || null);
       setFocusTags(prev => prev.filter(t => t.id !== tag.id));
       onDeleteTag(tag.id);
     }
   };
+  
 
   const handleClearProject = () => {
     setProject("");

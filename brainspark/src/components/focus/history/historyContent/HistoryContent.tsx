@@ -13,8 +13,8 @@ export default function HistoryContent({ focusHistory, onDelete }: HistoryConten
     const tags = focusHistory.tagResponse;
 
     return (
-        <div className="flex flex-col gap-2 border border-gray-200 rounded-lg p-2">
-            <HistoryTitle title={focusHistory.title} />
+        <div className="flex flex-col border border-gray-200 rounded-lg p-2">
+            <HistoryTitle title={focusHistory.title} createdAt={focusHistory.startedAt} />
             <MainContent focusHistory={focusHistory} onDelete={onDelete} />
             <Tag tagList={tags} />
         </div>

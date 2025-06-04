@@ -19,7 +19,7 @@ export type Focus = {
     focusTime: number;
     currentProject: FocusProject;
     tagResponse: FocusTags[];
-    startDate: Date;
+    startedAt: string;
     stopwatch: number;
 }
 
@@ -88,8 +88,6 @@ interface SaveFocusTimeProps {
 export async function SaveFocusTime(request: SaveFocusTimeProps) : Promise<Focus | null> {
     try {
         request.stopwatch = request.time;
-
-        console.log(request);
         
         var response = await httpRequest({
             url: ContextEnum.focus + "/save",

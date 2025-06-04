@@ -1,4 +1,5 @@
 import { DeleteFocus, Focus, FormatTimeResume } from "@/features/Focus";
+import { getFormatedHour } from "@/utils/TimeUtils";
 import { Trash } from "lucide-react";
 
 interface MainContentProps {
@@ -18,17 +19,41 @@ export default function MainContent({ focusHistory, onDelete }: MainContentProps
         }
     }
 
+    const getFinishedAt = () => {
+        const finishedAt = new Date(focusHistory.startedAt);
+        finishedAt.setSeconds(finishedAt.getSeconds() + focusHistory.focusTime);
+        return getFormatedHour(finishedAt.toISOString());
+    }
+
     const handleDeleteFocus = () => {
         DeleteFocus(focusHistory.id);
         onDelete(focusHistory.id);
     }
+
+    const projectName = focusHistory.currentProject?.name;
     
     return (
         <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 pl-1">
-                <p className="text-sm text-gray-500">
-                    Projeto: {focusHistory.currentProject?.name || "N/A"}
+            <div className="flex items-center gap-2 pl-1 text-xs text-gray-400">
+                {projectName && (
+                    <div className="flex items-center gap-2">
+                        <p >
+                            {projectName}
+                        </p>
+                        <span className="w-1 h-1 rounded-full bg-current" />
+                    </div>
+                )}
+
+                <div className="flex items-center gap-1">
+                <p>
+                    {getFormatedHour(focusHistory.startedAt)}
                 </p>
+                -
+                <p>
+                    {getFinishedAt()}
+                </p>
+            </div>
+
             </div>
             <div className="flex items-center gap-3 justify-end pr-2">
                 <p className="text-sm text-black font-semibold">{getFormatedFocusTime()}</p>

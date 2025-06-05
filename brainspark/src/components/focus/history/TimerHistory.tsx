@@ -1,6 +1,7 @@
 import EmptyContent from './EmptyContent';
 import { Focus } from '@/features/Focus';
 import HistoryContent from './historyContent/HistoryContent';
+import { PaginationComponent } from '@/components/base/Pagination';
 
 interface TimerHistoryProps {
     focusHistory: Focus[];
@@ -19,13 +20,16 @@ export default function TimerHistory({ focusHistory, setFocusHistory }: TimerHis
             <h2 className="text-lg font-semibold">Registros de tempo</h2>
         </div>
 
-        {/* Conteúdo */}
         {focusHistory === undefined || focusHistory.length === 0 ? (
             <EmptyContent />
         ) : (
             focusHistory.map((focus) => (
                 <HistoryContent key={focus.id} focusHistory={focus} onDelete={handleDelete} />
             ))
+        )}
+        
+        {focusHistory.length > 10 && (
+          <PaginationComponent />
         )}
     </div>
   );

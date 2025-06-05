@@ -31,7 +31,7 @@ export default function ColorSelect({
   return (
     <div className="w-44 top-full mt-1 flex flex-col gap-1 bg-white p-1">
       <div className="flex items-center gap-1">
-        <Palette className="w-4 h-4" />
+        <Palette className="w-4 h-4 text-gray-500" />
         <p className="text-sm text-gray-500">Cor:</p>
       </div>
       <div className="flex flex-row flex-wrap gap-1">

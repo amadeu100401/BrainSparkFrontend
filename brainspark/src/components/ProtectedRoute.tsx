@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import httpRequest from '../utils/HttpUtil';
-import Loding from './Loading';
+import AuthModal from './authenticateUser/AuthModal';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -10,27 +10,37 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
+  const isLoggedIn = sessionStorage.getItem('email') !== null;
+
+  const location = useLocation();
+
   useEffect(() => {
-    const checkAuth = async () => {
+    checkAuth();
+  }, [location.pathname]);
+
+  const checkAuth = async () => {
+    try {
       await httpRequest({
         url: "/api/v1/auth/validate-auth",
         method: "POST"
       });
+  
       setIsAuthenticated(true);
-    };
+    } catch(error) {
+      console.log("AQUI");
+      setIsAuthenticated(false);
+    }
+  };
 
-    checkAuth();
-  }, []);
-
-  if (isAuthenticated === null) {
-    return <Loding />;
-  }
-
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !isLoggedIn) {
     return <Navigate to="/welcome" replace />;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      {!isAuthenticated && isLoggedIn && <AuthModal isAuthenticated={false} />}
+    </>);
 };
 
 export default ProtectedRoute;

@@ -21,25 +21,38 @@ export function App() {
   return (
     <AuthProvider>
       <Routes>
-          <Route path="/" element={<Navigate to="/welcome" />} />
+        <Route path="/" element={<Navigate to="/welcome" />} />
 
-          <Route path="/welcome" element={<Welcome />}>
-            <Route index element={<Default />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="forgetPassword" element={<ForgotPassword />} />
-            <Route path="send-new-password" element={<SendNewPassword />} />
-          </Route>
-          
-          
-          <Route path='/brainspark' element={<ProtectedRoute> <MainPage /> </ProtectedRoute>}>
-            <Route path="home" element={<WelcomeScreen />} />
-            <Route path="user-info" element={ <UserInfo /> } />
-            <Route path='idea' element={ <IdeaDoc />} />
-            <Route path='docs-collection' element={ <DocCollection /> } />
-            <Route path='focus' element={<FocusProvider> <FocusTimePage /> </FocusProvider>} />        
-          </Route>
-        </Routes>
-      </AuthProvider>
+        <Route path="/welcome" element={<Welcome />}>
+          <Route index element={<Default />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="forgetPassword" element={<ForgotPassword />} />
+          <Route path="send-new-password" element={<SendNewPassword />} />
+        </Route>
+
+        <Route
+          path="/brainspark"
+          element={
+            <ProtectedRoute>
+              <MainPage />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="home" element={<WelcomeScreen />} />
+          <Route path="user-info" element={<UserInfo />} />
+          <Route path="idea" element={<IdeaDoc />} />
+          <Route path="docs-collection" element={<DocCollection />} />
+          <Route
+            path="focus"
+            element={
+              <FocusProvider>
+                <FocusTimePage />
+              </FocusProvider>
+            }
+          />
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }

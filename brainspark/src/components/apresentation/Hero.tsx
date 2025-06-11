@@ -1,7 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, CheckCircle, Clock, Target, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
+
+  const navigate = useNavigate();
+  
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
       {/* Animated background blobs */}
@@ -32,7 +36,8 @@ export default function Hero() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 fade-in-up stagger-3">
-            <Button size="lg" className="gradient-bg text-white hover:opacity-90 transition-all duration-300 transform hover:scale-105 px-8 py-3 text-lg">
+            <Button size="lg" className="gradient-bg text-white hover:opacity-90 transition-all duration-300 transform hover:scale-105 px-8 py-3 text-lg"
+             onClick={() => navigate("/welcome/login")}>
               Começar Gratuitamente
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>

@@ -39,7 +39,10 @@ export default function ApresentationPage() {
                         >
                             Entrar
                         </Button>
-                        <Button className="gradient-bg text-white hover:opacity-90 transition-opacity">
+                        <Button 
+                            className="gradient-bg text-white hover:opacity-90 transition-opacity"
+                            onClick={() => navigate("/welcome/register")}
+                        >
                             Começar Grátis
                         </Button>
                     </div>

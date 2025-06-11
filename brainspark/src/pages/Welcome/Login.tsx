@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ClockIcon, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Switch from "react-switch";
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { loginUser } from "../../features/Login";
 import { useNavigate } from "react-router-dom";
 import VerificationModal from "../../components/login/VerificationModal";
+import Logo from "@/components/login/Logo";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -59,15 +60,7 @@ export default function Login() {
             <div className="relative z-10 w-full max-w-md">
 
                 {/* Logo */}
-                <div className="text-center mb-8">
-                    <Link to="/" className="inline-flex items-center space-x-2">
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                            <ClockIcon className="w-6 h-6 text-white" />
-                        </div>
-                        <span className="text-2xl font-bold gradient-text">BrainSpark</span>
-                    </Link>
-                    <p className="text-sm text-gray-500 mt-2">Entre com sua conta</p>
-                </div>
+                <Logo subtitle="Entre com sua conta" />
 
                 {/* Login card */}
                 <Card className="shadow-2xl border-0">

@@ -2,7 +2,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Welcome from './pages/Welcome/WelcomePage';
 import Default from './pages/Welcome/EntryPage';
 import Login from './pages/Welcome/Login';
-import Register from './pages/Welcome/RegisterForm';
 import ProtectedRoute from './components/ProtectedRoute';
 import ForgotPassword from './pages/Welcome/ForgetPassword';
 import MainPage from './pages/Main/MainPage';
@@ -16,6 +15,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { FocusProvider } from './contexts/FocusContext';
 
 import './index.css';
+import RegisterPage from './pages/Welcome/Register';
 
 export function App() {
   return (
@@ -25,12 +25,13 @@ export function App() {
 
         <Route path="/welcome" element={<Welcome />}>
           <Route index element={<Default />} />
-          <Route path="register" element={<Register />} />
+          {/* <Route path="register" element={<Register />} /> */}
           <Route path="forgetPassword" element={<ForgotPassword />} />
           <Route path="send-new-password" element={<SendNewPassword />} />
         </Route>
 
         <Route path="/welcome/login" element={<Login />} />
+        <Route path="/welcome/register" element={<RegisterPage />} />
 
         <Route
           path="/brainspark"

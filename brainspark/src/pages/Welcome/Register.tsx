@@ -1,0 +1,164 @@
+import Logo from "@/components/login/Logo";
+import PasswordInput from "@/components/shared/PasswordInput";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+
+export default function RegisterPage() {
+
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newPassword = e.target.value;
+
+        if (newPassword !== confirmPassword) {
+            setError("As senhas não coincidem");
+        } else {
+            setError("");
+            setPassword(newPassword);
+        }
+    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        
+        try {
+            const payload = {
+                name,
+                email,
+                password,
+                birthDate: "2000-01-01"
+            }
+            
+        } catch (error: any) {
+            setError(error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4 select-none">
+            {/* background blobs */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="blob absolute top-20 left-20 w-64 h-64"></div>
+                <div className="blob absolute bottom-20 right-20 w-96 h-96"></div>
+                <div className="blob absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80"></div>
+            </div>
+
+            <div className="relative z-10 w-full max-w-md">
+                <Logo subtitle="Crie sua conta" />
+
+                <Card className="shadow-2xl border-0">
+                    <CardHeader className="space-y-1 pb-6">
+                        <CardTitle className="text-2xl font-bold text-center text-gray-900">
+                            Comece sua jornada
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <form onSubmit={handleSubmit}>
+                            {/* Name */}
+                            <div className="space-y-2">
+                                <Label htmlFor="name">Nome</Label>
+                                <Input 
+                                    type="text" 
+                                    id="name" 
+                                    placeholder="Digite seu nome" 
+                                    value={name}
+                                />
+                            </div>
+
+                            {/* Email */}
+                            <div className="space-y-2">
+                                <Label htmlFor="email">Email</Label>
+                                <Input 
+                                    type="email" 
+                                    id="email" 
+                                    placeholder="Digite seu email" 
+                                    value={email}
+                                />
+                            </div>
+
+                            {/* Password */}
+                            <div className="space-y-2">
+                                <PasswordInput password={password} setPassword={setPassword} />
+                            </div>
+
+                            {/* Confirm Password */}
+                            <div className="space-y-2">
+                                <PasswordInput password={confirmPassword} setPassword={setConfirmPassword} />
+                            </div>
+
+                            {/* Terms and Conditions */}
+                            <div className="flex items-start space-x-2 mt-4">
+                                <input
+                                type="checkbox"
+                                id="terms"
+                                required
+                                className="bg-white mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                />
+                                <Label htmlFor="terms" className="text-sm text-gray-600 leading-relaxed">
+                                Eu concordo com os{" "}
+                                <Link to="/terms" className="text-blue-600 hover:text-blue-800 hover:underline">
+                                    Termos de Uso
+                                </Link>{" "}
+                                e{" "}
+                                <Link to="/privacy" className="text-blue-600 hover:text-blue-800 hover:underline">
+                                    Política de Privacidade
+                                </Link>
+                                </Label>
+                            </div>
+
+                            <div className="mt-4">
+                                <Button
+                                    type="submit"
+                                    disabled={isLoading}
+                                    className="w-full h-11 gradient-bg text-white font-medium hover:opacity-90 transition-opacity"
+                                >
+                                    {isLoading ? "Cadastrando..." : "Cadastrar"}
+                                </Button>
+                            </div>
+
+                        </form>
+
+                        {/* Divider */}
+                        <div className="relative my-6">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-white text-gray-500">ou</span>
+                            </div>
+                        </div>
+
+                        {/* TODO: Add social login */}
+
+                        {/* Login Link */}
+                        <div className="text-center mt-6">
+                            <p className="text-sm text-gray-600">
+                                Já tem uma conta?{" "}
+                                <Link
+                                to="/welcome/login"
+                                className="text-blue-600 hover:text-blue-800 font-medium hover:underline"
+                                >
+                                Fazer login
+                                </Link>
+                            </p>
+                        </div>
+
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
+    )
+}

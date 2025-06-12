@@ -1,3 +1,4 @@
+import BasicAuthComponent from '@/components/shared/BasicAuthComponent';
 import Logo from "@/components/login/Logo";
 import PasswordInput from "@/components/shared/PasswordInput";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -64,7 +65,7 @@ export default function RegisterPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4 select-none">
+        <BasicAuthComponent>
             {/* background blobs */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="blob absolute top-20 left-20 w-64 h-64"></div>
@@ -193,6 +194,6 @@ export default function RegisterPage() {
                 navigate("/welcome/login");
             }}
             />
-        </div>
+        </BasicAuthComponent>
     )
 }

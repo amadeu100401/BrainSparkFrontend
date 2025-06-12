@@ -8,6 +8,7 @@ export default function Hero() {
   
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+      
       {/* Animated background blobs */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 blob"></div>
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 blob" style={{ animationDelay: '-2s' }}></div>

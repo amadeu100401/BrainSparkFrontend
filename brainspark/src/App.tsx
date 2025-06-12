@@ -27,12 +27,12 @@ export function App() {
         <Route path="/welcome" element={<Welcome />}>
           <Route index element={<Default />} />
           {/* <Route path="register" element={<Register />} /> */}
-          <Route path="forgetPassword" element={<ForgotPassword />} />
           <Route path="send-new-password" element={<SendNewPassword />} />
         </Route>
 
         <Route path="/welcome/login" element={<Login />} />
         <Route path="/welcome/register" element={<RegisterPage />} />
+        <Route path="/welcome/forgot-password" element={<ForgotPassword />} />
 
         <Route
           path="/brainspark"

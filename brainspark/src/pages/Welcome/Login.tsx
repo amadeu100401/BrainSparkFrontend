@@ -1,4 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import BasicAuthComponent from '@/components/shared/BasicAuthComponent';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
@@ -49,7 +50,7 @@ export default function Login() {
     }
 
     return (
-        <div className = "min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4 select-none">
+        <BasicAuthComponent>
             {/* background blobs */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="blob absolute top-20 left-20 w-64 h-64"></div>
@@ -136,7 +137,7 @@ export default function Login() {
                                     </Label>
                                 </div>
                                 <Link
-                                    to="/forgot-password"
+                                    to="/welcome/forgot-password"
                                     className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
                                 >
                                     Esqueceu a senha?
@@ -166,6 +167,6 @@ export default function Login() {
                 }}
                 onClose={() => setIsVerifying(true)}
             />
-        </div>
+        </BasicAuthComponent>
     )
 }

@@ -11,6 +11,7 @@ import UserInfo from './pages/Main/UserInfoPage';
 import IdeaDoc from './pages/Main/IdeaDocPage';
 import DocCollection from './pages/Main/DocCollectionPage';
 import FocusTimePage from './pages/Main/FocusTimePage';
+import NotFound from '@/pages/NotFound';
 import { AuthProvider } from './contexts/AuthContext';
 import { FocusProvider } from './contexts/FocusContext';
 
@@ -54,6 +55,7 @@ export function App() {
             }
           />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
   );

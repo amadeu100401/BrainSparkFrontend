@@ -4,47 +4,63 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { signup } from "@/features/SignUp";
+import DesktopDatePickerCustom from "@/components/shared/DesktopDatePicker";
+import VerificationModal from "../../components/login/VerificationModal";
 
 export default function RegisterPage() {
+
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [birthDate, setBirthDate] = useState(new Date());
 
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [isVerifying, setIsVerifying] = useState(false);
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newPassword = e.target.value;
 
-        if (newPassword !== confirmPassword) {
-            setError("As senhas não coincidem");
-        } else {
-            setError("");
-            setPassword(newPassword);
-        }
+        setError("");
+        setPassword(newPassword);
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleDateChange = (date: Date) => {
+        setBirthDate(date);
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+        console.log("AQUI")
         try {
             const payload = {
-                name,
-                email,
-                password,
-                birthDate: "2000-01-01"
+                name: name,
+                email: email,
+                password: password,
+                birthDate: birthDate
             }
+
+            await signup(payload);
+            setIsVerifying(true);
             
         } catch (error: any) {
             setError(error.message);
         } finally {
             setIsLoading(false);
+            clearForm();
         }
+    }
+
+    const clearForm = () => {
+        setEmail("");
+        setName("");
+        setPassword("");
+        setBirthDate(new Date());
     }
 
     return (
@@ -75,6 +91,7 @@ export default function RegisterPage() {
                                     id="name" 
                                     placeholder="Digite seu nome" 
                                     value={name}
+                                    onChange={(e) => setName(e.target.value)}
                                 />
                             </div>
 
@@ -86,36 +103,41 @@ export default function RegisterPage() {
                                     id="email" 
                                     placeholder="Digite seu email" 
                                     value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="name">Data de nascimento</Label>
+                                <DesktopDatePickerCustom isBirthDate = {true} onDateChange={handleDateChange}/>
                             </div>
 
                             {/* Password */}
                             <div className="space-y-2">
-                                <PasswordInput password={password} setPassword={setPassword} />
-                            </div>
-
-                            {/* Confirm Password */}
-                            <div className="space-y-2">
-                                <PasswordInput password={confirmPassword} setPassword={setConfirmPassword} />
+                                <PasswordInput 
+                                    password={password} 
+                                    setPassword={setPassword} 
+                                    handlePasswordChange={handlePasswordChange} 
+                                />
                             </div>
 
                             {/* Terms and Conditions */}
                             <div className="flex items-start space-x-2 mt-4">
                                 <input
-                                type="checkbox"
-                                id="terms"
-                                required
-                                className="bg-white mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    type="checkbox"
+                                    id="terms"
+                                    required
+                                    className="bg-white mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                                 />
                                 <Label htmlFor="terms" className="text-sm text-gray-600 leading-relaxed">
-                                Eu concordo com os{" "}
-                                <Link to="/terms" className="text-blue-600 hover:text-blue-800 hover:underline">
-                                    Termos de Uso
-                                </Link>{" "}
-                                e{" "}
-                                <Link to="/privacy" className="text-blue-600 hover:text-blue-800 hover:underline">
-                                    Política de Privacidade
-                                </Link>
+                                    Eu concordo com os{" "}
+                                    <Link to="/terms" className="text-blue-600 hover:text-blue-800 hover:underline">
+                                        Termos de Uso
+                                    </Link>{" "}
+                                    e{" "}
+                                    <Link to="/privacy" className="text-blue-600 hover:text-blue-800 hover:underline">
+                                        Política de Privacidade
+                                    </Link>
                                 </Label>
                             </div>
 
@@ -159,6 +181,18 @@ export default function RegisterPage() {
                     </CardContent>
                 </Card>
             </div>
+
+            {/* MODAL DE VERIFICAÇÃO */}
+            <VerificationModal
+            isOpen={isVerifying}
+            onClose={() => {
+                setIsVerifying(false);
+            }}
+            onSuccess={() => {
+                setIsVerifying(false);
+                navigate("/welcome/login");
+            }}
+            />
         </div>
     )
 }

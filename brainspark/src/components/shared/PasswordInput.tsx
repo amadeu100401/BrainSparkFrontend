@@ -8,17 +8,11 @@ interface PasswordInputProps {
     password: string;
     setPassword: (password: string) => void;
     required?: boolean;
+    handlePasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function PasswordInput({ password, setPassword, required = true }: PasswordInputProps) {
+export default function PasswordInput({ password, setPassword, required = true, handlePasswordChange }: PasswordInputProps) {
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState("");
-
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newPassword = e.target.value;
-        setPassword(newPassword);
-        setError("");
-    }
 
     return (
         <>
@@ -31,7 +25,7 @@ export default function PasswordInput({ password, setPassword, required = true }
                     type={showPassword ? "text" : "password"}
                     placeholder="Digite sua senha"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => handlePasswordChange(e)}
                     required
                     className="h-11 pr-10"
                 />

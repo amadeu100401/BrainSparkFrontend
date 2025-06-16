@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { loginUser } from "../../features/Login";
 import { useNavigate } from "react-router-dom";
 import VerificationModal from "../../components/login/VerificationModal";
-import Logo from "@/components/login/Logo";
+import Logo from "@/components/shared/Logo";
 
 export default function Login() {
     const navigate = useNavigate();

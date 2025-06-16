@@ -1,5 +1,5 @@
 import BasicAuthComponent from '@/components/shared/BasicAuthComponent';
-import Logo from "@/components/login/Logo";
+import Logo from "@/components/shared/Logo";
 import PasswordInput from "@/components/shared/PasswordInput";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { signup } from "@/features/SignUp";
 import DesktopDatePickerCustom from "@/components/shared/DesktopDatePicker";
 import VerificationModal from "../../components/login/VerificationModal";
+import Divider from "@/components/shared/Divider";
 
 export default function RegisterPage() {
 
@@ -37,7 +38,6 @@ export default function RegisterPage() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("AQUI")
         try {
             const payload = {
                 name: name,
@@ -155,14 +155,7 @@ export default function RegisterPage() {
                         </form>
 
                         {/* Divider */}
-                        <div className="relative my-6">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-300"></div>
-                            </div>
-                            <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-white text-gray-500">ou</span>
-                            </div>
-                        </div>
+                        <Divider orInDivide={true}/>
 
                         {/* TODO: Add social login */}
 
@@ -185,14 +178,14 @@ export default function RegisterPage() {
 
             {/* MODAL DE VERIFICAÇÃO */}
             <VerificationModal
-            isOpen={isVerifying}
-            onClose={() => {
-                setIsVerifying(false);
-            }}
-            onSuccess={() => {
-                setIsVerifying(false);
-                navigate("/welcome/login");
-            }}
+                isOpen={isVerifying}
+                onClose={() => {
+                    setIsVerifying(false);
+                }}
+                onSuccess={() => {
+                    setIsVerifying(false);
+                    navigate("/welcome/login");
+                }}
             />
         </BasicAuthComponent>
     )

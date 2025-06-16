@@ -27,7 +27,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   
       setIsAuthenticated(true);
     } catch(error) {
-      console.log("AQUI");
       setIsAuthenticated(false);
     }
   };

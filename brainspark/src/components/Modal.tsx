@@ -1,23 +1,35 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
-export default function Modal({ isOpen, onClose = () => {}, children }) {
+type ModalProps = {
+  isOpen: boolean;
+  onClose?: () => void;
+  children: ReactNode;
+  overlayClassName?: string;   
+  contentClassName?: string;   // Classe da caixa do modal
+};
+
+export default function Modal({
+  isOpen,
+  onClose = () => {},
+  children,
+  overlayClassName = "bg-black/70 backdrop-blur-sm",
+  contentClassName = "bg-white text-gray-900",
+}: ModalProps) {
   const [visible, setVisible] = useState(isOpen);
 
-  // Atualiza visibilidade quando isOpen muda
   useEffect(() => {
     if (isOpen) setVisible(true);
   }, [isOpen]);
 
-  // Ao sair da animação, chama onClose
   const handleClose = () => {
     setVisible(false);
   };
 
   const handleExited = () => {
-    onClose(); // chama função de fechar depois da animação
+    onClose();
   };
 
   return createPortal(
@@ -27,19 +39,19 @@ export default function Modal({ isOpen, onClose = () => {}, children }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+          className={`fixed inset-0 z-50 flex items-center justify-center ${overlayClassName}`}
         >
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="bg-gray-900 text-white w-full max-w-md p-6 rounded-2xl shadow-xl relative"
+            className={`w-full max-w-md p-6 rounded-2xl shadow-xl relative ${contentClassName}`}
           >
             <Button
               onClick={handleClose}
-              className="absolute top-3 right-3 transition text-white/60 text-sm p-1 bg-transparent border-none shadow-none outline-none
-               hover:text-white hover:bg-transparent active:border-none"
+              className="absolute top-3 right-3 text-gray-500 hover:text-black rounded-full p-1 h-8 w-8"
+              variant="ghost"
               aria-label="Fechar modal"
             >
               ×

@@ -4,12 +4,14 @@ import ResendEmail from './ResendVerifyEmailCode';
 import httpUtil from "../../utils/HttpUtil"; 
 import { useNavigate } from "react-router-dom";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
-
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import Divider from "@/components/shared/Divider";
+import { Button } from "@/components/ui/button";
+import { Clock, Mail, RotateCcw } from "lucide-react";
 
 export default function VerificationModal({ isOpen, onClose, onSuccess, isResendEmail = false}) {
   const [code, setCode] = useState("");
@@ -30,6 +32,7 @@ export default function VerificationModal({ isOpen, onClose, onSuccess, isResend
   const verifyCode = async (value) => {
     try {
       const email = sessionStorage.getItem("email");
+      
       const payload = {
         email: email,
         code: value,
@@ -40,7 +43,6 @@ export default function VerificationModal({ isOpen, onClose, onSuccess, isResend
         method:"POST",
         data:payload
       });
-
       
       setCode("");
       navigate("/welcome/login");
@@ -54,48 +56,96 @@ export default function VerificationModal({ isOpen, onClose, onSuccess, isResend
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <h3 className="text-xl font-semibold text-center">Verifique seu email</h3>
-      <p className="text-sm text-center text-gray-600 mb-4">
-        {!isResendEmail ? "Digite o código de 5 dígitos enviado para o seu email." 
-          : "Por favor, solicite um novo email com  o código"}
-      </p>
+    <Modal 
+      isOpen={isOpen} 
+      onClose={onClose} 
+      contentClassName="bg-white text-black select-none"
+    >
+      <div>
 
-      {/* Alinhamento central com espaçamento entre os slots */}
-      {(wasSended) && (
-        <div className="flex justify-center mb-2">
-          <InputOTP
-            maxLength={5}
-            value={code}
-            onChange={(val) => {
-              setError("");
-              setCode(val.replace(/\D/g, ""));
-            }}
-            pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-            className="caret-white"
-          >
-            <InputOTPGroup>
-              <InputOTPSlot index={0} className="caret-white"/>
-              <InputOTPSlot index={1} className="caret-white"/>
-              <InputOTPSlot index={2} className="caret-white"/>
-              <InputOTPSlot index={3} className="caret-white"/>
-              <InputOTPSlot index={4} className="caret-white"/>
-            </InputOTPGroup>
-          </InputOTP>
-        </div>
-      )}
-
-      {(isResendEmail && !wasSended) && (
         <div>
-          <ResendEmail
-            onSuccess={() => setWasSended(true)} 
-          />
+          <div className="mx-auto w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
+            <Mail className="w-6 h-6 text-white" />
+          </div>
         </div>
-      )}
 
-      {error && (
-        <p className="text-red-600 text-center text-sm mt-2">{error}</p>
-      )}
+        <div className="mb-2">
+          <h3 className="text-xl font-semibold">Validar email</h3>
+        </div>
+        
+        {!isResendEmail && (
+          <div className="text-sm mb-10">
+            <p className="text-gray-600">
+              Enviamos um código de 5 dígitos para`
+            </p>
+            <span>{sessionStorage.getItem("email")}</span>
+          </div>
+        )}
+
+        {isResendEmail && (
+          <div className="text-sm mb-10">
+            <p className="text-gray-600">
+              Por favor, solicite um novo email com  o código
+            </p>
+          </div>
+        )}
+
+        {wasSended && (
+          <div className="flex flex-col items-center justify-center">
+            <span className="text-center mb-2 font-semibold text-zinc-600">Código de verificação</span>
+            <InputOTP
+              maxLength={5}
+              value={code}
+              onChange={(val) => {
+                setError("");
+                setCode(val.replace(/\D/g, ""));
+              }}
+              pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+            >
+              <InputOTPGroup className = "w-full h-full">
+                <InputOTPSlot index={0} className="w-12 h-10 text-2xl caret-white"/>
+                <InputOTPSlot index={1} className="w-12 h-10 text-2xl caret-white" />
+                <InputOTPSlot index={2} className="w-12 h-10 text-2xl caret-white" />
+                <InputOTPSlot index={3} className="w-12 h-10 text-2xl caret-white" />
+                <InputOTPSlot index={4} className="w-12 h-10 text-2xl caret-white" />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+        )}
+        
+        {!isResendEmail && (
+          <div className="flex flex-col justify-center items-center mt-4">
+            <span className="text-gray-500 text-sm">Não recebeu o código?</span>
+
+            <div className="mt-4">
+              <Button className="bg-transparent border-none text-black hover:bg-purple-400">Reenviar código</Button>
+            </div>
+          </div>
+        )}
+
+        {(isResendEmail && !wasSended) && (
+          <div>
+            <ResendEmail
+              onSuccess={() => setWasSended(true)} 
+            />
+          </div>
+        )}
+
+        {error && (
+          <p className="text-red-600 text-center text-sm mt-2">{error}</p>
+        )}
+
+        <Divider />
+
+        <div className="w-full h-full flex justify-center items-center">
+          <div className="w-96 flex text-xs text-gray-600 justify-center">
+            <span>
+              O código expira em 10 minutos. Verifique sua caixa de spam se não encontrar o email.
+            </span>
+          </div>
+        </div>
+
+      </div>
     </Modal>
   );
 }

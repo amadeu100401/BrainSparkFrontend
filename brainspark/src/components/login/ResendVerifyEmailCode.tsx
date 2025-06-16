@@ -1,56 +1,60 @@
 import { Button } from "@/components/ui/button";
-import httpUtil  from "../../utils/HttpUtil";
-import ErrorToast from "@/components/ErrorToast"; 
+import httpUtil from "../../utils/HttpUtil";
+import ErrorToast from "@/components/ErrorToast";
 import { useState } from "react";
 
-export default function ResendEmail({ onSuccess }) {
+interface ResendEmailProps {
+  onSuccess: () => void;
+}
 
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showToast, setShowToast] = useState(false);
+export default function ResendEmail({ onSuccess }: ResendEmailProps) {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
-    const handleRedenEmail = async () => {
-        const email = sessionStorage.getItem("email");
-        const payload = { email };
+  const handleResendEmail = async () => {
+    const email = sessionStorage.getItem("email");
+    const payload = { email };
 
-        try{
-            const response = await httpUtil({
-            url:"/api/v1/auth/resend-validate-email",
-            method:"POST", 
-            data:payload
-            });
-            
+    try {
+      await httpUtil({
+        url: "/api/v1/auth/resend-validate-email",
+        method: "POST",
+        data: payload,
+      });
 
-            onSuccess();
-
-        } catch(error: any) {
-            setShowToast(true);
-            setErrorMessage(error.message);
-        }
+      onSuccess();
+    } catch (error: any) {
+      setShowToast(true);
+      setErrorMessage(
+        error?.response?.data?.message || error.message || "Erro ao reenviar email"
+      );
     }
+  };
 
-    return(
-        <div className="flex justify-center mt-4">
-            <Button
-                onClick={handleRedenEmail}
-                type="submit"
-                className="bg-yellow-500
-                           hover:bg-yellow-400 
-                           text-1xl
-                           hover:text-white/100
-                           hover:shadow-md
-                           hover:no-underline
-                           transaction
-                           font-bold
-                           px-35"
-                >
-                Solicitar um novo código
-            </Button>
-            {showToast && (
-                <ErrorToast
-                message={errorMessage}
-                onClose={() => setShowToast(false)}
-                />
-            )}
-        </div>
-    );
+  return (
+    <div className="flex justify-center mt-4">
+      <Button
+        onClick={handleResendEmail}
+        type="button"
+        className="bg-yellow-500 
+                   hover:bg-yellow-400 
+                   text-base
+                   font-bold
+                   px-6
+                   py-2
+                   rounded-md
+                   transition 
+                   hover:shadow-md"
+      >
+        Solicitar código
+      </Button>
+
+      {showToast && (
+        <ErrorToast
+          message={errorMessage}
+          onClose={() => setShowToast(false)}
+        />
+      )}
+    </div>
+  );
 }

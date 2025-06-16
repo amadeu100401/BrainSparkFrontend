@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import Header from "../../components/apresentation/Header";
 import Hero from "../../components/apresentation/Hero";
 import Features from "../../components/apresentation/Features";
+import { Toaster } from 'sonner';
 
 export default function WelcomePage() {
   const navigate = useNavigate();

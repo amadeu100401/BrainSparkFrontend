@@ -14,6 +14,7 @@ import FocusTimePage from './pages/Main/FocusTimePage';
 import NotFound from '@/pages/NotFound';
 import { AuthProvider } from './contexts/AuthContext';
 import { FocusProvider } from './contexts/FocusContext';
+import { Toaster } from "sonner";
 
 import './index.css';
 import RegisterPage from './pages/Welcome/Register';
@@ -57,6 +58,7 @@ export function App() {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Toaster theme='system' richColors position="bottom-right" />
     </AuthProvider>
   );
 }

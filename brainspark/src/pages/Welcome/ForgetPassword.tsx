@@ -1,25 +1,40 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BasicAuthComponent from '@/components/shared/BasicAuthComponent';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Logo from "@/components/login/Logo";
+import Logo from "@/components/shared/Logo";
 import ForgetPasswordSub from "../../features/ForgetPassword";
 import { useState } from "react";
-import ResetPasswordModal from "../../components/login/ResetPasswordModal";
+import { toast } from "sonner"
 
 export default function ForgetPassword() {
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
 
     const [isLoading, setIsLoading] = useState(false);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setIsLoading(true);
+
         const isSucess = await ForgetPasswordSub({ email });
-        setShowSuccessModal(isSucess);
+
+        if (isSucess) {
+            toast(
+                "A solicitação foi enviada", {
+                    description: "A solicitação foi enviada com sucesso",
+                    action: {
+                        label: "Ir para Login",
+                        onClick: () => navigate("/welcome/login")
+                    }
+                }
+            );
+        }
+
+        setIsLoading(false);
     }
 
     return (
@@ -83,10 +98,6 @@ export default function ForgetPassword() {
                     </CardContent>
                 </Card>
             </div>
-            <ResetPasswordModal
-                isOpen={showSuccessModal}
-                onClose={() => setShowSuccessModal(false)}
-            />
         </BasicAuthComponent>
     );
 }

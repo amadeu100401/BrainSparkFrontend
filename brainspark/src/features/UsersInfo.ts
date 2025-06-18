@@ -5,6 +5,7 @@ interface UsersInfo {
   name: string;
   email: string;
   photoLink?: string;
+  birthDate?: Date 
 }
 
 interface UpdateUsersInfo {

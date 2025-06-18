@@ -38,7 +38,7 @@ export default function Hero() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 fade-in-up stagger-3">
             <Button size="lg" className="gradient-bg text-white hover:opacity-90 transition-all duration-300 transform hover:scale-105 px-8 py-3 text-lg"
-             onClick={() => navigate("/welcome/login")}>
+             onClick={() => navigate("/welcome/register")}>
               Começar Gratuitamente
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>

@@ -12,7 +12,7 @@ export default function AccountHeader() {
 
 
     return(
-        <header className="flex mb-8 gap-10">
+        <header className="flex items-center mb-8 gap-10">
             <div className="flex gap-2">
                 <Button 
                     type="button"
@@ -20,7 +20,6 @@ export default function AccountHeader() {
                     className="flex items-center gap-2 bg-transparent"
                     onClick={handleComeBack}
                 >
-
                     <ArrowLeft className="text-zinc-800 w-4 h-4"/>
                     Voltar
                 </Button>

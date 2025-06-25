@@ -6,7 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { CalendarIcon, Mail, User, Crown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ptBR } from "date-fns/locale";
 import { format } from "date-fns";
 import { UpdateUsersInfo } from '../../features/UsersInfo.ts';
@@ -18,7 +18,7 @@ interface PersonalInfoProps {
 }
 
 export default function PersonalInfo({ name, email, birthDate }:PersonalInfoProps) {
-
+    
     const [formData, setFormData] = useState({
         name: name,
         email: email,
@@ -28,14 +28,26 @@ export default function PersonalInfo({ name, email, birthDate }:PersonalInfoProp
 
     const [isLoading, setIsLoading] = useState(false);
 
+    useEffect(() => {
+        setFormData({
+            name,
+            email,
+            birthDate,
+            plan: "Free"
+        })
+    }, [name, email, birthDate])
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        setIsLoading(true);
+
         await UpdateUsersInfo({
           name: formData.name
         });
-    };
 
-    console.log(formData)
+        setIsLoading(false);
+    };
 
     return(
         <div className="p-5 rounded-lg bg-white border shadow-sm">

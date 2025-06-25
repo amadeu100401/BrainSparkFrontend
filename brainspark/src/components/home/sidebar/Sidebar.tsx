@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../../contexts/AuthContext'
-import FullSidebar from './FullSidebar';
 
 import {
   Home,
@@ -86,7 +85,6 @@ export default function Sidebar() {
           {!isCollapsed && (
             null
           )}
-          <FullSidebar />
         </div>
       </aside>
 

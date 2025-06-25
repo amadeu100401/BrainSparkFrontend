@@ -12,15 +12,19 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-		keyframes: {
-			"caret-blink": {
-			"0%,70%,100%": { opacity: "1" },
-			"20%,50%": { opacity: "0" },
-			},
-		},
-		animation: {
-        "caret-blink": "caret-blink 1.25s ease-out infinite",
-      	},
+  		keyframes: {
+  			'caret-blink': {
+  				'0%,70%,100%': {
+  					opacity: '1'
+  				},
+  				'20%,50%': {
+  					opacity: '0'
+  				}
+  			}
+  		},
+  		animation: {
+  			'caret-blink': 'caret-blink 1.25s ease-out infinite'
+  		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -28,7 +32,7 @@ export default {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
   			},
-			brainspark: '#4D8EFF',
+  			brainspark: '#4D8EFF',
   			popover: {
   				DEFAULT: 'hsl(var(--popover))',
   				foreground: 'hsl(var(--popover-foreground))'
@@ -63,31 +67,39 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			},
-
-			focusProjectResume: '#6e59a5',
-			
-			keyframes: {
-				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
-				},
-				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
-				}
-			},
-			animation: {
-				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+  			focusProjectResume: '#6e59a5',
+  			keyframes: {
+  				'accordion-down': {
+  					from: {
+  						height: '0'
+  					},
+  					to: {
+  						height: 'var(--radix-accordion-content-height)'
+  					}
+  				},
+  				'accordion-up': {
+  					from: {
+  						height: 'var(--radix-accordion-content-height)'
+  					},
+  					to: {
+  						height: '0'
+  					}
+  				}
+  			},
+  			animation: {
+  				'accordion-down': 'accordion-down 0.2s ease-out',
+  				'accordion-up': 'accordion-up 0.2s ease-out'
+  			},
+  			sidebar: {
+  				DEFAULT: 'hsl(var(--sidebar-background))',
+  				foreground: 'hsl(var(--sidebar-foreground))',
+  				primary: 'hsl(var(--sidebar-primary))',
+  				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+  				accent: 'hsl(var(--sidebar-accent))',
+  				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+  				border: 'hsl(var(--sidebar-border))',
+  				ring: 'hsl(var(--sidebar-ring))'
+  			}
   		}
   	}
   },

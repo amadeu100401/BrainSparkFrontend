@@ -6,6 +6,8 @@ import { GetAccounData } from '../../features/UsersInfo.ts';
 import AccountHeader from "@/components/accountSettings/AccountHeader.tsx"
 import AvatarProfile from "@/components/accountSettings/ProfileAvatar.tsx"
 import PersonalInfo from "@/components/accountSettings/PersonalInfo.tsx"
+import DeleteAccount from "@/components/accountSettings/DeleteAccount.tsx"
+import Divider from "@/components/shared/Divider";
 
 export default function UserInfo() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -39,7 +41,7 @@ export default function UserInfo() {
           })
           setFormInput({
             email: response.email,
-            name: response.name,
+            name: response.name, 
             birthDate: new Date()
           })
       }
@@ -50,8 +52,8 @@ export default function UserInfo() {
     }
 
     return(
-      <BaseComponent className="w-full p-8 flex justify-center bg-gray-50 rounded-xl shadow-sm border border-black/20">
-        <div className="min-w-[1000px] h-full p-10">
+      <BaseComponent className="w-full min-h-screen flex justify-center bg-gray-50 rounded-xl shadow-sm border border-black/20">
+        <div className="min-w-[1000px] h-full p-5">
           <AccountHeader />
 
           <div className="flex flex-col gap-y-5">
@@ -61,7 +63,14 @@ export default function UserInfo() {
               email={userForm.email} 
               birthDate={userForm.birthDate}
             />   
-          </div>     
+          </div> 
+
+          {/* Divider */}
+          <Divider orInDivide={false}/>    
+
+          <div className="pb-10">
+            <DeleteAccount />
+          </div>
 
           {showDeleteModal && (
           <DeleteAccountModal 

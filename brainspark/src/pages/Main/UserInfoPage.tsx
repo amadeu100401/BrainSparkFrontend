@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"; 
-import Loading from "../../components/home/LoadingComponent.tsx";
 import DeleteAccountModal from "../../components/home/DeleteAccountModal.tsx";
 import BaseComponent from "../../components/home/ContentComponentBase.tsx"
 import { GetAccounData } from '../../features/UsersInfo.ts';
@@ -52,7 +51,7 @@ export default function UserInfo() {
     }
 
     return(
-      <BaseComponent className="w-full min-h-screen flex justify-center bg-gray-50 rounded-xl shadow-sm border border-black/20">
+      <BaseComponent className="w-full min-h-screen flex justify-center bg-gray-50">
         <div className="min-w-[1000px] h-full p-5">
           <AccountHeader />
 

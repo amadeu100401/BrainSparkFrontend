@@ -16,7 +16,7 @@ export default function ApresentationPage() {
                         <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                             <ClockIcon className="w-5 h-5 text-white" />
                         </div>
-                        <h1 className="text-2xl font-bold text-black">BrainSpark</h1>
+                        <h1 className="text-xl font-bold gradient-text">BrainSpark</h1>
                     </div>
 
                     <nav className="hidden md:flex items-center space-x-8">

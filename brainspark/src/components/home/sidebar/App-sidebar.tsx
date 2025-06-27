@@ -9,17 +9,23 @@ import {
     SidebarRail,
 } from "@/components/ui/sidebar"
 
-import NavFocus from "@/components/home/sidebar/Nav-focus"
+import NavMain from "@/components/home/sidebar/Nav-main"
 import UserMenu from "@/components/home/sidebar/UserMenu"
+import NavHeader from "@/components/home/sidebar/Nav-header"
 
 export default function sidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return (
-        <Sidebar collapsible="icon" {...props}>
+        <Sidebar 
+            collapsible="icon"
+            color=""
+            {...props}
+        >
             <SidebarHeader>
+                <NavHeader />
             </SidebarHeader>
 
             <SidebarContent>
-                <NavFocus />
+                <NavMain />
             </SidebarContent>
 
             <SidebarFooter>

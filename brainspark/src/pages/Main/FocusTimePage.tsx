@@ -41,7 +41,7 @@ export default function FocusTimePage() {
   };
 
   return (
-    <ComponentBase className="min-h-screen w-screen bg-gray-50 p-6">
+    <ComponentBase className="max-h-screen bg-gray-50 p-6">
       {/* Layout de 2 colunas */}
       <div className="flex flex-col lg:flex-row gap-6 h-full">
         {/* Coluna da esquerda (Cronômetro + Registros) */}

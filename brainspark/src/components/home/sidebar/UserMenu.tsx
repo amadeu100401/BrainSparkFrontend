@@ -22,13 +22,15 @@ import {
 } from "@/components/ui/sidebar"
 
 import {
-    BadgeCheck,
     Bell,
     ChevronsUpDown,
+    UserCog,
     LogOut,
     Sparkles,
+    User,
 } from "lucide-react"
 import { useAuth } from '../../../contexts/AuthContext'
+import { useNavigate } from "react-router-dom"
 
 export default function UserMenu({
     user,
@@ -39,6 +41,8 @@ export default function UserMenu({
         avatar: string
     }
 }) {
+
+    const navigate = useNavigate();
 
     const { isMobile } = useSidebar()
     const { logout } = useAuth();
@@ -92,9 +96,17 @@ export default function UserMenu({
                         </DropdownMenu>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <BadgeCheck />
-                                Conta
+                            <DropdownMenuItem
+                                onClick={() => navigate("/brainspark/user-info")}
+                            >
+                                <User />
+                                Perfil
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => navigate("/brainspark/user-info")}
+                            >
+                                <UserCog />
+                                Configurações
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <Bell />

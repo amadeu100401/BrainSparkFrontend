@@ -5,19 +5,21 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon, Mail, User, Crown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import * as React from "react";
 import { useState, useEffect } from "react";
 import { ptBR } from "date-fns/locale";
 import { format } from "date-fns";
-import { UpdateUsersInfo } from '../../features/UsersInfo.ts';
 
 interface PersonalInfoProps {
     name: string,
     email: string,
-    birthDate: Date 
+    birthDate: Date,
+    handleSubmit: (user: {
+        name: string,
+        birthDate: Date
+    }) => void;
 }
 
-export default function PersonalInfo({ name, email, birthDate }:PersonalInfoProps) {
+export default function PersonalInfo({ name, email, birthDate, handleSubmit }:PersonalInfoProps) {
     
     const [formData, setFormData] = useState({
         name: name,
@@ -33,17 +35,17 @@ export default function PersonalInfo({ name, email, birthDate }:PersonalInfoProp
             name,
             email,
             birthDate,
-            plan: "Free"
+            plan: "Estudante"
         })
     }, [name, email, birthDate])
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const submit = async () => {
 
         setIsLoading(true);
 
-        await UpdateUsersInfo({
-          name: formData.name
+        await handleSubmit({
+            name: formData.name,
+            birthDate: formData.birthDate
         });
 
         setIsLoading(false);
@@ -59,7 +61,7 @@ export default function PersonalInfo({ name, email, birthDate }:PersonalInfoProp
             </header>
 
             <div className="mt-5">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={submit}>
                     {/* name and email */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="flex flex-col gap-y-2">
@@ -171,6 +173,7 @@ export default function PersonalInfo({ name, email, birthDate }:PersonalInfoProp
                         type="submit"
                         className="px-8 bg-slate-800"
                         disabled={isLoading}
+                        onClick={() => submit()}
                     >
                         {isLoading ? "Salvando..." : "Salvar alterações"}
                     </Button>                            

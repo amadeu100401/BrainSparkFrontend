@@ -6,7 +6,7 @@ import { useRef, useState } from "react"
 
 interface AvatarProfileProps {
     currentPicture: string | null;
-    onPictureUpdate: (picture: string | null) => void;
+    onPictureUpdate: (file: File) => void;
 }
 
 export default function AvatarProfile({ currentPicture, onPictureUpdate }: AvatarProfileProps) {
@@ -45,12 +45,7 @@ export default function AvatarProfile({ currentPicture, onPictureUpdate }: Avata
             return;
         }
 
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const base64 = reader.result as string;
-            onPictureUpdate(base64);
-        }
-        reader.readAsDataURL(file);
+        onPictureUpdate(file);
     }
 
     const handleUploadClick = () => {
@@ -93,6 +88,7 @@ export default function AvatarProfile({ currentPicture, onPictureUpdate }: Avata
                                 variant="outline" 
                                 className="flex items-center gap-2"
                                 onClick={handleUploadClick}
+                                disabled={true}
                             >
 
                                 <Upload className="text-zinc-800 w-4 h-4"/>
@@ -101,12 +97,13 @@ export default function AvatarProfile({ currentPicture, onPictureUpdate }: Avata
 
                             {currentPicture && (
                                 <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={handleRemovePicture}
-                                disabled={isUploading}
-                                className="flex items-center gap-2 text-red-600 hover:text-red-700"
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={handleRemovePicture}
+                                    // disabled={isUploading}
+                                    disabled={true}
+                                    className="flex items-center gap-2 text-red-600 hover:text-red-700"
                                 >
                                 <Trash2 className="w-4 h-4" />
                                 Remover

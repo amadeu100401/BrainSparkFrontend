@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"; 
 import DeleteAccountModal from "../../components/home/DeleteAccountModal.tsx";
 import BaseComponent from "../../components/home/ContentComponentBase.tsx"
-import { GetAccounData } from '../../features/UsersInfo.ts';
+import { GetAccounData, UpdateUsersInfo } from '../../features/UsersInfo.ts';
 import AccountHeader from "@/components/accountSettings/AccountHeader.tsx"
 import AvatarProfile from "@/components/accountSettings/ProfileAvatar.tsx"
 import PersonalInfo from "@/components/accountSettings/PersonalInfo.tsx"
@@ -9,6 +9,7 @@ import DeleteAccount from "@/components/accountSettings/DeleteAccount.tsx"
 import Divider from "@/components/shared/Divider";
 
 export default function UserInfo() {
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const [userForm, setUserForm] = useState({
@@ -36,22 +37,32 @@ export default function UserInfo() {
             email: response.email,
             name: response.name,
             profileSrc: response.photoLink || "",
-            birthDate: new Date()
+            birthDate: new Date(`${response.birthDate}T12:00:00`) ?? new Date()
           })
           setFormInput({
             email: response.email,
             name: response.name, 
-            birthDate: new Date()
+            birthDate: new Date(`${response.birthDate}T12:00:00`) ?? new Date()
           })
       }
     }
 
-    const onPictureUpdate = () => {
-      console.log("OK funcionou")
+    const onPictureUpdate = (profileAvatar: File) => {
+      setAvatarFile(profileAvatar);
+      console.log(avatarFile)
+    }
+
+    async function handleSubmit(user: {
+      name: string;
+      avatar?: File;
+      birthDate?: Date;
+    }) {  
+      user.avatar = avatarFile ?? undefined;
+      await UpdateUsersInfo(user);
     }
 
     return(
-      <BaseComponent className="w-full min-h-screen flex justify-center bg-gray-50">
+      <BaseComponent className="w-full min-h-screen flex justify-center bg-gray-50 select-none">
         <div className="min-w-[1000px] h-full p-5">
           <AccountHeader />
 
@@ -61,6 +72,7 @@ export default function UserInfo() {
               name={userForm.name}
               email={userForm.email} 
               birthDate={userForm.birthDate}
+              handleSubmit={handleSubmit}
             />   
           </div> 
 

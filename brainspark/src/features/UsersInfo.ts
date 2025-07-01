@@ -10,6 +10,8 @@ interface UsersInfo {
 
 interface UpdateUsersInfo {
     name: string;
+    avatar?: File;
+    birthDate?: Date;
 }
 
 const userContext = ContextEnum.user;
@@ -34,9 +36,17 @@ export async function UpdateUsersInfo(user: UpdateUsersInfo) {
     try {
         const formData = new FormData();
 
-        formData.append("image", "");
+        if (user.avatar) {
+          formData.append("image", user.avatar)
+        } else {
+          formData.append("image", "");
+        }
+
         formData.append("request", new Blob(
-            [JSON.stringify({ name: user.name, birthDate: "2001-01-01" })],
+            [JSON.stringify({ 
+              name: user.name, 
+              birthDate: user.birthDate ? user.birthDate : "2000-01-01"
+            })],
             { type: "application/json" }
         ));
 
@@ -55,5 +65,4 @@ export async function UpdateUsersInfo(user: UpdateUsersInfo) {
         error instanceof Error ? error.message : "Erro desconhecido ao enviar os dados.";
         showErrorToast(message);
     }
-
 }

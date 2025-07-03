@@ -4,7 +4,8 @@ interface SignUpProps {
     name: string;
     email: string;
     password: string;
-    birthDate?: any;
+    birthDate: any;
+    role: string
 }
 
 export async function signup( payload : SignUpProps) {

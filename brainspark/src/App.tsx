@@ -6,7 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ForgotPassword from './pages/Welcome/ForgetPassword';
 import MainPage from './pages/Main/MainPage';
 import SendNewPassword from './pages/Welcome/SendNewPassword';
-import WelcomeScreen from './pages/Main/HomePage';
+import WelcomeScreen from './pages/Main/Dashboard';
 import UserInfo from './pages/Main/UserInfoPage';
 import IdeaDoc from './pages/Main/IdeaDocPage';
 import DocCollection from './pages/Main/DocCollectionPage';

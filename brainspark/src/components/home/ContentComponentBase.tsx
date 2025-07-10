@@ -6,9 +6,9 @@ interface BaseComponentProps {
 export default function BaseComponent({ children, className }: BaseComponentProps) {
   return (
       <div className={`
-        relative w-full h-full mx-auto 
-        bg-zinc-100 rounded-xl
-        overflow-y-auto overflow-x-hidden
+        relative w-full min-h-screen mx-auto 
+        bg-zinc-100 rounded-xl 
+        overflow-x-hidden
         ${className ?? ''}
       `}>
         {children}

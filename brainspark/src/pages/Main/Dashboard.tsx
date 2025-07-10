@@ -3,6 +3,8 @@ import httpRequest from "../../utils/HttpUtil";
 import BaseComponent from '../../components/home/ContentComponentBase'
 import { getDayMessage } from "../../utils/TimeUtils"; 
 import KeyMetrics from "../../components/home/KeyMetricsComponent";
+import TodayActivities from "../../components/home/TodayActivites";
+import NextTests from "../../components/home/NextTests";
 
 interface Document {
   title: string;
@@ -52,6 +54,7 @@ export default function WelcomeScreen() {
       fetchData();
   }, []);
 
+  // Simulação de dados do usuário
   const userStats = {
     dailyGoal: 6,
     studiedToday: 3.5,
@@ -62,6 +65,24 @@ export default function WelcomeScreen() {
     upcomingExams: 3,
     favoriteSubject: "Matemática"
   };
+
+  // Simulação de atividades de hoje
+  const todayTasks = [
+    { id: 1, subject: "Matemática", topic: "Derivadas", completed: true, timeSpent: 90 },
+    { id: 2, subject: "Física", topic: "Cinemática", completed: true, timeSpent: 60 },
+    { id: 3, subject: "Química", topic: "Ligações Químicas", completed: false, timeSpent: 0 },
+    { id: 4, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
+    { id: 4, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
+    { id: 4, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
+    { id: 4, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 }
+  ];
+
+  //Simulação de provas futuras
+  const upcomingTests = [
+    {id: 1, subject: "Matemática", date: new Date("2025-07-15")},
+    {id: 2, subject: "Física", date: new Date("2025-10-20")},
+    {id: 3, subject: "Química", date: new Date("2025-10-25")},
+  ]
 
   return (
     <BaseComponent className="p-6 font-sans flex flex-col bg-gray-50 space-y-4">
@@ -79,7 +100,8 @@ export default function WelcomeScreen() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
+        <TodayActivities activities={todayTasks}/>
+        <NextTests tests={upcomingTests}/>
       </div>
     </BaseComponent>
   );

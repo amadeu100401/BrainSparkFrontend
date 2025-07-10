@@ -11,12 +11,10 @@ interface KeyMetricsComponentProps {
     userStats: {
         dailyGoal: number;  
         studiedToday: number;
-        weeklyProgress: number;
         streak: number;
         completedTasks: number;
         totalTasks: number;
         upcomingExams: number;
-        favoriteSubject: string;
     }
 }
 
@@ -79,7 +77,7 @@ export default function KeyMetricsComponent({ userStats }:KeyMetricsComponentPro
                 </CardTitle>
                 <CardContent>
                     <div className="text-2xl font-bold">{userStats.upcomingExams}</div>
-                    <p className="text-xs opacity-90">nos próximos 30 dias</p>
+                    <p className="text-sm opacity-90">nos próximos 30 dias</p>
                 </CardContent>                    
             </CardHeader>
         </Card>

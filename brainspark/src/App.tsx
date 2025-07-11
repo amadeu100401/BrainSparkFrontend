@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Welcome from './pages/Welcome/WelcomePage';
-import Default from './pages/Welcome/EntryPage';
+// import Default from './pages/Welcome/EntryPage';
 import Login from './pages/Welcome/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import ForgotPassword from './pages/Welcome/ForgetPassword';
@@ -26,8 +26,6 @@ export function App() {
         <Route path="/" element={<Navigate to="/welcome" />} />
 
         <Route path="/welcome" element={<Welcome />}>
-          <Route index element={<Default />} />
-          {/* <Route path="register" element={<Register />} /> */}
           <Route path="send-new-password" element={<SendNewPassword />} />
         </Route>
 

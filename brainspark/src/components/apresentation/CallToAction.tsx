@@ -12,7 +12,7 @@ export default function CallToAction() {
                     Junte-se a milhares de estudantes que já alcançaram seus objetivos
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-44">
-                    <Link to={"/register"}>
+                    <Link to={"/welcome/register"}>
                         <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 text-lg">
                             Começar gratuitamente
                         </Button>

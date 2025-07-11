@@ -31,7 +31,7 @@ export default function StudyFeatures() {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                    <h2 className="text-3xl font-bold mb-6">
                         Tudo que você precisa para <span className="gradient-text">estudar melhor</span>
                     </h2>
                     <p className="text-lg text-gray-600">

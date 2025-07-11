@@ -1,6 +1,7 @@
 import Sidebar from "../../components/home/sidebar/App-sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { Outlet } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 import {
   SidebarInset,
@@ -29,6 +30,12 @@ export default function MainPage() {
                         focus:outline-none focus:ring-0 focus-visible:ring-0 
                         outline-none"
             />
+            
+          </div>
+          <div className="flex-1 flex items-center justify-end p-4">
+            <Link to={"/brainspark/home"}>
+              <span className="text-2xl font-bold gradient-text">BrainSpark</span>
+            </Link>
           </div>
         </header>
         <div className="flex flex-1 flex-col pt-0 bg-gray-100 max-h-screen">

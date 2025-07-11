@@ -15,7 +15,7 @@ export default function Management() {
                         Organize seus objetivos de estudo, cadastre suas provas e acompanhe seu progresso. 
                         Nossa plataforma te ajuda a manter o foco e alcançar seus objetivos acadêmicos.
                     </p>
-                    <Link to="/login">
+                    <Link to="/welcome/register">
                         <Button size="lg" className="text-lg px-8 py-3">
                             Comece Agora
                         </Button>

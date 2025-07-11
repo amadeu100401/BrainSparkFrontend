@@ -38,9 +38,9 @@ export default function WelcomePage() {
           <Management />
           <Stats />
           <StudyFeatures />
-          <Testimonials />
           <CallToAction />
-          <Features />
+          <Testimonials />
+          {/* <Features /> */}
           <Footer />
         </div>
     </div>

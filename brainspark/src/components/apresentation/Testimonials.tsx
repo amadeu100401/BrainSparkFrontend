@@ -6,17 +6,17 @@ export default function Testimonials() {
     const testimonials = [
         {
             name: "Ana Clara",
-            feedback: "Consegui organizar meu cronograma de estudos para o ENEM e melhorei minha produtividade em 80%. Aprovado em Medicina!",
+            feedback: '"Consegui organizar meu cronograma de estudos para o ENEM e melhorei minha produtividade em 80%. Aprovada em Medicina!"',
             corse: "Estudante de Medicina - USP"
         },
         {
             name: "Lucas Silva",
-            feedback: "As ferramentas de planejamento e relatórios são incríveis! Me ajudaram a melhorar meu desempenho acadêmico.",
+            feedback: '"As ferramentas de planejamento e relatórios são incríveis! Me ajudaram a melhorar meu desempenho acadêmico."',
             corse: "Servidor Público - TRT"
         },
         {
             name: "Mariana Costa",
-            feedback: "Finalmente consegui equilibrar trabalho e estudos. Passei na OAB na primeira tentativa usando o BrainSpark!",
+            feedback: '"Finalmente consegui equilibrar trabalho e estudos. Passei na OAB na primeira tentativa usando o BrainSpark!"',
             corse: "Advogada - OAB/SP"
         },
     ];
@@ -29,7 +29,7 @@ export default function Testimonials() {
                         O que nossos estudantes dizem
                     </h2>
                     <p className="text-lg text-gray-600">
-                        Histórias reais de sucesso acadêmiaco com a BrainSpark
+                        Histórias reais de sucesso acadêmico
                     </p>
                 </div>
 
@@ -49,7 +49,7 @@ export default function Testimonials() {
                                     {testimonial.feedback}
                                 </p>
                                 <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                                <div className="text-sm text-gray-500">Estudante de Medicina - USP</div>
+                                <div className="text-sm text-gray-500">{testimonial.corse}</div>
                             </CardContent>
                        </Card> 
                     ))}

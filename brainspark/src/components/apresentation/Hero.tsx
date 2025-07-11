@@ -19,20 +19,20 @@ export default function Hero() {
           {/* Badge */}
           <div className="inline-flex items-center bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full px-4 py-2 mb-8 fade-in-up">
             <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-            <span className="text-sm text-gray-600">Mais de 10.000 pessoas organizadas</span>
+            <span className="text-sm text-gray-600">Mais de 10.000 estudantes organizadas</span>
           </div>
 
           {/* Main Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 fade-in-up stagger-1">
-            Transforme seu{" "}
-            <span className="gradient-text">tempo</span>{" "}
+            Transforme seus{" "}
+            <span className="gradient-text">estudos</span>{" "}
             em{" "}
-            <span className="gradient-text">produtividade</span>
+            <span className="gradient-text">aprovação</span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto fade-in-up stagger-2">
-            A plataforma completa para gerenciar tarefas, organizar projetos e alcançar seus objetivos com eficiência máxima.
+            A plataforma completa para organizar seus estudos, gerenciar provas e alcançar a aprovação dos seus sonhos com máxima eficiência.
           </p>
 
           {/* CTA Buttons */}
@@ -59,24 +59,24 @@ export default function Hero() {
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 float-animation">
                 <Clock className="w-8 h-8 text-blue-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Gestão de Tempo</h3>
-              <p className="text-gray-600 text-sm">Controle total sobre seu tempo com timers e relatórios detalhados</p>
+              <h3 className="font-semibold text-gray-900 mb-2">Cronograma Inteligente</h3>
+              <p className="text-gray-600 text-sm">Organize seu tempo de estudo com cronogramas personalizados e lembretes automáticos</p>
             </div>
             
             <div className="flex flex-col items-center">
               <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4 float-animation" style={{ animationDelay: '-2s' }}>
                 <Target className="w-8 h-8 text-purple-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Metas Inteligentes</h3>
-              <p className="text-gray-600 text-sm">Defina e acompanhe objetivos com sistema de progresso visual</p>
+              <h3 className="font-semibold text-gray-900 mb-2">Metas de Aprovação</h3>
+              <p className="text-gray-600 text-sm">Defina objetivos claros para cada matéria e acompanhe seu progresso até a aprovação</p>
             </div>
             
             <div className="flex flex-col items-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 float-animation" style={{ animationDelay: '-4s' }}>
                 <Zap className="w-8 h-8 text-green-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Produtividade</h3>
-              <p className="text-gray-600 text-sm">Técnicas comprovadas como Pomodoro e Getting Things Done</p>
+              <h3 className="font-semibold text-gray-900 mb-2">Foco Máximo</h3>
+              <p className="text-gray-600 text-sm">Técnicas comprovadas como Pomodoro para maximizar sua concentração nos estudos</p>
             </div>
           </div>
         </div>

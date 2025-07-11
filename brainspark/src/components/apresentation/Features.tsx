@@ -63,16 +63,16 @@ export default function Features() {
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 lg:p-12">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                         <div>
-                        <div className="text-4xl lg:text-5xl font-bold gradient-text mb-2">99.9%</div>
-                        <div className="text-gray-600">Tempo de atividade</div>
+                            <div className="text-4xl lg:text-5xl font-bold gradient-text mb-2">99.9%</div>
+                            <div className="text-gray-600">Tempo de atividade</div>
                         </div>
                         <div>
-                        <div className="text-4xl lg:text-5xl font-bold gradient-text mb-2">10K+</div>
-                        <div className="text-gray-600">Usuários ativos</div>
+                            <div className="text-4xl lg:text-5xl font-bold gradient-text mb-2">10K+</div>
+                            <div className="text-gray-600">Usuários ativos</div>
                         </div>
                         <div>
-                        <div className="text-4xl lg:text-5xl font-bold gradient-text mb-2">50M+</div>
-                        <div className="text-gray-600">Tarefas completadas</div>
+                            <div className="text-4xl lg:text-5xl font-bold gradient-text mb-2">50M+</div>
+                            <div className="text-gray-600">Tarefas completadas</div>
                         </div>
                     </div>
                 </div>

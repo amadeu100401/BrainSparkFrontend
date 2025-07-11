@@ -66,6 +66,7 @@ export default function WelcomeScreen() {
     favoriteSubject: "Matemática"
   };
 
+  //TODO: Integrar com a API para obter as atividades de hoje e provas futuras
   // Simulação de atividades de hoje
   const todayTasks = [
     { id: 1, subject: "Matemática", topic: "Derivadas", completed: true, timeSpent: 90 },
@@ -77,6 +78,7 @@ export default function WelcomeScreen() {
     { id: 4, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 }
   ];
 
+  //TODO: Integrar com a API para obter as provas futuras
   //Simulação de provas futuras
   const upcomingTests = [
     {id: 1, subject: "Matemática", date: new Date("2025-07-15")},

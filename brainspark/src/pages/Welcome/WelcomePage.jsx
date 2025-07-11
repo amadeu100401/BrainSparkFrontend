@@ -1,10 +1,15 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';  
 import Header from "../../components/apresentation/Header";
 import Hero from "../../components/apresentation/Hero";
 import Features from "../../components/apresentation/Features";
-import { Toaster } from 'sonner';
+import Management from "../../components/apresentation/Management";
+import Stats from "../../components/apresentation/Stats";
+import StudyFeatures from "../../components/apresentation/StudyFeatures";
+import Testimonials from "../../components/apresentation/Testimonials";
+import CallToAction from "../../components/apresentation/CallToAction";
+import Footer from "../../components/apresentation/Footer";
 
 export default function WelcomePage() {
   const navigate = useNavigate();
@@ -26,10 +31,18 @@ export default function WelcomePage() {
   }
 
   return (
-    <div className="min-h-screen select-none">
+    <div className="flex flex-col h-screen w-full ">
         <Header />
-        <Hero />
-        <Features />
+        <div className="overflow-y-auto">
+          <Hero />
+          <Management />
+          <Stats />
+          <StudyFeatures />
+          <Testimonials />
+          <CallToAction />
+          <Features />
+          <Footer />
+        </div>
     </div>
   );
 }

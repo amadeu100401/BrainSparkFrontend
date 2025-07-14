@@ -73,9 +73,9 @@ export default function WelcomeScreen() {
     { id: 2, subject: "Física", topic: "Cinemática", completed: true, timeSpent: 60 },
     { id: 3, subject: "Química", topic: "Ligações Químicas", completed: false, timeSpent: 0 },
     { id: 4, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
-    { id: 4, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
-    { id: 4, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
-    { id: 4, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 }
+    { id: 5, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
+    { id: 6, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
+    { id: 7, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 }
   ];
 
   //TODO: Integrar com a API para obter as provas futuras

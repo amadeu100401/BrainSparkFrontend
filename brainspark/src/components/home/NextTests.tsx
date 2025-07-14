@@ -6,6 +6,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface NextTest {
   id: number;
@@ -27,6 +28,34 @@ export default function NextTest({ tests }: NextTestProps) {
         return Math.ceil(timeDiff / (1000 * 3600 * 24)); 
     }
 
+    const testToShow = () => {
+      return(
+        <div>
+          {tests.length === 0 ? (
+            <div className="text-center text-gray-500 mt-8">
+              Nenhuma prova agendada
+            </div>
+          ) : (
+            tests.map((exam) => (
+              <div
+                key={exam.id}
+                className="flex justify-between p-2 bg-zinc-50 rounded-lg mb-2 hover:bg-zinc-100 transition-colors"
+              >
+                  <div>
+                      <p className="font-medium text-gray-900">{exam.subject}</p>
+                      <span className="text-sm text-gray-600">{exam.date.toLocaleDateString()}</span>
+                  </div>
+
+                  <Badge variant={calculateDaysLeft(exam.date) <= 7 ? "destructive" : "secondary"}>
+                      {calculateDaysLeft(exam.date)}d
+                  </Badge>
+              </div>
+            ))
+          )}
+        </div>
+      )
+    }
+
   return (
     <div className="space-y-6">
       <Card>
@@ -38,31 +67,14 @@ export default function NextTest({ tests }: NextTestProps) {
             Confira as próximas provas agendadas e se prepare com antecedência.
           </CardDescription>
         </CardHeader>
-
         <CardContent>
-          <div>
-            {tests.length === 0 ? (
-              <div className="text-center text-gray-500 mt-8">
-                Nenhuma prova agendada
-              </div>
-            ) : (
-              tests.map((exam) => (
-                <div
-                  key={exam.id}
-                  className="flex justify-between p-3 bg-zinc-50 rounded-lg mb-2 hover:bg-zinc-100 transition-colors"
-                >
-                    <div>
-                        <p className="font-medium text-gray-900">{exam.subject}</p>
-                        <span className="text-sm text-gray-600">Teste</span>
-                    </div>
-
-                    <Badge variant={calculateDaysLeft(exam.date) <= 7 ? "destructive" : "secondary"}>
-                        {calculateDaysLeft(exam.date)}d
-                    </Badge>
-                </div>
-              ))
-            )}
-          </div>
+          {tests.length > 3 ? (
+            <ScrollArea className="h-64">
+              {testToShow()}
+            </ScrollArea>
+          ) : (
+            testToShow()
+          )}
         </CardContent>
       </Card>
     </div>

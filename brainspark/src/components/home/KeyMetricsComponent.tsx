@@ -5,7 +5,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress";
-import { Clock, Zap, CheckCircle, Calendar } from "lucide-react";
+import { Clock, Zap, CheckCircle, TrendingUp } from "lucide-react";
 
 interface KeyMetricsComponentProps {
     userStats: {
@@ -14,7 +14,7 @@ interface KeyMetricsComponentProps {
         streak: number;
         completedTasks: number;
         totalTasks: number;
-        upcomingExams: number;
+        weeklyGoal: number;
     }
 }
 
@@ -72,12 +72,17 @@ export default function KeyMetricsComponent({ userStats }:KeyMetricsComponentPro
         <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
             <CardHeader className="pb-2">
                 <CardTitle className="text-xl font-medium flex items-center">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    Próximas Provas
+                    <TrendingUp className="w-4 h-4 mr-2" />
+                    Progresso Semanal
                 </CardTitle>
                 <CardContent>
-                    <div className="text-2xl font-bold">{userStats.upcomingExams}</div>
-                    <p className="text-sm opacity-90">nos próximos 30 dias</p>
+                    <div className="text-3xl font-bold text-white mb-2">
+                        {userStats.weeklyGoal || 0}%
+                    </div>
+                    <Progress value={userStats.weeklyGoal} className="mb-2" />
+                    <p className="text-sm text-sm opacity-90">
+                        Meta semanal atingida
+                    </p>
                 </CardContent>                    
             </CardHeader>
         </Card>

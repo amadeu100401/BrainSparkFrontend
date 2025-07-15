@@ -67,7 +67,7 @@ export default function TodayActivities({ activities }: ActivityProps) {
       <CardHeader>
         <CardTitle className="flex items-center">
           <BookOpen className="w-5 h-5 mr-2" />
-          Atividades de Hoje
+          <h2 className="text-xl">Atividades de Hoje</h2>
         </CardTitle>
         <CardDescription className="text-sm text-gray-500">
           Suas tarefas de estudo programadas para hoje

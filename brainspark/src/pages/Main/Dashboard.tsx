@@ -62,7 +62,7 @@ export default function WelcomeScreen() {
     streak: 7,
     completedTasks: 8,
     totalTasks: 12,
-    upcomingExams: 3,
+    weeklyGoal: 3,
     favoriteSubject: "Matemática"
   };
 
@@ -73,9 +73,6 @@ export default function WelcomeScreen() {
     { id: 2, subject: "Física", topic: "Cinemática", completed: true, timeSpent: 60 },
     { id: 3, subject: "Química", topic: "Ligações Químicas", completed: false, timeSpent: 0 },
     { id: 4, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
-    { id: 5, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
-    { id: 6, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
-    { id: 7, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 }
   ];
 
   //TODO: Integrar com a API para obter as provas futuras
@@ -103,7 +100,9 @@ export default function WelcomeScreen() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <TodayActivities activities={todayTasks}/>
-        <NextTests tests={upcomingTests}/>
+        <div className="grid grid-cols-1">
+          <NextTests tests={upcomingTests}/>
+        </div>
       </div>
     </BaseComponent>
   );

@@ -8,8 +8,6 @@ import MainPage from './pages/Main/MainPage';
 import SendNewPassword from './pages/Welcome/SendNewPassword';
 import WelcomeScreen from './pages/Main/Dashboard';
 import UserInfo from './pages/Main/UserInfoPage';
-import IdeaDoc from './pages/Main/IdeaDocPage';
-import DocCollection from './pages/Main/DocCollectionPage';
 import FocusTimePage from './pages/Main/FocusTimePage';
 import NotFound from '@/pages/NotFound';
 import { AuthProvider } from './contexts/AuthContext';
@@ -43,8 +41,6 @@ export function App() {
         >
           <Route path="home" element={<WelcomeScreen />} />
           <Route path="user-info" element={<UserInfo />} />
-          <Route path="idea" element={<IdeaDoc />} />
-          <Route path="docs-collection" element={<DocCollection />} />
           <Route
             path="focus"
             element={

@@ -12,8 +12,13 @@ import DesktopDatePickerCustom from "@/components/shared/DesktopDatePicker";
 import VerificationModal from "../../components/login/VerificationModal";
 import Divider from "@/components/shared/Divider";
 import RoleSelection from "@/components/login/RoleSelection";
-import { Tag } from 'lucide-react';
+import { LucideIcon, Tag } from 'lucide-react';
 import { Popover, PopoverTrigger } from '@/components/ui/popover';
+
+type Role = {
+    icon: LucideIcon;
+    title: string;
+}
 
 export default function RegisterPage() {
     const navigate = useNavigate();
@@ -22,7 +27,7 @@ export default function RegisterPage() {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [birthDate, setBirthDate] = useState(new Date());
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState<Role | null>(null);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [isLoading, setIsLoading] = useState(false);
     const [isVerifying, setIsVerifying] = useState(false);
@@ -33,7 +38,7 @@ export default function RegisterPage() {
         if (!name.trim()) newErrors.name = "Nome é obrigatório.";
         if (!email.trim()) newErrors.email = "Email é obrigatório.";
         if (!password.trim()) newErrors.password = "Senha é obrigatória.";
-        if (role.length === 0) newErrors.role = "Selecione ao menos um perfil.";
+        if (role?.title.length === 0) newErrors.role = "Selecione ao menos um perfil.";
 
         return newErrors;
     }
@@ -47,7 +52,7 @@ export default function RegisterPage() {
         setBirthDate(date);
     };
 
-    const handleRoleSelected = (selectedRole: string) => {
+    const handleRoleSelected = (selectedRole: Role) => {
         setRole(selectedRole);
         setErrors(prev => ({ ...prev, role: "" }));
     }
@@ -65,7 +70,7 @@ export default function RegisterPage() {
 
         try {
             setIsLoading(true);
-            const payload = { name, email, password, birthDate, role };
+            const payload = { name, email, password, birthDate, role: role?.title || "" };
             await signup(payload);
             setIsVerifying(true);
             clearForm();
@@ -81,7 +86,7 @@ export default function RegisterPage() {
         setName("");
         setPassword("");
         setBirthDate(new Date());
-        setRole("");
+        setRole(null);
     }
 
     return (
@@ -149,9 +154,10 @@ export default function RegisterPage() {
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <div className="w-full">
-                                            <Button type="button" className="w-full justify-start border border-gray-300 shadow-sm bg-transparent text-gray-900 hover:bg-gray-100">
-                                                <Tag className="w-4 h-4 mr-2" />
-                                                Selecione seu perfil
+                                            <Button type="button" className="w-full justify-start border border-gray-300 shadow-sm 
+                                            bg-transparent text-gray-900 hover:bg-gray-100">
+                                                {role?.icon ? <role.icon className="w-4 h-4 mr-2" /> : <Tag className="w-4 h-4 mr-2" />}
+                                                {role?.title || "Selecione seu perfil"}
                                             </Button>
                                         </div>
                                     </PopoverTrigger>

@@ -1,6 +1,6 @@
 import { PopoverContent } from "@radix-ui/react-popover";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
-import { GraduationCap, BriefcaseBusiness, Clock, Check } from "lucide-react";
+import { GraduationCap, BriefcaseBusiness, Clock, Check, LucideIcon} from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +23,9 @@ const roles = [
 ];
 
 interface RoleSelectionProps {
-  handleRoleSelected: (roles: string) => void;
+  handleRoleSelected: (roles: {    
+    icon: LucideIcon;
+    title: string;}) => void;
 }
 
 export default function RoleSelection({ handleRoleSelected }: RoleSelectionProps) {
@@ -32,7 +34,16 @@ export default function RoleSelection({ handleRoleSelected }: RoleSelectionProps
   function selectRole(roleId: string) {
     const newRole = roleId === selectedRole ? null : roleId;
     setSelectedRole(newRole);
-    handleRoleSelected(newRole ? newRole : "");
+    
+    if (newRole) {
+      const roleObj = roles.find((role) => role.id === newRole);
+      if (roleObj) {
+        handleRoleSelected({
+          icon: roleObj.icon.type,
+          title: roleObj.name,
+        });
+      }
+    }
   }
 
   return (

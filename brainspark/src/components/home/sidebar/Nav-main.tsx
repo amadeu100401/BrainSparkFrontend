@@ -38,9 +38,9 @@ export default function NavMain() {
                 </SidebarMenuItem>
                 <SidebarMenuItem>
                     <SidebarMenuButton asChild tooltip={"Focus timer"}>
-                        <a href={""}>
+                        <a href={"/brainspark/gestao-estudo"}>
                             <Target />
-                            <span>Objetivos</span>
+                            <span>Gestão de Estudos</span>
                         </a>
                     </SidebarMenuButton>
                 </SidebarMenuItem>

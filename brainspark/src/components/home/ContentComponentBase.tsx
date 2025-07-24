@@ -10,8 +10,10 @@ export default function BaseComponent({ children, className }: BaseComponentProp
         bg-zinc-100 rounded-xl 
         overflow-x-hidden
         ${className ?? ''}
+        pb-10
       `}>
         {children}
+        <div className="h-10" />
       </div>
   );
 }

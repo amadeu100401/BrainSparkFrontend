@@ -113,7 +113,7 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <BaseComponent className="p-6 font-sans flex flex-col bg-gray-50 space-y-4">
+    <BaseComponent className="p-6 font-sans flex flex-col bg-gray-50 space-y-4 pb-10">
       <div className='flex flex-col space-y-2 items-start mb-4'>
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center">
           {getGreeting()}, {mainPage.userName || "Estudante"}!
@@ -133,6 +133,7 @@ export default function WelcomeScreen() {
           <NextTests tests={mainPage.nextTestResponses}/>
         </div>
       </div>
+      <div className="h-10" />
     </BaseComponent>
   );
 }

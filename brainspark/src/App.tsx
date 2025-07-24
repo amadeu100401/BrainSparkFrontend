@@ -12,6 +12,7 @@ import FocusTimePage from './pages/Main/FocusTimePage';
 import NotFound from '@/pages/NotFound';
 import { AuthProvider } from './contexts/AuthContext';
 import { FocusProvider } from './contexts/FocusContext';
+import StudyManagement from './pages/Main/StudyManagementPage'; 
 import { Toaster } from "sonner";
 
 import './index.css';
@@ -49,6 +50,7 @@ export function App() {
               </FocusProvider>
             }
           />
+          <Route path="gestao-estudo" element={<StudyManagement />}/>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -67,6 +67,7 @@ export default function FocusTimePage() {
           <Tips />
         </div>
       </div>
+      <div className="h-10" />
     </ComponentBase>
   );
 }

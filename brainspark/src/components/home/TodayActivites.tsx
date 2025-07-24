@@ -12,18 +12,18 @@ import { Plus, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface Activity {
-  id: number;
-  subject: string;
+  id: string;
+  Subject: string;
   topic: string;
-  completed: boolean;
-  timeSpent: number;
+  isConcluded: boolean;
+  totalStudyTime: number;
 }
 
 interface ActivityProps {
-  activities: Activity[];
+  activities: Activity[] | [];
 }
 
-export default function TodayActivities({ activities }: ActivityProps) {
+export default function TodayActivities({ activities = [] }: ActivityProps) {
   const ActivityList = (
     <div className="space-y-4">
       {activities.map((task) => (
@@ -34,28 +34,28 @@ export default function TodayActivities({ activities }: ActivityProps) {
           <div className="flex items-center space-x-3">
             <div
               className={`w-3 h-3 rounded-full ${
-                task.completed ? "bg-green-500" : "bg-gray-300"
+                task.isConcluded ? "bg-green-500" : "bg-gray-300"
               }`}
             ></div>
             <div>
               <p
                 className={`font-medium ${
-                  task.completed
+                  task.isConcluded
                     ? "line-through text-gray-800"
                     : "text-gray-900"
                 }`}
               >
-                {task.subject} - {task.topic}
+                {task.Subject} - {task.topic}
               </p>
-              {task.timeSpent > 0 && (
+              {task.totalStudyTime > 0 && (
                 <p className="text-sm text-gray-500">
-                  {task.timeSpent} minutos estudados
+                  {task.totalStudyTime} minutos estudados
                 </p>
               )}
             </div>
           </div>
-          <Badge variant={task.completed ? "default" : "secondary"}>
-            {task.completed ? "Concluído" : "Pendente"}
+          <Badge variant={task.isConcluded ? "default" : "secondary"}>
+            {task.isConcluded ? "Concluído" : "Pendente"}
           </Badge>
         </div>
       ))}

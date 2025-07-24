@@ -1,27 +1,62 @@
 import { useEffect, useState } from "react";
-import httpRequest from "../../utils/HttpUtil"; 
+import httpRequest, { ContextEnum } from "../../utils/HttpUtil"; 
 import BaseComponent from '../../components/home/ContentComponentBase'
 import { getDayMessage } from "../../utils/TimeUtils"; 
 import KeyMetrics from "../../components/home/KeyMetricsComponent";
 import TodayActivities from "../../components/home/TodayActivites";
 import NextTests from "../../components/home/NextTests";
 
-interface Document {
+interface userRole {
+  code: number;
   title: string;
-  updatedAt: string;
+}
+
+interface todayActivities {
   id: string;
+  Subject: string;
+  topic: string;
+  isConcluded: boolean;
+  totalStudyTime: number;
+}
+
+interface nextTestResponses {
+  name: string;
+  doDate: Date;
 }
 
 interface MainPageData {
-  name: string;
-  documents: Document[];
+  userName: string;
+  userEmail: string;
+  avatarLink: string;
+  birthDate: Date | null;
+  totalTimeToday: number;
+  daysInARow: number;
+  activitiesConcluded: number;
+  weeklyProgress: number;
+  userRole: userRole[] | [];
+  totalActivityCount: number;
+  todayTimeGoal: number;
+  todayActivities: todayActivities[] | [];
+  nextTestResponses: nextTestResponses[] | [];
 }
 
 export default function WelcomeScreen() {
   const [mainPage, setMainPage] = useState<MainPageData>({
-    name: "",
-    documents: []
+    userName: "",
+    userEmail: "",
+    avatarLink: "",
+    birthDate: null,
+    totalTimeToday: 0,
+    daysInARow: 0,
+    activitiesConcluded: 0,
+    weeklyProgress: 0,
+    userRole: [],
+    totalActivityCount: 0,
+    todayTimeGoal: 0,
+    todayActivities: [],
+    nextTestResponses: []
   });
+
   const [loading, setLoading] = useState(false);
 
   const getGreeting = () => {
@@ -35,13 +70,24 @@ export default function WelcomeScreen() {
     try {
       setLoading(true); 
       const response = await httpRequest({
-        url:"/api/v1/users/main-page",
+        url: ContextEnum.me + "/summary",
         method:"GET",
       });
       
       setMainPage({
-        name: response.name,
-        documents: response.ideaList || []
+        userName: response.userName,
+        userEmail: response.userEmail,
+        avatarLink: response.avatarLink,
+        birthDate: response.birthDate,
+        totalTimeToday: response.totalTimeToday,
+        daysInARow: response.daysInARow,
+        activitiesConcluded: response.activitiesConcluded,
+        weeklyProgress: response.weeklyProgress,
+        userRole: response.userRole,
+        totalActivityCount: response.totalActivityCount,
+        todayTimeGoal: response.todayTimeGoal,
+        todayActivities: response.totalActivities,
+        nextTestResponses: response.nextTestResponses
       });
     } catch (error) {
       console.error("Erro ao buscar dados da main page:", error);
@@ -56,38 +102,21 @@ export default function WelcomeScreen() {
 
   // Simulação de dados do usuário
   const userStats = {
-    dailyGoal: 6,
-    studiedToday: 3.5,
-    weeklyProgress: 75,
-    streak: 7,
-    completedTasks: 8,
-    totalTasks: 12,
-    weeklyGoal: 3,
+    dailyGoal: mainPage.todayTimeGoal,
+    studiedToday: mainPage.todayTimeGoal,
+    weeklyProgress: mainPage.weeklyProgress,
+    streak: mainPage.daysInARow,
+    completedTasks: mainPage.activitiesConcluded,
+    totalTasks: mainPage.totalActivityCount,
+    weeklyGoal: mainPage.weeklyProgress,
     favoriteSubject: "Matemática"
   };
-
-  //TODO: Integrar com a API para obter as atividades de hoje e provas futuras
-  // Simulação de atividades de hoje
-  const todayTasks = [
-    { id: 1, subject: "Matemática", topic: "Derivadas", completed: true, timeSpent: 90 },
-    { id: 2, subject: "Física", topic: "Cinemática", completed: true, timeSpent: 60 },
-    { id: 3, subject: "Química", topic: "Ligações Químicas", completed: false, timeSpent: 0 },
-    { id: 4, subject: "História", topic: "Segunda Guerra", completed: false, timeSpent: 0 },
-  ];
-
-  //TODO: Integrar com a API para obter as provas futuras
-  //Simulação de provas futuras
-  const upcomingTests = [
-    {id: 1, subject: "Matemática", date: new Date("2025-07-15")},
-    {id: 2, subject: "Física", date: new Date("2025-10-20")},
-    {id: 3, subject: "Química", date: new Date("2025-10-25")},
-  ]
 
   return (
     <BaseComponent className="p-6 font-sans flex flex-col bg-gray-50 space-y-4">
       <div className='flex flex-col space-y-2 items-start mb-4'>
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center">
-          {getGreeting()}, {mainPage.name || "Estudante"}!
+          {getGreeting()}, {mainPage.userName || "Estudante"}!
         </h1>
         <span className="text-gray-600">
           {getDayMessage()} 
@@ -99,9 +128,9 @@ export default function WelcomeScreen() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <TodayActivities activities={todayTasks}/>
+        <TodayActivities activities={mainPage.todayActivities}/>
         <div className="grid grid-cols-1">
-          <NextTests tests={upcomingTests}/>
+          <NextTests tests={mainPage.nextTestResponses}/>
         </div>
       </div>
     </BaseComponent>

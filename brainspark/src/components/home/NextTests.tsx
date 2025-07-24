@@ -10,9 +10,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlertCircle } from "lucide-react";
 
 interface NextTest {
-  id: number;
-  subject: string;
-  date: Date;
+  name: string;
+  doDate: Date;
 }
 
 interface NextTestProps {
@@ -45,16 +44,15 @@ export default function NextTest({ tests }: NextTestProps) {
         ) : (
           tests.map((exam) => (
             <div
-              key={exam.id}
               className="flex justify-between items-center p-2 bg-gray-50 rounded mb-2"
             >
                 <div>
-                    <p className="font-medium text-gray-900">{exam.subject}</p>
-                    <span className="text-sm text-gray-600">{exam.date.toLocaleDateString()}</span>
+                    <p className="font-medium text-gray-900">{exam.name}</p>
+                    <span className="text-sm text-gray-600">{exam.doDate.toLocaleDateString()}</span>
                 </div>
 
-                <Badge variant={calculateDaysLeft(exam.date) <= 7 ? "destructive" : "secondary"} className="rounded-full">
-                    {calculateDaysLeft(exam.date)}d
+                <Badge variant={calculateDaysLeft(exam.doDate) <= 7 ? "destructive" : "secondary"} className="rounded-full">
+                    {calculateDaysLeft(exam.doDate)}d
                 </Badge>
             </div>
           ))

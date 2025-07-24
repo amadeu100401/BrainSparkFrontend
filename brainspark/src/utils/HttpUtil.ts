@@ -6,7 +6,8 @@ export enum ContextEnum {
   user = "/api/v1/users",
   idea = "/api/v1/ideas",
   auth = "/api/v1/auth",
-  focus = "/api/v1/focus"
+  focus = "/api/v1/focus",
+  me = "/api/v1/me"
 }
 
 interface HttpRequestOption {

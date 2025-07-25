@@ -6,8 +6,8 @@ interface StudyObjective {
   id: string;
   subject: string;
   topic: string;
-  dailyGoal: number; // minutes
-  totalStudied: number; // minutes
+  dailyGoal: number;
+  totalStudied: number;
   deadline: string;
   status: 'active' | 'completed' | 'paused';
 }

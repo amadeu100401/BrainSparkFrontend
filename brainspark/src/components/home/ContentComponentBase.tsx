@@ -7,7 +7,8 @@ export default function BaseComponent({ children, className }: BaseComponentProp
   return (
       <div className={`
         relative w-full min-h-screen mx-auto 
-        bg-zinc-100 rounded-xl 
+        bg-slate-50
+        rounded-xl 
         overflow-x-hidden
         ${className ?? ''}
         pb-10

@@ -1,6 +1,7 @@
 import BaseComponent from "@/components/home/ContentComponentBase";
 import GoalsManagement from "@/components/studyManagement/GoalsAssistents";
 import GoalsStatus from "@/components/studyManagement/GoalsStatus";
+import NavTab from "@/components/studyManagement/NavTab";
 import { Target } from "lucide-react";
 
 export default function StudyManagement() {
@@ -22,6 +23,7 @@ export default function StudyManagement() {
                 <GoalsManagement />
                 <GoalsStatus />
             </div>
+            <NavTab />
             <div className="h-10" />
         </BaseComponent>
     );
